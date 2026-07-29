@@ -9,6 +9,7 @@ datasource db {
 
 enum Role {
   super_admin
+  operator
   store_owner
   customer
 }

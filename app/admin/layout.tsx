@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { requireSuperAdmin } from "@/lib/session";
+import { requireAdmin } from "@/lib/session";
 import { SignOutButton } from "@/components/admin/SignOutButton";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  await requireSuperAdmin();
+  const session = await requireAdmin();
 
   return (
     <div className="min-h-screen">
@@ -14,9 +14,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link href="/admin" className="hover:underline">
               Daftar Tenant
             </Link>
-            <Link href="/admin/pengaturan-ai" className="hover:underline">
-              Pengaturan AI
-            </Link>
+            {session.user.role === "super_admin" && (
+              <Link href="/admin/pengaturan-ai" className="hover:underline">
+                Pengaturan AI
+              </Link>
+            )}
           </nav>
         </div>
         <SignOutButton />

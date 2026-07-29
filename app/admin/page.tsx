@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { requireSuperAdmin } from "@/lib/session";
+import { requireAdmin } from "@/lib/session";
 import { SITE_TYPE_CONFIG } from "@/lib/site-types";
 import { updateStoreStatus, deleteStore } from "@/app/admin/actions";
 import {
@@ -16,7 +16,7 @@ import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
 import { StoreStatusSelect } from "@/components/admin/StoreStatusSelect";
 
 export default async function AdminPage() {
-  await requireSuperAdmin();
+  const session = await requireAdmin();
 
   const stores = await prisma.store.findMany({
     include: {

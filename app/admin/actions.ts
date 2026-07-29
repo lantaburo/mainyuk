@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireSuperAdmin } from "@/lib/session";
+import { requireAdmin, requireSuperAdmin } from "@/lib/session";
 import { callAiProvider, extractJson, AiClientError } from "@/lib/ai-client";
 import { blockArraySchema } from "@/lib/block-schema";
 import { blocksToJson, type Block } from "@/lib/blocks-types";
@@ -11,7 +11,7 @@ import { blocksToJson, type Block } from "@/lib/blocks-types";
 const statusSchema = z.enum(["active", "suspended", "trial"]);
 
 export async function updateStoreStatus(storeId: string, formData: FormData) {
-  await requireSuperAdmin();
+  await requireAdmin();
 
   const parsed = statusSchema.safeParse(formData.get("status"));
   if (!parsed.success) throw new Error("Status tidak valid");
@@ -25,7 +25,7 @@ export async function updateStoreStatus(storeId: string, formData: FormData) {
 }
 
 export async function deleteStore(storeId: string) {
-  await requireSuperAdmin();
+  await requireAdmin();
 
   await prisma.store.delete({ where: { id: storeId } });
 
@@ -35,7 +35,7 @@ export async function deleteStore(storeId: string) {
 type GenerateResult = { ok: true; blocks: Block[] } | { ok: false; error: string };
 
 export async function generateContentWithAi(prompt: string): Promise<GenerateResult> {
-  await requireSuperAdmin();
+  await requireAdmin();
 
   const settings = await prisma.aiSettings.findFirst();
   if (!settings) {
@@ -63,7 +63,7 @@ export async function generateContentWithAi(prompt: string): Promise<GenerateRes
 }
 
 export async function applyGeneratedBlocks(storeId: string, blocks: Block[]) {
-  await requireSuperAdmin();
+  await requireAdmin();
 
   const validated = blockArraySchema.safeParse(blocks);
   if (!validated.success) throw new Error("Data block tidak valid");

@@ -31,7 +31,8 @@ export default function LoginPage() {
     }
 
     const session = await getSession();
-    router.push(session?.user.role === "super_admin" ? "/admin" : "/dashboard");
+    const role = session?.user.role;
+    router.push(role === "super_admin" || role === "operator" ? "/admin" : "/dashboard");
     router.refresh();
   }
 

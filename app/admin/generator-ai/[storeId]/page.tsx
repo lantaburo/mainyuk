@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { requireSuperAdmin } from "@/lib/session";
+import { requireAdmin } from "@/lib/session";
 import { AiContentGenerator } from "@/components/admin/AiContentGenerator";
 import { DEFAULT_INDUSTRY, isIndustry } from "@/lib/industry-content";
 
@@ -9,7 +9,7 @@ export default async function AdminGeneratorAiPage({
 }: {
   params: { storeId: string };
 }) {
-  await requireSuperAdmin();
+  await requireAdmin();
 
   const [store, aiSettings] = await Promise.all([
     prisma.store.findUnique({
