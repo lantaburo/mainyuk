@@ -15,9 +15,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               Daftar Tenant
             </Link>
             {session.user.role === "super_admin" && (
-              <Link href="/admin/pengaturan-ai" className="hover:underline">
-                Pengaturan AI
-              </Link>
+              <>
+                <Link href="/admin/operator" className="hover:underline">
+                  Manajemen Operator
+                </Link>
+                <Link href="/admin/pengaturan-ai" className="hover:underline">
+                  Pengaturan AI
+                </Link>
+              </>
             )}
           </nav>
         </div>
