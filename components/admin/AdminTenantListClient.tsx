@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SITE_TYPE_CONFIG } from "@/lib/site-types";
 import { updateStoreStatus, deleteStore } from "@/app/admin/actions";
@@ -46,6 +46,11 @@ type StoreData = {
 
 export function AdminTenantListClient({ initialStores }: { initialStores: StoreData[] }) {
   const [search, setSearch] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const filteredStores = initialStores.filter(store => {
     const q = search.toLowerCase();
@@ -138,7 +143,10 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                     </div>
                   </TableCell>
                   <TableCell className="text-sm text-gray-500 whitespace-nowrap">
-                    {store.createdAt.toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {mounted 
+                      ? new Date(store.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })
+                      : "..."
+                    }
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
