@@ -9,9 +9,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!store) redirect("/login");
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-slate-50/50">
       <DashboardNav store={{ name: store.name, slug: store.slug, siteType: store.siteType }} />
-      <main className="flex-1 p-6">{children}</main>
+      <main className="flex-1 p-8 overflow-x-hidden">{children}</main>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { addOperator, deleteOperator } from "./actions";
+import { Users, Mail, Trash2 } from "lucide-react";
 
 type Operator = {
   id: string;
@@ -81,35 +82,44 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
         </form>
       )}
 
-      <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
+      <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
         {initialOperators.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground">
-            Belum ada operator terdaftar.
+          <div className="p-12 flex flex-col items-center justify-center text-center">
+            <Users className="h-10 w-10 text-gray-300 mb-3" />
+            <p className="text-gray-500 font-medium">Belum ada operator terdaftar.</p>
+            <p className="text-sm text-gray-400 mt-1">Tambahkan operator baru untuk membantu mengelola sistem.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b bg-muted/50 text-muted-foreground">
+              <thead className="bg-slate-50/80 border-b border-gray-200">
                 <tr>
-                  <th className="p-4 font-medium">Nama</th>
-                  <th className="p-4 font-medium">Email</th>
-                  <th className="p-4 font-medium">Terdaftar</th>
-                  <th className="p-4 font-medium text-right">Aksi</th>
+                  <th className="p-4 font-semibold text-gray-700">Operator</th>
+                  <th className="p-4 font-semibold text-gray-700">Terdaftar</th>
+                  <th className="p-4 font-semibold text-gray-700 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
+              <tbody className="divide-y divide-gray-100">
                 {initialOperators.map((op) => (
-                  <tr key={op.id} className="hover:bg-muted/30">
-                    <td className="p-4 font-medium">{op.name}</td>
-                    <td className="p-4">{op.email}</td>
-                    <td className="p-4" suppressHydrationWarning>{new Date(op.createdAt).toLocaleDateString('id-ID')}</td>
+                  <tr key={op.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="p-4">
+                      <div className="font-semibold text-gray-900">{op.name}</div>
+                      <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                        <Mail className="h-3 w-3" /> {op.email}
+                      </div>
+                    </td>
+                    <td className="p-4 text-gray-500 whitespace-nowrap" suppressHydrationWarning>
+                      {new Date(op.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </td>
                     <td className="p-4 text-right">
                       <Button 
-                        variant="destructive" 
-                        size="sm" 
+                        variant="outline" 
+                        size="sm"
+                        className="h-8 gap-1 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700" 
                         onClick={() => handleDelete(op.id)}
                       >
-                        Hapus
+                        <Trash2 className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">Hapus</span>
                       </Button>
                     </td>
                   </tr>
