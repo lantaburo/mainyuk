@@ -1,15 +1,18 @@
-import { requireStoreOwner } from "@/lib/session";
+import { requireAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { SITE_TYPE_CONFIG, type SiteType } from "@/lib/site-types";
 import { ensureRequiredPages } from "@/lib/ensure-required-pages";
 import { parseBlocks } from "@/lib/blocks-types";
-import { updatePageBlocks } from "@/app/dashboard/halaman/actions";
+import { updatePageBlocksByAdmin } from "@/app/admin/halaman/[storeId]/actions";
 import { PageBlocksEditor } from "@/components/dashboard/PageBlocksEditor";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { notFound } from "next/navigation";
 
-export default async function HalamanPage() {
-  const session = await requireStoreOwner();
-  const store = await prisma.store.findUniqueOrThrow({ where: { id: session.user.storeId } });
+export default async function AdminHalamanPage({ params }: { params: { storeId: string } }) {
+  await requireAdmin();
+  const store = await prisma.store.findUnique({ where: { id: params.storeId } });
+  if (!store) notFound();
+
   const config = SITE_TYPE_CONFIG[store.siteType];
 
   await ensureRequiredPages(store.id, store.siteType, store.name);
@@ -27,9 +30,12 @@ export default async function HalamanPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-semibold">Halaman</h1>
+      <a href="/admin" className="text-sm text-muted-foreground hover:underline">
+        ← Kembali ke Daftar Tenant
+      </a>
+      <h1 className="mt-2 text-2xl font-semibold">Edit Halaman — {store.name}</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Susun dan edit blok konten untuk situs Anda.
+        Susun dan edit blok konten untuk situs ini sebagai admin/operator.
       </p>
 
       <div className="mt-6">
@@ -95,7 +101,7 @@ function PageEditorSection({
       siteType={siteType}
       pageType={pageConfig.pageType}
       pageLabel={pageConfig.label}
-      action={updatePageBlocks}
+      action={updatePageBlocksByAdmin}
     />
   );
 }

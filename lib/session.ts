@@ -24,6 +24,21 @@ export async function requireAdmin() {
   return session;
 }
 
+export async function requireAdminOrOwner(storeId: string) {
+  const session = await getSession();
+  if (!session) redirect("/login");
+  
+  if (session.user.role === "super_admin" || session.user.role === "operator") {
+    return session;
+  }
+  
+  if (session.user.role === "store_owner" && session.user.storeId === storeId) {
+    return session;
+  }
+  
+  redirect("/login");
+}
+
 export async function requireSuperAdmin() {
   const session = await getSession();
   if (!session || session.user.role !== "super_admin") {

@@ -9,6 +9,7 @@ import type { BlockType, SiteType } from "@/lib/site-types";
 import { createEmptyBlock, BLOCK_TYPE_LABELS } from "@/lib/empty-block";
 import { BlockFields } from "@/components/dashboard/blocks/BlockFields";
 import { AiGeneratorPanel } from "@/components/dashboard/AiGeneratorPanel";
+import { AiBlockGeneratorButton } from "@/components/dashboard/AiBlockGeneratorButton";
 
 interface ProductOption {
   id: string;
@@ -17,6 +18,7 @@ interface ProductOption {
 
 export function PageBlocksEditor({
   pageId,
+  storeId,
   initialBlocks,
   allowedBlocks,
   products,
@@ -26,6 +28,7 @@ export function PageBlocksEditor({
   action,
 }: {
   pageId: string;
+  storeId: string;
   initialBlocks: Block[];
   allowedBlocks: BlockType[];
   products: ProductOption[];
@@ -113,7 +116,12 @@ export function PageBlocksEditor({
         <div key={block.id} className="rounded-lg border p-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-sm font-medium">{BLOCK_TYPE_LABELS[block.type]}</span>
-            <div className="flex gap-1">
+            <div className="flex gap-1 items-center">
+              <AiBlockGeneratorButton 
+                storeId={storeId} 
+                blockType={block.type} 
+                onApply={(data) => updateBlockData(block.id, data)} 
+              />
               <Button
                 type="button"
                 variant="ghost"

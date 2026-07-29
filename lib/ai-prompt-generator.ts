@@ -255,3 +255,33 @@ FORMAT OUTPUT
 
 Mulai output JSON sekarang:`;
 }
+
+export function buildSingleBlockPrompt(opts: {
+  storeName: string;
+  industry: Industry;
+  businessDescription: string;
+  blockType: BlockType;
+}): string {
+  const industryInfo = INDUSTRY_CONTENT[opts.industry];
+  const schemaLine = BLOCK_SCHEMA_DOCS[opts.blockType];
+
+  return `Kamu adalah ahli copywriting untuk UMKM Indonesia.
+Tugasmu: menghasilkan JSON data konten HANYA untuk satu bagian (section) bertipe "${opts.blockType}".
+
+DATA BISNIS:
+- Nama bisnis : ${opts.storeName}
+- Kategori    : ${industryInfo.label} (${industryInfo.description})
+- Deskripsi   : ${opts.businessDescription.trim() || "Isi konten yang menarik dan profesional."}
+
+ATURAN WAJIB:
+1. Output HANYA object JSON untuk field "data", tanpa ada teks di luarnya.
+2. Bahasa Indonesia. Gaya: hangat, persuasif, profesional.
+3. Field "image_url" / "map_embed_url" harus berupa string kosong "".
+4. Harus persis mengikuti SKEMA di bawah.
+
+SKEMA JSON UNTUK "data" DARI TIPE "${opts.blockType}":
+${schemaLine}
+
+Berikan hanya object JSON yang merepresentasikan isi dari properti "data" tersebut:`;
+}
+

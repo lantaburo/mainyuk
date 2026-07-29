@@ -84,6 +84,14 @@ export default async function AdminPage() {
                   >
                     Generator AI
                   </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    nativeButton={false}
+                    render={<Link href={`/admin/halaman/${store.id}`} />}
+                  >
+                    Edit Halaman
+                  </Button>
                   <ConfirmDeleteButton
                     action={deleteStore.bind(null, store.id)}
                     confirmText={`Hapus toko "${store.name}"? Semua produk, halaman, dan datanya akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.`}

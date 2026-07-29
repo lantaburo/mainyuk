@@ -1,10 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { requireStoreOwner } from "@/lib/session";
+import { getSession } from "@/lib/session";
 import { SITE_TYPE_CONFIG } from "@/lib/site-types";
 import { callAiProvider, extractJson, AiClientError } from "@/lib/ai-client";
-import { buildContentPrompt } from "@/lib/ai-prompt-generator";
+import { buildContentPrompt, buildSingleBlockPrompt } from "@/lib/ai-prompt-generator";
 import { blockArraySchema } from "@/lib/block-schema";
 import { isIndustry, DEFAULT_INDUSTRY } from "@/lib/industry-content";
 import type { Block } from "@/lib/blocks-types";
@@ -22,17 +22,21 @@ export async function generatePageBlocksAction(
   pageId: string,
   userPrompt: string
 ): Promise<GenerateResult> {
-  const session = await requireStoreOwner();
+  const session = await getSession();
+  if (!session) return { ok: false, error: "Not logged in" };
 
-  // Verify page belongs to this store
-  const page = await prisma.storePage.findFirst({
-    where: { id: pageId, storeId: session.user.storeId },
+  const page = await prisma.storePage.findUnique({
+    where: { id: pageId },
   });
   if (!page) return { ok: false, error: "Halaman tidak ditemukan." };
 
+  if (session.user.role === "store_owner" && session.user.storeId !== page.storeId) {
+    return { ok: false, error: "Akses ditolak" };
+  }
+
   // Get store info for prompt context
   const store = await prisma.store.findUniqueOrThrow({
-    where: { id: session.user.storeId },
+    where: { id: page.storeId },
     include: { settings: true },
   });
 
@@ -104,3 +108,56 @@ export async function generatePageBlocksAction(
 
   return { ok: true, blocks: reordered };
 }
+
+export async function generateSingleBlockAction(
+  storeId: string,
+  blockType: string,
+  userPrompt: string
+): Promise<{ ok: true; data: any } | { ok: false; error: string }> {
+  const session = await getSession();
+  if (!session) return { ok: false, error: "Not logged in" };
+
+  if (session.user.role === "store_owner" && session.user.storeId !== storeId) {
+    return { ok: false, error: "Akses ditolak" };
+  }
+
+  const store = await prisma.store.findUnique({
+    where: { id: storeId },
+  });
+  if (!store) return { ok: false, error: "Toko tidak ditemukan." };
+
+  const aiSettings = await prisma.aiSettings.findFirst();
+  if (!aiSettings?.apiKey || !aiSettings?.baseUrl || !aiSettings?.model) {
+    return { ok: false, error: "Konfigurasi AI belum diatur." };
+  }
+
+  const industry = store.industry && isIndustry(store.industry) ? store.industry : DEFAULT_INDUSTRY;
+
+  const prompt = buildSingleBlockPrompt({
+    storeName: store.name,
+    industry,
+    businessDescription: userPrompt.trim(),
+    blockType: blockType as any,
+  });
+
+  let rawText: string;
+  try {
+    rawText = await callAiProvider(
+      { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model },
+      prompt
+    );
+  } catch (err) {
+    const msg = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
+    return { ok: false, error: msg };
+  }
+
+  let parsed: any;
+  try {
+    parsed = extractJson(rawText);
+  } catch {
+    return { ok: false, error: "Respons AI tidak valid JSON." };
+  }
+
+  return { ok: true, data: parsed };
+}
+
