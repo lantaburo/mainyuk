@@ -102,7 +102,7 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
                   <tr key={op.id} className="hover:bg-muted/30">
                     <td className="p-4 font-medium">{op.name}</td>
                     <td className="p-4">{op.email}</td>
-                    <td className="p-4">{new Date(op.createdAt).toLocaleDateString('id-ID')}</td>
+                    <td className="p-4" suppressHydrationWarning>{new Date(op.createdAt).toLocaleDateString('id-ID')}</td>
                     <td className="p-4 text-right">
                       <Button 
                         variant="destructive" 
