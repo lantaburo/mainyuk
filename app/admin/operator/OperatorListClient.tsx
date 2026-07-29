@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { addOperator, deleteOperator } from "./actions";
-import { Users, Mail, Trash2 } from "lucide-react";
+import { Users, Mail, Trash2, Search, ShieldAlert } from "lucide-react";
 
 type Operator = {
   id: string;
@@ -19,6 +20,7 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
   const [error, setError] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -51,13 +53,29 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
     }
   }
 
+  const filteredOperators = initialOperators.filter(op => {
+    const q = search.toLowerCase();
+    return op.name.toLowerCase().includes(q) || op.email.toLowerCase().includes(q);
+  });
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="text-xl font-semibold tracking-tight">Daftar Operator</h2>
-        <Button onClick={() => setIsAdding(!isAdding)} variant={isAdding ? "outline" : "default"}>
-          {isAdding ? "Batal" : "Tambah Operator"}
-        </Button>
+        <div className="flex items-center gap-2">
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input 
+              placeholder="Cari nama atau email..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9 bg-white w-full h-9"
+            />
+          </div>
+          <Button onClick={() => setIsAdding(!isAdding)} variant={isAdding ? "outline" : "default"} size="sm" className="h-9">
+            {isAdding ? "Batal" : "Tambah Operator"}
+          </Button>
+        </div>
       </div>
 
       {isAdding && (
@@ -88,29 +106,45 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
       )}
 
       <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-        {initialOperators.length === 0 ? (
+        {filteredOperators.length === 0 ? (
           <div className="p-12 flex flex-col items-center justify-center text-center">
             <Users className="h-10 w-10 text-gray-300 mb-3" />
             <p className="text-gray-500 font-medium">Belum ada operator terdaftar.</p>
-            <p className="text-sm text-gray-400 mt-1">Tambahkan operator baru untuk membantu mengelola sistem.</p>
+            <p className="text-sm text-gray-400 mt-1">Coba gunakan kata kunci pencarian yang berbeda.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-50/80 border-b border-gray-200">
                 <tr>
-                  <th className="p-4 font-semibold text-gray-700">Operator</th>
+                  <th className="p-4 font-semibold text-gray-700">Profil Operator</th>
+                  <th className="p-4 font-semibold text-gray-700">Peran</th>
                   <th className="p-4 font-semibold text-gray-700">Terdaftar</th>
                   <th className="p-4 font-semibold text-gray-700 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {initialOperators.map((op) => (
+                {filteredOperators.map((op) => (
                   <tr key={op.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="p-4">
-                      <div className="font-semibold text-gray-900">{op.name}</div>
-                      <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
-                        <Mail className="h-3 w-3" /> {op.email}
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9 border border-gray-200">
+                          <AvatarFallback className="bg-indigo-50 text-indigo-700 font-semibold">
+                            {op.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-semibold text-gray-900">{op.name}</div>
+                          <div className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                            <Mail className="h-3 w-3" /> {op.email}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">
+                        <ShieldAlert className="h-3.5 w-3.5" />
+                        Operator
                       </div>
                     </td>
                     <td className="p-4 text-gray-500 whitespace-nowrap">
