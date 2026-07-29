@@ -20,7 +20,7 @@ function getInitials(name: string) {
 function TestimonialCard({ item, i, large = false }: { item: TestimonialData["items"][number]; i: number; large?: boolean }) {
   return (
     <div className={`sf-animate sf-delay-${Math.min(i + 1, 6)} relative flex flex-col gap-4 overflow-hidden rounded-[var(--store-radius)] border bg-white p-7 shadow-[var(--store-shadow)] ${large ? "row-span-2" : ""}`}>
-      <span className="pointer-events-none absolute right-5 top-2 select-none text-7xl font-serif leading-none opacity-[0.06]" style={{ color: "var(--store-primary)" }}>"</span>
+      <span className="pointer-events-none absolute right-5 top-2 select-none text-7xl font-serif leading-none opacity-[0.06]" style={{ color: "var(--store-primary)" }}>&quot;</span>
       <StarRating rating={item.rating} />
       <p className="relative z-10 flex-1 text-sm leading-relaxed text-foreground/80">&ldquo;{item.text}&rdquo;</p>
       <div className="mt-auto flex items-center gap-3 border-t pt-4">
@@ -56,7 +56,7 @@ export function TestimonialBlock({ data }: { data: TestimonialData }) {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* Large featured card */}
             <div className="sf-animate relative flex flex-col gap-4 overflow-hidden rounded-[var(--store-radius)] border bg-white p-8 shadow-[var(--store-shadow)] sm:row-span-2 lg:col-span-1">
-              <span className="pointer-events-none absolute right-6 top-4 select-none text-8xl font-serif leading-none opacity-[0.06]" style={{ color: "var(--store-primary)" }}>"</span>
+              <span className="pointer-events-none absolute right-6 top-4 select-none text-8xl font-serif leading-none opacity-[0.06]" style={{ color: "var(--store-primary)" }}>&quot;</span>
               <StarRating rating={first.rating} />
               <p className="relative z-10 flex-1 text-base leading-relaxed text-foreground/80">&ldquo;{first.text}&rdquo;</p>
               <div className="mt-auto flex items-center gap-3 border-t pt-4">
