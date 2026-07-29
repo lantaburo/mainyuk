@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,11 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -108,8 +113,11 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
                         <Mail className="h-3 w-3" /> {op.email}
                       </div>
                     </td>
-                    <td className="p-4 text-gray-500 whitespace-nowrap" suppressHydrationWarning>
-                      {new Date(op.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}
+                    <td className="p-4 text-gray-500 whitespace-nowrap">
+                      {mounted 
+                        ? new Date(op.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })
+                        : "..."
+                      }
                     </td>
                     <td className="p-4 text-right">
                       <Button 
