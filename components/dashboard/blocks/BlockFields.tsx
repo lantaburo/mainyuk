@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { ImageUploadField } from "@/components/dashboard/ImageUploadField";
 import type {
   Block,
   FeatureItem,
@@ -47,10 +48,11 @@ export function BlockFields({
               onChange={(e) => onChange({ ...d, subtitle: e.target.value })}
             />
           </Field>
-          <Field label="URL Gambar Latar">
-            <Input
+          <Field label="Gambar Latar (opsional)">
+            <ImageUploadField
+              label="Gambar Hero"
               value={d.image_url ?? ""}
-              onChange={(e) => onChange({ ...d, image_url: e.target.value })}
+              onChange={(url) => onChange({ ...d, image_url: url })}
             />
           </Field>
           <div className="grid grid-cols-2 gap-3">
@@ -91,10 +93,11 @@ export function BlockFields({
       const d = block.data;
       return (
         <div className="space-y-3">
-          <Field label="URL Gambar">
-            <Input
-              value={d.image_url}
-              onChange={(e) => onChange({ ...d, image_url: e.target.value })}
+          <Field label="Gambar Banner">
+            <ImageUploadField
+              label="Gambar Banner"
+              value={d.image_url ?? ""}
+              onChange={(url) => onChange({ ...d, image_url: url })}
             />
           </Field>
           <Field label="Link (opsional)">

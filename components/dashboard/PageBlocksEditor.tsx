@@ -5,9 +5,10 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import type { Block } from "@/lib/blocks-types";
-import type { BlockType } from "@/lib/site-types";
+import type { BlockType, SiteType } from "@/lib/site-types";
 import { createEmptyBlock, BLOCK_TYPE_LABELS } from "@/lib/empty-block";
 import { BlockFields } from "@/components/dashboard/blocks/BlockFields";
+import { AiGeneratorPanel } from "@/components/dashboard/AiGeneratorPanel";
 
 interface ProductOption {
   id: string;
@@ -19,12 +20,18 @@ export function PageBlocksEditor({
   initialBlocks,
   allowedBlocks,
   products,
+  siteType,
+  pageType,
+  pageLabel,
   action,
 }: {
   pageId: string;
   initialBlocks: Block[];
   allowedBlocks: BlockType[];
   products: ProductOption[];
+  siteType: SiteType;
+  pageType: string;
+  pageLabel: string;
   action: (pageId: string, blocks: Block[]) => Promise<void>;
 }) {
   const [blocks, setBlocks] = useState<Block[]>(() =>
@@ -76,8 +83,29 @@ export function PageBlocksEditor({
 
   const sorted = [...blocks].sort((a, b) => a.order - b.order);
 
+  function handleAiApply(newBlocks: Block[], mode: "replace" | "append") {
+    if (mode === "replace") {
+      setBlocks(newBlocks);
+    } else {
+      setBlocks((prev) => {
+        const maxOrder = prev.length ? Math.max(...prev.map((b) => b.order)) : 0;
+        const shifted = newBlocks.map((b, i) => ({ ...b, order: maxOrder + i + 1 }));
+        return [...prev, ...shifted];
+      });
+    }
+  }
+
   return (
     <div className="space-y-4">
+      <AiGeneratorPanel
+        pageId={pageId}
+        siteType={siteType}
+        pageType={pageType}
+        pageLabel={pageLabel}
+        hasExistingBlocks={blocks.length > 0}
+        onApply={handleAiApply}
+      />
+
       {sorted.length === 0 && (
         <p className="text-sm text-muted-foreground">Belum ada blok. Tambahkan di bawah.</p>
       )}

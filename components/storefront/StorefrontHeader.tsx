@@ -17,25 +17,50 @@ export function StorefrontHeader({ store, config }: StorefrontHeaderProps) {
     navItems.push({ href: `/${store.slug}/kontak`, label: "Kontak" });
 
   return (
-    <header className="flex items-center justify-between border-b px-6 py-4">
-      <Link href={`/${store.slug}`} className="flex items-center gap-2 font-semibold">
-        {store.logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={store.logoUrl} alt={store.name} className="h-8 w-8 rounded object-cover" />
-        ) : null}
-        {store.name}
-      </Link>
-      <div className="flex items-center gap-5">
-        {navItems.length > 0 && (
-          <nav className="flex items-center gap-5 text-sm">
-            {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="hover:underline">
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        )}
-        {store.siteType === "storefront" && <CartButton storeSlug={store.slug} />}
+    <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <Link
+          href={`/${store.slug}`}
+          className="flex items-center gap-3 font-bold tracking-tight transition-opacity hover:opacity-80"
+        >
+          {store.logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={store.logoUrl}
+              alt={store.name}
+              className="h-9 w-9 rounded-lg object-cover shadow-sm"
+            />
+          ) : (
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-sm font-extrabold text-white shadow-sm"
+              style={{ background: "var(--store-primary)" }}
+            >
+              {store.name.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <span className="text-base">{store.name}</span>
+        </Link>
+
+        <div className="flex items-center gap-6">
+          {navItems.length > 0 && (
+            <nav className="hidden items-center gap-6 sm:flex">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group relative text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+                >
+                  {item.label}
+                  <span
+                    className="absolute -bottom-0.5 left-0 h-0.5 w-0 rounded-full transition-all duration-300 group-hover:w-full"
+                    style={{ background: "var(--store-primary)" }}
+                  />
+                </Link>
+              ))}
+            </nav>
+          )}
+          {store.siteType === "storefront" && <CartButton storeSlug={store.slug} />}
+        </div>
       </div>
     </header>
   );

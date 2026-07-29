@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { ImageUploadField } from "@/components/dashboard/ImageUploadField";
 import { SITE_TYPE_CONFIG, SITE_TYPES } from "@/lib/site-types";
 import { TEMPLATE_PRESETS, TEMPLATE_STYLE, DEFAULT_TEMPLATE } from "@/lib/templates";
 import { BankAccountsEditor } from "@/components/dashboard/BankAccountsEditor";
@@ -87,12 +88,12 @@ export default async function PengaturanPage() {
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="logoUrl">URL Logo</Label>
-          <Input id="logoUrl" name="logoUrl" type="url" defaultValue={store.logoUrl ?? ""} />
+          <Label>URL Logo</Label>
+          <ImageUploadField name="logoUrl" defaultValue={store.logoUrl ?? ""} label="Logo" />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="bannerUrl">URL Banner</Label>
-          <Input id="bannerUrl" name="bannerUrl" type="url" defaultValue={store.bannerUrl ?? ""} />
+          <Label>URL Banner</Label>
+          <ImageUploadField name="bannerUrl" defaultValue={store.bannerUrl ?? ""} label="Banner" />
         </div>
         <Button type="submit">Simpan Profil</Button>
       </form>
@@ -242,13 +243,8 @@ export default async function PengaturanPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="qrisImageUrl">URL Gambar QRIS</Label>
-              <Input
-                id="qrisImageUrl"
-                name="qrisImageUrl"
-                type="url"
-                defaultValue={store.settings?.qrisImageUrl ?? ""}
-              />
+              <Label>URL Gambar QRIS</Label>
+              <ImageUploadField name="qrisImageUrl" defaultValue={store.settings?.qrisImageUrl ?? ""} label="QRIS" />
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center gap-2">

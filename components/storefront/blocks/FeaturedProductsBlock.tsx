@@ -30,12 +30,29 @@ export async function FeaturedProductsBlock({
   if (products.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-14">
-      {data.title && <h2 className="mb-6 text-2xl font-semibold">{data.title}</h2>}
-      <div className={`grid grid-cols-1 gap-6 ${layoutCols[data.layout] ?? layoutCols["grid-3"]}`}>
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} storeSlug={storeSlug} />
-        ))}
+    <section className="px-4 py-20">
+      <div className="mx-auto max-w-6xl">
+        {/* Section header */}
+        {data.title && (
+          <div className="sf-animate mb-12 text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{data.title}</h2>
+            <div
+              className="mx-auto mt-3 h-1 w-16 rounded-full"
+              style={{ background: "var(--store-primary)" }}
+            />
+          </div>
+        )}
+
+        <div className={`grid grid-cols-1 gap-6 ${layoutCols[data.layout] ?? layoutCols["grid-3"]}`}>
+          {products.map((product, i) => (
+            <div
+              key={product.id}
+              className={`sf-animate sf-delay-${Math.min(i + 1, 6)}`}
+            >
+              <ProductCard product={product} storeSlug={storeSlug} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

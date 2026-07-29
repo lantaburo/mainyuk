@@ -7,6 +7,8 @@ const heroData = z.object({
   image_url: z.string().optional(),
   cta_text: z.string().optional(),
   cta_link: z.string().optional(),
+  align: z.enum(["center", "split"]).optional().default("center"),
+  style: z.enum(["gradient", "dark", "light"]).optional().default("gradient"),
 });
 
 const featuredProductsData = z.object({
@@ -29,16 +31,20 @@ const testimonialData = z.object({
       rating: z.coerce.number().int().min(1).max(5),
     })
   ),
+  layout: z.enum(["grid", "highlight"]).optional().default("grid"),
 });
 
 const aboutData = z.object({
   title: z.string(),
   content: z.string(),
+  layout: z.enum(["split", "centered"]).optional().default("split"),
 });
 
 const featuresData = z.object({
   title: z.string().optional(),
   items: z.array(z.object({ title: z.string(), description: z.string() })),
+  variant: z.enum(["cards", "numbered", "icon_left"]).optional().default("cards"),
+  bg: z.enum(["muted", "white", "primary"]).optional().default("muted"),
 });
 
 const ctaData = z.object({
@@ -46,6 +52,7 @@ const ctaData = z.object({
   subtitle: z.string().optional(),
   button_text: z.string(),
   button_link: z.string(),
+  variant: z.enum(["solid", "gradient", "outline"]).optional().default("solid"),
 });
 
 const contactData = z.object({
@@ -59,11 +66,13 @@ const contactData = z.object({
 const faqData = z.object({
   title: z.string().optional(),
   items: z.array(z.object({ question: z.string(), answer: z.string() })),
+  variant: z.enum(["accordion", "list"]).optional().default("accordion"),
 });
 
 const productHighlightData = z.object({
   product_id: z.string().default(""),
   headline: z.string().optional(),
+  layout: z.enum(["default", "reversed"]).optional().default("default"),
 });
 
 const blockSchema = z.discriminatedUnion("type", [

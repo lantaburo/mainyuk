@@ -13,6 +13,10 @@ export interface HeroData {
   image_url?: string;
   cta_text?: string;
   cta_link?: string;
+  /** "center" (default) = teks di tengah | "split" = teks kiri, gambar kanan */
+  align?: "center" | "split";
+  /** "gradient" (default) = bg gradient brand | "dark" = bg gelap solid | "light" = bg terang */
+  style?: "gradient" | "dark" | "light";
 }
 
 export interface FeaturedProductsData {
@@ -35,11 +39,15 @@ export interface TestimonialItem {
 export interface TestimonialData {
   title?: string;
   items: TestimonialItem[];
+  /** "grid" (default) = kartu sejajar | "highlight" = kartu besar + 2 kecil */
+  layout?: "grid" | "highlight";
 }
 
 export interface AboutData {
   title: string;
   content: string;
+  /** "split" (default) = heading kiri, konten kanan | "centered" = teks tengah */
+  layout?: "split" | "centered";
 }
 
 export interface FeatureItem {
@@ -50,6 +58,10 @@ export interface FeatureItem {
 export interface FeaturesData {
   title?: string;
   items: FeatureItem[];
+  /** "cards" (default) = kotak card | "numbered" = list bernomor | "icon_left" = ikon kiri teks */
+  variant?: "cards" | "numbered" | "icon_left";
+  /** "muted" (default) = bg abu muda | "white" = bg putih | "primary" = bg brand berwarna */
+  bg?: "muted" | "white" | "primary";
 }
 
 export interface CtaData {
@@ -57,6 +69,8 @@ export interface CtaData {
   subtitle?: string;
   button_text: string;
   button_link: string;
+  /** "solid" (default) = bg brand solid | "gradient" = gradient brand ke gelap | "outline" = border saja */
+  variant?: "solid" | "gradient" | "outline";
 }
 
 export interface ContactData {
@@ -67,19 +81,23 @@ export interface ContactData {
   map_embed_url?: string;
 }
 
+export interface FaqData {
+  title?: string;
+  items: FaqItem[];
+  /** "accordion" (default) = lipat/buka | "list" = tampil semua sekaligus */
+  variant?: "accordion" | "list";
+}
+
 export interface FaqItem {
   question: string;
   answer: string;
 }
 
-export interface FaqData {
-  title?: string;
-  items: FaqItem[];
-}
-
 export interface ProductHighlightData {
   product_id: string;
   headline?: string;
+  /** "default" = gambar kiri teks kanan | "reversed" = teks kiri gambar kanan */
+  layout?: "default" | "reversed";
 }
 
 export type Block =

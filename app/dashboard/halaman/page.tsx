@@ -1,6 +1,6 @@
 import { requireStoreOwner } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { SITE_TYPE_CONFIG } from "@/lib/site-types";
+import { SITE_TYPE_CONFIG, type SiteType } from "@/lib/site-types";
 import { ensureRequiredPages } from "@/lib/ensure-required-pages";
 import { parseBlocks } from "@/lib/blocks-types";
 import { updatePageBlocks } from "@/app/dashboard/halaman/actions";
@@ -36,8 +36,10 @@ export default async function HalamanPage() {
         {config.pages.length === 1 ? (
           <PageEditorSection
             page={pagesByType.get(config.pages[0].pageType)!}
+            pageConfig={config.pages[0]}
             allowedBlocks={config.allowedBlocks}
             products={products}
+            siteType={store.siteType}
           />
         ) : (
           <Tabs defaultValue={config.pages[0].pageType}>
@@ -52,8 +54,10 @@ export default async function HalamanPage() {
               <TabsContent key={p.pageType} value={p.pageType} className="mt-4">
                 <PageEditorSection
                   page={pagesByType.get(p.pageType)!}
+                  pageConfig={p}
                   allowedBlocks={config.allowedBlocks}
                   products={products}
+                  siteType={store.siteType}
                 />
               </TabsContent>
             ))}
@@ -66,12 +70,16 @@ export default async function HalamanPage() {
 
 function PageEditorSection({
   page,
+  pageConfig,
   allowedBlocks,
   products,
+  siteType,
 }: {
-  page: { id: string; blocks: unknown };
+  page: { id: string; blocks: unknown; pageType: string };
+  pageConfig: { pageType: string; label: string };
   allowedBlocks: (typeof SITE_TYPE_CONFIG)["storefront"]["allowedBlocks"];
   products: { id: string; name: string }[];
+  siteType: SiteType;
 }) {
   return (
     <PageBlocksEditor
@@ -79,6 +87,9 @@ function PageEditorSection({
       initialBlocks={parseBlocks(page.blocks)}
       allowedBlocks={allowedBlocks}
       products={products}
+      siteType={siteType}
+      pageType={pageConfig.pageType}
+      pageLabel={pageConfig.label}
       action={updatePageBlocks}
     />
   );
