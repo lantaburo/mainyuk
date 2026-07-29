@@ -30,7 +30,7 @@ export default async function AdminPage() {
 
   const staffCount = await prisma.user.count({
     where: {
-      role: { in: ['admin', 'operator', 'superadmin'] }
+      role: { in: ['super_admin', 'operator'] }
     }
   });
 
