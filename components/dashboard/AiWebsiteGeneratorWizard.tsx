@@ -66,6 +66,8 @@ export function AiWebsiteGeneratorWizard({
   const [htmlUsage, setHtmlUsage] = useState<AiUsage | null>(null);
   const [streamingCode, setStreamingCode] = useState("");
   const [isStreamingHtml, setIsStreamingHtml] = useState(false);
+  const [isEnrichingImages, setIsEnrichingImages] = useState(false);
+  const [enrichedPhotos, setEnrichedPhotos] = useState<{ sectionName: string; photographer: string; pexelsLink: string }[]>([]);
   const [isBriefPending, startBrief] = useTransition();
   const [isApplying, startApplying] = useTransition();
 
@@ -156,6 +158,7 @@ export function AiWebsiteGeneratorWizard({
     setStep("loading");
     setStreamingCode("");
     setIsStreamingHtml(true);
+    setEnrichedPhotos([]);
 
     try {
       const res = await fetch("/api/ai-generator/stream-html", {
@@ -197,7 +200,30 @@ export function AiWebsiteGeneratorWizard({
         return;
       }
 
-      setHtml(finalPayload.html);
+      setIsStreamingHtml(false);
+
+      // ── Enrich: inject foto Pexels ke section yang butuh ──
+      let finalHtml = finalPayload.html as string;
+      setIsEnrichingImages(true);
+      try {
+        const enrichRes = await fetch("/api/ai-generator/enrich-images", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ storeId, brief, html: finalHtml }),
+        });
+        if (enrichRes.ok) {
+          const enrichData = await enrichRes.json();
+          finalHtml = enrichData.html ?? finalHtml;
+          if (enrichData.photos?.length) setEnrichedPhotos(enrichData.photos);
+        }
+      } catch {
+        // Enrichment gagal → tetap lanjut dengan HTML tanpa foto
+      } finally {
+        setIsEnrichingImages(false);
+      }
+      // ─────────────────────────────────────────
+
+      setHtml(finalHtml);
       setHtmlUsage(finalPayload.usage ?? null);
       setStep("result");
     } catch {
@@ -205,6 +231,7 @@ export function AiWebsiteGeneratorWizard({
       setStep("brief");
     } finally {
       setIsStreamingHtml(false);
+      setIsEnrichingImages(false);
     }
   }
 
@@ -445,24 +472,67 @@ export function AiWebsiteGeneratorWizard({
         <div className="space-y-3 rounded-xl border p-5">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium">
-              {isStreamingHtml ? "AI sedang menyusun kode halaman website-mu…" : "Menyelesaikan…"}
+              {isEnrichingImages
+                ? "Mencari foto untuk section website…"
+                : isStreamingHtml
+                ? "AI sedang menyusun kode halaman website-mu…"
+                : "Menyelesaikan…"}
             </p>
             <span className="text-xs text-muted-foreground">
-              {streamingCode.length.toLocaleString("id-ID")} karakter
+              {isEnrichingImages ? (
+                <span className="inline-flex items-center gap-1">
+                  <span className="h-2 w-2 animate-bounce rounded-full" style={{ background: "var(--store-primary, #6366f1)" }} />
+                  <span className="h-2 w-2 animate-bounce rounded-full [animation-delay:0.15s]" style={{ background: "var(--store-primary, #6366f1)" }} />
+                  <span className="h-2 w-2 animate-bounce rounded-full [animation-delay:0.3s]" style={{ background: "var(--store-primary, #6366f1)" }} />
+                </span>
+              ) : (
+                `${streamingCode.length.toLocaleString("id-ID")} karakter`
+              )}
             </span>
           </div>
-          <pre
-            ref={codeBoxRef}
-            className="max-h-[50vh] overflow-y-auto whitespace-pre-wrap break-all rounded-lg bg-zinc-950 p-4 font-mono text-[11px] leading-relaxed text-emerald-400"
-          >
-            {streamingCode || "Menghubungi AI…"}
-            {isStreamingHtml && <span className="animate-pulse">▌</span>}
-          </pre>
+          {!isEnrichingImages && (
+            <pre
+              ref={codeBoxRef}
+              className="max-h-[50vh] overflow-y-auto whitespace-pre-wrap break-all rounded-lg bg-zinc-950 p-4 font-mono text-[11px] leading-relaxed text-emerald-400"
+            >
+              {streamingCode || "Menghubungi AI…"}
+              {isStreamingHtml && <span className="animate-pulse">▌</span>}
+            </pre>
+          )}
+          {isEnrichingImages && (
+            <div className="flex items-center gap-3 rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+              <svg className="h-8 w-8 shrink-0 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" strokeLinecap="round" />
+              </svg>
+              <div>
+                <p className="font-medium text-foreground">Mencari foto dari Pexels…</p>
+                <p className="text-xs">Mencocokkan foto dengan setiap section website</p>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {step === "result" && html && (
         <div className="space-y-4">
+          {/* Badge foto Pexels */}
+          {enrichedPhotos.length > 0 && (
+            <div className="flex flex-wrap items-start gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 dark:border-blue-800 dark:bg-blue-950/30">
+              <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">📷 {enrichedPhotos.length} foto dari Pexels disuntikkan:</span>
+              <div className="flex flex-wrap gap-1.5">
+                {enrichedPhotos.map((p, i) => (
+                  <span key={i} className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+                    {p.sectionName} ·{" "}
+                    <a href={p.pexelsLink} target="_blank" rel="noopener noreferrer" className="underline">
+                      {p.photographer}
+                    </a>
+                  </span>
+                ))}
+              </div>
+              <p className="w-full text-[11px] text-blue-500 dark:text-blue-400">Foto bisa diganti di editor setelah diterapkan.</p>
+            </div>
+          )}
+
           <div className="overflow-hidden rounded-lg border">
             <div className="flex items-center gap-1.5 border-b bg-muted/50 px-3 py-2">
               <span className="h-2.5 w-2.5 rounded-full bg-red-400" />

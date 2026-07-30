@@ -112,7 +112,7 @@ ATURAN TEKNIS WAJIB (pelanggaran akan ditolak sistem):
       ? `\n10. Untuk section yang menampilkan produk (mis. "Produk Unggulan"/"Katalog"), JANGAN buat kartu produk sendiri — taruh tag ini SEBAGAI SECTION TERSENDIRI, sejajar dengan section lain (JANGAN ditaruh di dalam section lain): <div data-klikweb-widget="featured-products" class="px-6 py-16"></div> (boleh ubah class untuk spacing, tapi jangan taruh child/isi lain di dalamnya — sistem akan menggantinya dengan grid produk asli secara otomatis).`
       : ""
   }
-11. Gambar: jangan gunakan <img> dengan src palsu/placeholder acak — kalau section butuh gambar tapi tidak ada sumber gambar nyata, lewati gambar dan fokus ke tipografi/warna/layout saja.
+11. Gambar: sistem akan OTOMATIS menyuntikkan foto nyata dari Pexels ke section yang butuh gambar (hero, about, banner dll) — kamu TIDAK perlu memasukkan <img> atau background-image sama sekali. Fokus ke tipografi, warna, dan layout; sistem yang akan tambahkan foto di belakang layar.
 
 Mulai output HTML sekarang:`;
 }
