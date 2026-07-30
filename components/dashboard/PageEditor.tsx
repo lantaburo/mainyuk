@@ -74,6 +74,7 @@ export function PageEditor({
   themeColor,
   templateId,
   initialHtml,
+  backUrl = "/dashboard/ai-generator",
 }: {
   pageId: string;
   storeId: string;
@@ -82,10 +83,12 @@ export function PageEditor({
   themeColor: string;
   templateId: string | null;
   initialHtml: string;
+  backUrl?: string;
 }) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const historyRef = useRef<string[]>([initialHtml]);
   const historyIndexRef = useRef(0);
+  const isFirstRender = useRef(true);
 
   const [activeTab, setActiveTab] = useState<Tab>("design");
   const [device, setDevice] = useState<Device>("desktop");
@@ -101,6 +104,7 @@ export function PageEditor({
   const [textValue, setTextValue] = useState("");
   const [codeText, setCodeText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [html, setHtml] = useState(initialHtml);
 
   // Mount the live DOM once. Never re-render this from React state after —
   // all edits mutate it directly so text/style edits don't fight React
@@ -119,6 +123,7 @@ export function PageEditor({
     const idx = historyIndexRef.current;
     historyRef.current = [...historyRef.current.slice(0, idx + 1), html];
     historyIndexRef.current += 1;
+    setHtml(html);
   }
 
   function restoreFromHistory(idx: number) {
@@ -130,6 +135,7 @@ export function PageEditor({
     historyIndexRef.current = idx;
     setSelectedId(null);
     setVersion((v) => v + 1);
+    setHtml(html);
   }
 
   function handleUndo() {
@@ -250,11 +256,27 @@ export function PageEditor({
     toast.success("Kode diterapkan ke pratinjau.");
   }
 
+  // Debounced auto-save ke server
+  useEffect(() => {
+    if (isFirstRender.current || html === initialHtml) {
+      isFirstRender.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      saveEditedHtmlAction(storeId, pageId, html)
+        .then((res) => {
+          if (!res.ok) toast.error(res.error);
+        })
+        .catch(() => toast.error("Gagal auto-save"));
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [html, initialHtml, storeId, pageId]);
+
   function handleSave() {
     if (!canvasRef.current) return;
     const html = getCleanHtml(canvasRef.current);
     setIsSaving(true);
-    saveEditedHtmlAction(pageId, html)
+    saveEditedHtmlAction(storeId, pageId, html)
       .then((res) => {
         if (!res.ok) {
           toast.error(res.error);
@@ -281,7 +303,7 @@ export function PageEditor({
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-zinc-800 bg-zinc-900 px-4 shadow-sm z-20">
         <div className="flex items-center gap-4">
           <Link
-            href="/dashboard/ai-generator"
+            href={backUrl}
             className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-zinc-400 hover:text-white")}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

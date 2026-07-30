@@ -31,9 +31,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Payload tidak lengkap." }, { status: 400 });
   }
 
-  // Validasi storeId milik session user
-  const store = await prisma.store.findFirst({
-    where: { id: body.storeId, ownerId: (session.user as { id?: string }).id ?? "" },
+  const role = (session.user as any).role;
+  const sessionStoreId = (session.user as any).storeId;
+  const isAdmin = role === "super_admin" || role === "operator";
+  if (!isAdmin && (role !== "store_owner" || sessionStoreId !== body.storeId)) {
+    return NextResponse.json({ error: "Akses ditolak" }, { status: 403 });
+  }
+
+  // Cek apakah store ada
+  const store = await prisma.store.findUnique({
+    where: { id: body.storeId },
     select: { name: true },
   });
   if (!store) {

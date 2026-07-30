@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireStoreOwner } from "@/lib/session";
+import { requireAdminOrOwner } from "@/lib/session";
 import { callAiProvider, extractJson, stripCodeFence, AiClientError, type AiUsage } from "@/lib/ai-client";
 import { buildBriefPrompt, buildElementEditPrompt } from "@/lib/ai-html-prompt-generator";
 import { designBriefSchema, type DesignBrief } from "@/lib/ai-html-schema";
@@ -31,8 +31,7 @@ export async function generateBriefAction(
   businessDescription: string,
   targetAudience: string
 ): Promise<BriefResult> {
-  const session = await requireStoreOwner();
-  if (session.user.storeId !== storeId) return { ok: false, error: "Akses ditolak" };
+  await requireAdminOrOwner(storeId);
 
   const store = await prisma.store.findUniqueOrThrow({ where: { id: storeId } });
   const config = await getAiConfig();
@@ -81,14 +80,15 @@ export async function generateBriefAction(
 
 /** Terapkan hasil generate ke halaman Beranda toko. */
 export async function applyGeneratedHtmlAction(
+  storeId: string,
   pageId: string,
   html: string,
   brief: DesignBrief
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const session = await requireStoreOwner();
+  await requireAdminOrOwner(storeId);
 
   const page = await prisma.storePage.findFirst({
-    where: { id: pageId, storeId: session.user.storeId },
+    where: { id: pageId, storeId },
   });
   if (!page) return { ok: false, error: "Halaman tidak ditemukan." };
 
@@ -105,13 +105,14 @@ export async function applyGeneratedHtmlAction(
 
 /** Editor: save whatever's currently in the live-edited page (text/style/AI/code-tab edits). */
 export async function saveEditedHtmlAction(
+  storeId: string,
   pageId: string,
   html: string
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const session = await requireStoreOwner();
+  await requireAdminOrOwner(storeId);
 
   const page = await prisma.storePage.findFirst({
-    where: { id: pageId, storeId: session.user.storeId },
+    where: { id: pageId, storeId },
   });
   if (!page) return { ok: false, error: "Halaman tidak ditemukan." };
 
@@ -132,8 +133,7 @@ export async function generateElementEditAction(
   currentOuterHtml: string,
   instruction: string
 ): Promise<HtmlResult> {
-  const session = await requireStoreOwner();
-  if (session.user.storeId !== storeId) return { ok: false, error: "Akses ditolak" };
+  await requireAdminOrOwner(storeId);
 
   const store = await prisma.store.findUniqueOrThrow({ where: { id: storeId } });
   const config = await getAiConfig();

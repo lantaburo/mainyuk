@@ -44,6 +44,7 @@ export function AiWebsiteGeneratorWizard({
   templateId,
   targetAudience,
   hasExistingHtml,
+  afterApplyUrl = "/editor",
 }: {
   storeId: string;
   pageId: string;
@@ -53,6 +54,7 @@ export function AiWebsiteGeneratorWizard({
   templateId: string | null;
   targetAudience: string | null;
   hasExistingHtml: boolean;
+  afterApplyUrl?: string;
 }) {
   const router = useRouter();
   const config = SITE_TYPE_CONFIG[siteType];
@@ -238,13 +240,13 @@ export function AiWebsiteGeneratorWizard({
   function handleApply() {
     if (!html || !brief) return;
     startApplying(async () => {
-      const res = await applyGeneratedHtmlAction(pageId, html, brief);
+      const res = await applyGeneratedHtmlAction(storeId, pageId, html, brief);
       if (!res.ok) {
         toast.error(res.error);
         return;
       }
       toast.success("Website berhasil diterapkan!");
-      router.push("/editor");
+      router.push(afterApplyUrl);
     });
   }
 
@@ -271,7 +273,7 @@ export function AiWebsiteGeneratorWizard({
           <Button
             size="sm"
             nativeButton={false}
-            render={<Link href="/editor" />}
+            render={<Link href={afterApplyUrl} />}
             className="bg-indigo-600 text-white hover:bg-indigo-700"
           >
             Buka Editor

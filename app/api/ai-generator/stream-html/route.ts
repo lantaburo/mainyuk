@@ -19,13 +19,20 @@ import { STREAM_DONE_MARKER } from "@/lib/streaming-protocol";
  */
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!session?.user || session.user.role !== "store_owner" || !session.user.storeId) {
+  if (!session?.user) {
     return new Response("Unauthorized", { status: 401 });
   }
 
   const body = await req.json().catch(() => null);
   const storeId = body?.storeId;
-  if (typeof storeId !== "string" || session.user.storeId !== storeId) {
+  if (typeof storeId !== "string") {
+    return new Response("Store ID wajib diisi", { status: 400 });
+  }
+
+  const role = (session.user as any).role;
+  const sessionStoreId = (session.user as any).storeId;
+  const isAdmin = role === "super_admin" || role === "operator";
+  if (!isAdmin && (role !== "store_owner" || sessionStoreId !== storeId)) {
     return new Response("Akses ditolak", { status: 403 });
   }
 
