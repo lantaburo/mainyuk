@@ -51,7 +51,7 @@ export function VisualBuilder({
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId) || null;
 
-  function updateBlockData(id: string, data: unknown, styles?: unknown) {
+  function updateBlockData(id: string, data: any, styles?: any) {
     setBlocks((prev) =>
       prev.map((b) => (b.id === id ? { ...b, data, style_overrides: styles ?? b.style_overrides } : b))
     );

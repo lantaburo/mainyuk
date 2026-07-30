@@ -137,7 +137,7 @@ export async function generateSingleBlockAction(
     storeName: store.name,
     industry,
     businessDescription: userPrompt.trim(),
-    blockType: blockType as string,
+    blockType: blockType as any,
   });
 
   let rawText: string;

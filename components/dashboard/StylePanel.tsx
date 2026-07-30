@@ -33,7 +33,7 @@ interface StylePanelProps {
 }
 
 export function StylePanel({ styles = {}, onChange, storeId }: StylePanelProps) {
-  const updateStyle = (key: keyof BlockStyleOverrides, value: string | number | boolean) => {
+  const updateStyle = (key: keyof BlockStyleOverrides, value: any) => {
     onChange({ ...styles, [key]: value });
   };
 
