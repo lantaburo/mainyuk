@@ -19,6 +19,10 @@ interface ProductOption {
 export function PageBlocksEditor({
   pageId,
   storeId,
+  storeSlug,
+  themeColor,
+  templateId,
+  whatsappNumber,
   initialBlocks,
   allowedBlocks,
   products,
@@ -30,6 +34,10 @@ export function PageBlocksEditor({
 }: {
   pageId: string;
   storeId: string;
+  storeSlug: string;
+  themeColor: string;
+  templateId: string | null;
+  whatsappNumber?: string | null;
   initialBlocks: Block[];
   allowedBlocks: BlockType[];
   products: ProductOption[];
@@ -109,6 +117,10 @@ export function PageBlocksEditor({
           pageType={pageType}
           pageLabel={pageLabel}
           hasExistingBlocks={blocks.length > 0}
+          storeSlug={storeSlug}
+          themeColor={themeColor}
+          templateId={templateId}
+          whatsappNumber={whatsappNumber}
           onApply={handleAiApply}
         />
       )}

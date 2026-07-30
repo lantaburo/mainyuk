@@ -10,6 +10,7 @@ import { SITE_TYPE_CONFIG, type SiteType } from "@/lib/site-types";
 import type { Block } from "@/lib/blocks-types";
 import { blockArraySchema } from "@/lib/block-schema";
 import { generatePageBlocksAction } from "@/app/dashboard/halaman/generate-action";
+import { BlocksPreview } from "@/components/dashboard/BlocksPreview";
 
 /** Block sequence recommended per site type for the home page */
 const SITE_TYPE_BLOCK_SEQUENCE: Record<SiteType, string[]> = {
@@ -42,6 +43,10 @@ interface AiGeneratorPanelProps {
   pageType: string; // "home" | "about" | "contact"
   pageLabel: string; // label tampilan, mis. "Beranda", "Tentang Kami"
   hasExistingBlocks: boolean;
+  storeSlug: string;
+  themeColor: string;
+  templateId: string | null;
+  whatsappNumber?: string | null;
   onApply: (blocks: Block[], mode: "replace" | "append") => void;
 }
 
@@ -51,11 +56,16 @@ export function AiGeneratorPanel({
   pageType,
   pageLabel,
   hasExistingBlocks,
+  storeSlug,
+  themeColor,
+  templateId,
+  whatsappNumber,
   onApply,
 }: AiGeneratorPanelProps) {
   const [open, setOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [generatedBlocks, setGeneratedBlocks] = useState<Block[] | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const config = SITE_TYPE_CONFIG[siteType];
@@ -75,6 +85,7 @@ export function AiGeneratorPanel({
   function handleGenerate() {
     startTransition(async () => {
       setGeneratedBlocks(null);
+      setShowPreview(false);
       const result = await generatePageBlocksAction(pageId, prompt);
       if (!result.ok) {
         toast.error(result.error);
@@ -114,6 +125,7 @@ export function AiGeneratorPanel({
     onApply(generatedBlocks, mode);
     setOpen(false);
     setGeneratedBlocks(null);
+    setShowPreview(false);
     setPrompt("");
     toast.success(
       mode === "replace" ? "Halaman diganti dengan hasil AI" : "Section AI ditambahkan"
@@ -244,6 +256,26 @@ export function AiGeneratorPanel({
                   </li>
                 ))}
               </ol>
+
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="w-full border-green-300 text-green-700 hover:bg-green-100"
+                onClick={() => setShowPreview((v) => !v)}
+              >
+                {showPreview ? "Sembunyikan Pratinjau Halaman" : "👁 Lihat Pratinjau Halaman Penuh"}
+              </Button>
+
+              {showPreview && (
+                <BlocksPreview
+                  blocks={generatedBlocks}
+                  storeSlug={storeSlug}
+                  themeColor={themeColor}
+                  templateId={templateId}
+                  whatsappNumber={whatsappNumber}
+                />
+              )}
 
               {/* Apply buttons */}
               <div className="flex gap-2 pt-1">

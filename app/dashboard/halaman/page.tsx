@@ -5,11 +5,15 @@ import { ensureRequiredPages } from "@/lib/ensure-required-pages";
 import { parseBlocks } from "@/lib/blocks-types";
 import { updatePageBlocks } from "@/app/dashboard/halaman/actions";
 import { PageBlocksEditor } from "@/components/dashboard/PageBlocksEditor";
+import { AiGenerateAllPagesButton } from "@/components/dashboard/AiGenerateAllPagesButton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 export default async function HalamanPage() {
   const session = await requireStoreOwner();
-  const store = await prisma.store.findUniqueOrThrow({ where: { id: session.user.storeId } });
+  const store = await prisma.store.findUniqueOrThrow({
+    where: { id: session.user.storeId },
+    include: { settings: true },
+  });
   const config = SITE_TYPE_CONFIG[store.siteType];
 
   await ensureRequiredPages(store.id, store.siteType, store.name);
@@ -25,6 +29,13 @@ export default async function HalamanPage() {
 
   const pagesByType = new Map(pages.map((p) => [p.pageType, p]));
 
+  const themeProps = {
+    storeSlug: store.slug,
+    themeColor: store.themeColor,
+    templateId: store.templateId,
+    whatsappNumber: store.settings?.whatsappNumber ?? null,
+  };
+
   return (
     <div className="max-w-2xl">
       <h1 className="text-2xl font-semibold">Halaman</h1>
@@ -32,7 +43,16 @@ export default async function HalamanPage() {
         Susun dan edit blok konten untuk situs Anda.
       </p>
 
-      <div className="mt-6">
+      <div className="mt-6 space-y-6">
+        {config.pages.length > 1 && (
+          <AiGenerateAllPagesButton
+            storeId={store.id}
+            siteType={store.siteType}
+            pages={config.pages}
+            {...themeProps}
+          />
+        )}
+
         {config.pages.length === 1 ? (
           <PageEditorSection
             page={pagesByType.get(config.pages[0].pageType)!}
@@ -41,6 +61,7 @@ export default async function HalamanPage() {
             products={products}
             siteType={store.siteType}
             storeId={store.id}
+            {...themeProps}
           />
         ) : (
           <Tabs defaultValue={config.pages[0].pageType}>
@@ -60,6 +81,7 @@ export default async function HalamanPage() {
                   products={products}
                   siteType={store.siteType}
                   storeId={store.id}
+                  {...themeProps}
                 />
               </TabsContent>
             ))}
@@ -77,6 +99,10 @@ function PageEditorSection({
   products,
   siteType,
   storeId,
+  storeSlug,
+  themeColor,
+  templateId,
+  whatsappNumber,
 }: {
   page: { id: string; blocks: unknown; pageType: string };
   pageConfig: { pageType: string; label: string };
@@ -84,17 +110,26 @@ function PageEditorSection({
   products: { id: string; name: string }[];
   siteType: SiteType;
   storeId: string;
+  storeSlug: string;
+  themeColor: string;
+  templateId: string | null;
+  whatsappNumber: string | null;
 }) {
   return (
     <PageBlocksEditor
       pageId={page.id}
       storeId={storeId}
+      storeSlug={storeSlug}
+      themeColor={themeColor}
+      templateId={templateId}
+      whatsappNumber={whatsappNumber}
       initialBlocks={parseBlocks(page.blocks)}
       allowedBlocks={allowedBlocks}
       products={products}
       siteType={siteType}
       pageType={pageConfig.pageType}
       pageLabel={pageConfig.label}
+      showAiGenerator
       action={updatePageBlocks}
     />
   );

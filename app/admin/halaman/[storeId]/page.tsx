@@ -10,7 +10,10 @@ import { notFound } from "next/navigation";
 
 export default async function AdminHalamanPage({ params }: { params: { storeId: string } }) {
   await requireAdmin();
-  const store = await prisma.store.findUnique({ where: { id: params.storeId } });
+  const store = await prisma.store.findUnique({
+    where: { id: params.storeId },
+    include: { settings: true },
+  });
   if (!store) notFound();
 
   const config = SITE_TYPE_CONFIG[store.siteType];
@@ -47,6 +50,10 @@ export default async function AdminHalamanPage({ params }: { params: { storeId: 
             products={products}
             siteType={store.siteType}
             storeId={store.id}
+            storeSlug={store.slug}
+            themeColor={store.themeColor}
+            templateId={store.templateId}
+            whatsappNumber={store.settings?.whatsappNumber ?? null}
           />
         ) : (
           <Tabs defaultValue={config.pages[0].pageType}>
@@ -66,6 +73,10 @@ export default async function AdminHalamanPage({ params }: { params: { storeId: 
                   products={products}
                   siteType={store.siteType}
                   storeId={store.id}
+                  storeSlug={store.slug}
+                  themeColor={store.themeColor}
+                  templateId={store.templateId}
+                  whatsappNumber={store.settings?.whatsappNumber ?? null}
                 />
               </TabsContent>
             ))}
@@ -83,6 +94,10 @@ function PageEditorSection({
   products,
   siteType,
   storeId,
+  storeSlug,
+  themeColor,
+  templateId,
+  whatsappNumber,
 }: {
   page: { id: string; blocks: unknown; pageType: string };
   pageConfig: { pageType: string; label: string };
@@ -90,11 +105,19 @@ function PageEditorSection({
   products: { id: string; name: string }[];
   siteType: SiteType;
   storeId: string;
+  storeSlug: string;
+  themeColor: string;
+  templateId: string | null;
+  whatsappNumber: string | null;
 }) {
   return (
     <PageBlocksEditor
       pageId={page.id}
       storeId={storeId}
+      storeSlug={storeSlug}
+      themeColor={themeColor}
+      templateId={templateId}
+      whatsappNumber={whatsappNumber}
       initialBlocks={parseBlocks(page.blocks)}
       allowedBlocks={allowedBlocks}
       products={products}
