@@ -7,12 +7,16 @@ export const designBriefSchema = z.object({
     primary: z.string(),
     secondary: z.string(),
     accent: z.string(),
+    neutral: z.string(),
+    extra1: z.string().optional(),
+    extra2: z.string().optional(),
   }),
   typography: z.object({
     heading: z.string(),
     body: z.string(),
   }),
   tone: z.string(),
+  signatureElement: z.string(),
   sections: z
     .array(
       z.object({

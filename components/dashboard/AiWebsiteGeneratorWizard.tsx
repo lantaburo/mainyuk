@@ -237,30 +237,42 @@ export function AiWebsiteGeneratorWizard({
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <Label className="text-sm font-medium">Palet Warna</Label>
-              <div className="flex gap-2">
-                {(["primary", "secondary", "accent"] as const).map((key) => (
+          <div className="space-y-1.5">
+            <Label className="text-sm font-medium">Palet Warna</Label>
+            <div className="flex flex-wrap gap-2">
+              {(["primary", "secondary", "accent", "neutral", "extra1", "extra2"] as const).map((key) => {
+                const value = brief.colorPalette[key];
+                if (key.startsWith("extra") && !value) return null;
+                return (
                   <div key={key} className="flex items-center gap-1.5">
                     <span
                       className="h-6 w-6 shrink-0 rounded-full border"
-                      style={{ background: brief.colorPalette[key] }}
+                      style={{ background: value || "#e5e7eb" }}
                     />
                     <Input
-                      value={brief.colorPalette[key]}
+                      value={value ?? ""}
                       onChange={(e) =>
                         updateBriefField("colorPalette", { ...brief.colorPalette, [key]: e.target.value })
                       }
                       className="h-8 w-24 text-xs"
                     />
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label className="text-sm font-medium">Nada Tulisan</Label>
               <Input value={brief.tone} onChange={(e) => updateBriefField("tone", e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium">Elemen Khas</Label>
+              <Input
+                value={brief.signatureElement}
+                onChange={(e) => updateBriefField("signatureElement", e.target.value)}
+              />
             </div>
           </div>
 
