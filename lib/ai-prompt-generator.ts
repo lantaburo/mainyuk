@@ -108,61 +108,51 @@ const BLOCK_SCHEMA_DOCS: Record<BlockType, string> = {
 };
 
 /**
- * Recommended block sequence + design choices per site type.
+ * General senior-UI/UX reasoning principles the AI must apply itself —
+ * not a fixed template. It decides which blocks to use, how many, in what
+ * order, and which design variant per block, based on the specific business.
  */
-const SITE_TYPE_BLOCK_GUIDE: Record<SiteType, string> = {
-  storefront: `
-SUSUNAN & DESAIN BLOK (ikuti persis):
-1. hero          — align: "split", style: "gradient"
-2. featured_products — layout: "grid-3"
-3. features      — variant: "cards", bg: "muted"
-4. testimonial   — layout: "highlight"
-5. cta           — variant: "solid"`,
+const DESIGN_PRINCIPLES = `
+PRINSIP DESAIN (terapkan sendiri sesuai konteks bisnis — JANGAN asal pilih opsi pertama atau meniru contoh secara membabi buta):
+- Section pertama SEBAIKNYA "hero" — ini kesan pertama. Pilih style sesuai karakter brand: "dark" untuk kesan premium/formal, "gradient" untuk energik/menarik perhatian, "light" untuk bersih/personal.
+- Variasikan bg antar section yang berdekatan ("muted" / "white" / "primary") supaya halaman tidak monoton — hindari dua section berurutan dengan bg sama.
+- bg "primary" sangat mencolok — pakai MAKSIMAL SATU KALI per halaman, di section yang paling ingin ditonjolkan.
+- layout "highlight" (testimonial) hanya kalau ada satu testimoni yang jauh lebih kuat untuk ditonjolkan; kalau semua setara, pakai "grid".
+- variant "numbered" (features) cocok untuk proses/cara kerja bertahap; "icon_left" untuk poin gaya editorial/landing page; "cards" untuk daftar keunggulan yang setara.
+- Section terakhir SEBAIKNYA ajakan bertindak yang jelas (cta atau contact) — jangan tutup halaman dengan section pasif seperti "about" atau "banner".
+- Sesuaikan jumlah & urutan section dengan strategi bisnis: penawaran tunggal yang butuh keyakinan ekstra (mis. produk baru/mahal) lebih butuh testimonial+faq sebelum cta; bisnis yang sudah dikenal bisa lebih ringkas.
+- Jangan mengulang tipe blok yang sama kecuali ada alasan jelas (mis. 2x product_highlight untuk 2 produk berbeda) — kalau diulang, variasikan layout-nya (mis. "default" lalu "reversed").
+- Jumlah section wajar: 4-6 untuk halaman utama (home), 2-4 untuk halaman lain — jangan gunakan semua blok yang tersedia sekaligus kalau tidak relevan, dan jangan terlalu sedikit sehingga halaman terasa kosong.
+`;
 
-  sales_page: `
-SUSUNAN & DESAIN BLOK (ikuti persis):
-1. hero            — align: "center", style: "gradient"
-2. product_highlight — layout: "default"
-3. features        — variant: "numbered", bg: "white"
-4. testimonial     — layout: "highlight"
-5. faq             — variant: "accordion"
-6. cta             — variant: "gradient"`,
-
-  landing_page: `
-SUSUNAN & DESAIN BLOK (ikuti persis):
-1. hero        — align: "split", style: "dark"
-2. features    — variant: "icon_left", bg: "white"
-3. testimonial — layout: "grid"
-4. faq         — variant: "list"
-5. cta         — variant: "gradient"`,
-
-  company_profile: `
-SUSUNAN & DESAIN BLOK (ikuti persis):
-1. hero        — align: "center", style: "dark"
-2. about       — layout: "split"
-3. features    — variant: "cards", bg: "muted"
-4. testimonial — layout: "grid"
-5. contact     — (isi jam operasional minimal)`,
+/**
+ * Business-strategy hints per site type — describes the GOAL of the page,
+ * not a fixed block sequence. The AI chooses which allowed blocks best serve
+ * that goal for this specific business.
+ */
+const SITE_TYPE_STRATEGY: Record<SiteType, string> = {
+  storefront:
+    "Toko dengan katalog produk. Tujuan: pengunjung mengenal brand lalu tertarik melihat/membeli produk. Pertimbangkan: perkenalan brand, produk unggulan, alasan kepercayaan (keunggulan/testimoni), lalu ajakan belanja.",
+  sales_page:
+    "Halaman tunggal menjual SATU produk/penawaran, biasanya lewat WhatsApp. Alur yang efektif: tarik perhatian dengan masalah/keunggulan utama, tunjukkan produknya, yakinkan calon pembeli (keunggulan/bukti sosial), atasi keraguan, baru dorong beli. Sesuaikan seberapa banyak 'meyakinkan' dibutuhkan dengan seberapa besar keputusan pembelian ini bagi calon pembeli.",
+  landing_page:
+    "Halaman untuk mengumpulkan minat terhadap satu penawaran (kursus/layanan/event). Fokus jelaskan manfaat & isi penawaran, bangun kepercayaan, jawab keraguan umum, lalu dorong tindakan (daftar/hubungi).",
+  company_profile:
+    "Situs profil perusahaan — tujuan membangun kredibilitas, BUKAN jualan langsung. Fokus cerita perusahaan, keunggulan/layanan, bukti kepercayaan dari klien, dan cara dihubungi. Tone lebih formal dibanding jenis situs lain.",
 };
 
 const PAGE_TYPE_GUIDE: Record<string, string> = {
   home: "Halaman BERANDA — pengenalan, produk/layanan unggulan, daya tarik utama.",
-  about:
-    "Halaman TENTANG KAMI — cerita perusahaan, visi/misi, nilai. Gunakan: about (layout: centered), features (variant: icon_left, bg: white), testimonial (layout: grid).",
-  contact:
-    "Halaman KONTAK — cara menghubungi, jam operasional. Gunakan: contact (isi hours wajib), cta (variant: outline).",
+  about: "Halaman TENTANG KAMI — cerita perusahaan, visi/misi, nilai, alasan dipercaya.",
+  contact: "Halaman KONTAK — cara menghubungi, jam operasional.",
 };
 
-const PAGE_TYPE_BLOCK_GUIDE: Record<string, string> = {
-  about: `
-SUSUNAN & DESAIN BLOK untuk halaman TENTANG KAMI:
-1. about       — layout: "centered"
-2. features    — variant: "icon_left", bg: "white"
-3. testimonial — layout: "grid"`,
-  contact: `
-SUSUNAN & DESAIN BLOK untuk halaman KONTAK:
-1. contact     — isi hours wajib
-2. cta         — variant: "outline"`,
+/** Strategy hints for non-home pages — same intent regardless of site type. */
+const PAGE_TYPE_STRATEGY: Record<string, string> = {
+  about:
+    "Ceritakan siapa bisnis ini dan kenapa layak dipercaya. Pertimbangkan: cerita/latar belakang, keunggulan atau nilai yang dipegang, bukti sosial (testimoni) — pilih & urutkan mana yang paling kuat untuk bisnis ini.",
+  contact:
+    "Permudah calon pelanggan menghubungi. Isi info kontak & jam operasional selengkap mungkin, dan tutup dengan ajakan menghubungi yang jelas.",
 };
 
 const PLACEHOLDER_EXAMPLES: Record<SiteType, string> = {
@@ -202,16 +192,16 @@ export function buildContentPrompt(opts: {
 
   const schemaLines = allowedBlocks.map((b) => BLOCK_SCHEMA_DOCS[b]).join("\n\n");
   const pageGuide = PAGE_TYPE_GUIDE[pageType] ?? PAGE_TYPE_GUIDE["home"];
-  const blockGuide =
+  const strategyHint =
     pageType === "home"
-      ? SITE_TYPE_BLOCK_GUIDE[opts.siteType]
-      : PAGE_TYPE_BLOCK_GUIDE[pageType] ?? `Pilih blok yang relevan untuk ${pageGuide}`;
+      ? SITE_TYPE_STRATEGY[opts.siteType]
+      : PAGE_TYPE_STRATEGY[pageType] ?? `Sesuaikan section dengan tujuan halaman ini: ${pageGuide}`;
 
   const descriptionFallback = PLACEHOLDER_EXAMPLES[opts.siteType];
 
-  return `Kamu adalah Senior UI Designer dan UX Copywriter untuk UMKM Indonesia.
+  return `Kamu adalah Senior UI/UX Designer fullstack untuk UMKM Indonesia — bukan sekadar penulis konten.
 Platform klikweb.id merender halaman dari JSON — TIDAK ada HTML/CSS bebas.
-Tugasmu: mengisi konten (teks) DAN memilih varian desain terbaik untuk setiap blok.
+Tugasmu: bertindak sebagai perancang halaman sungguhan — putuskan sendiri blok mana yang dipakai (dari daftar yang tersedia), urutannya, berapa banyak, dan varian desain tiap blok — lalu isi kontennya. JANGAN ikuti template tetap; setiap keputusan harus punya alasan yang masuk akal untuk bisnis spesifik ini.
 
 ═══════════════════════════════════════
 DATA BISNIS
@@ -225,8 +215,10 @@ DATA BISNIS
 ═══════════════════════════════════════
 HALAMAN: ${pageGuide}
 ═══════════════════════════════════════
-${blockGuide}
+STRATEGI: ${strategyHint}
 
+BLOK YANG TERSEDIA (pilih sebagian sesuai kebutuhan, JANGAN wajib semua): ${allowedBlocks.join(", ")}
+${DESIGN_PRINCIPLES}
 ═══════════════════════════════════════
 ATURAN WAJIB
 ═══════════════════════════════════════
@@ -235,13 +227,13 @@ ATURAN WAJIB
 3. DILARANG: HTML, markdown, emoji, klaim yang tidak disebutkan.
 4. Field bertanda WAJIB harus diisi — jangan kosongkan.
 5. Field "image_url" / "map_embed_url" selalu dikosongkan atau dihapus.
-6. Hanya gunakan tipe blok yang ada di SKEMA di bawah.
+6. Hanya gunakan tipe blok dari daftar BLOK YANG TERSEDIA di atas.
 7. Nama field HARUS persis sama — jangan terjemahkan.
-8. Untuk field desain (align/style/layout/variant/bg): WAJIB diisi, ikuti rekomendasi di SUSUNAN & DESAIN BLOK di atas.
-9. "id" format "blk-[type]-[nomor]". "order" mulai 1 berurutan.
+8. Untuk field desain (align/style/layout/variant/bg): WAJIB diisi berdasarkan pertimbanganmu sendiri sebagai senior UI/UX, ikuti PRINSIP DESAIN di atas — bukan asal pilih opsi pertama di skema.
+9. "id" format "blk-[type]-[nomor]". "order" mulai 1 berurutan sesuai urutan yang kamu putuskan.
 
 ═══════════════════════════════════════
-SKEMA JSON (teks + desain)
+SKEMA JSON (opsi desain yang tersedia per tipe blok)
 ═══════════════════════════════════════
 ${schemaLines}
 
@@ -265,8 +257,8 @@ export function buildSingleBlockPrompt(opts: {
   const industryInfo = INDUSTRY_CONTENT[opts.industry];
   const schemaLine = BLOCK_SCHEMA_DOCS[opts.blockType];
 
-  return `Kamu adalah Senior UI Designer dan UX Copywriter untuk UMKM Indonesia.
-Tugasmu: menghasilkan JSON data konten HANYA untuk satu bagian (section) bertipe "${opts.blockType}".
+  return `Kamu adalah Senior UI/UX Designer fullstack untuk UMKM Indonesia — bukan sekadar penulis konten.
+Tugasmu: menghasilkan JSON data konten DAN memilih varian desain (align/style/layout/variant/bg, sesuai yang tersedia di skema) HANYA untuk satu bagian (section) bertipe "${opts.blockType}", berdasarkan pertimbanganmu sendiri untuk bisnis ini — bukan asal pilih opsi pertama di skema.
 
 DATA BISNIS:
 - Nama bisnis : ${opts.storeName}
@@ -277,7 +269,7 @@ ATURAN WAJIB:
 1. Output HANYA object JSON untuk field "data", tanpa ada teks di luarnya.
 2. Bahasa Indonesia. Gaya: hangat, persuasif, profesional.
 3. Field "image_url" / "map_embed_url" harus berupa string kosong "".
-4. Harus persis mengikuti SKEMA di bawah.
+4. Harus persis mengikuti SKEMA di bawah (nama field & opsi enum tidak boleh diubah).
 
 SKEMA JSON UNTUK "data" DARI TIPE "${opts.blockType}":
 ${schemaLine}
