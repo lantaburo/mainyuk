@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getStoreBySlug, getStorePage } from "@/lib/store";
-import { BlockRenderer } from "@/components/storefront/blocks/BlockRenderer";
-import { parseBlocks } from "@/lib/blocks-types";
+import { StoreHtmlRenderer } from "@/components/storefront/StoreHtmlRenderer";
 
 export default async function StoreContactPage({ params }: { params: { store: string } }) {
   const store = await getStoreBySlug(params.store);
@@ -10,13 +9,5 @@ export default async function StoreContactPage({ params }: { params: { store: st
   const page = await getStorePage(store.id, "contact");
   if (!page) notFound();
 
-  const blocks = parseBlocks(page.blocks);
-
-  return (
-    <BlockRenderer
-      blocks={blocks}
-      storeSlug={store.slug}
-      whatsappNumber={store.settings?.whatsappNumber}
-    />
-  );
+  return <StoreHtmlRenderer html={page.html} storeId={store.id} storeSlug={store.slug} />;
 }

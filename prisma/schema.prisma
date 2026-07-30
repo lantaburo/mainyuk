@@ -82,6 +82,7 @@ model Store {
   templateId   String?     @map("template_id")
   layoutType   String?     @map("layout_type")
   industry     String?     @map("industry")
+  targetAudience String?   @map("target_audience")
   ownerId      String      @map("owner_id")
   owner        User        @relation(fields: [ownerId], references: [id])
   planType     PlanType    @default(basic) @map("plan_type")
@@ -116,7 +117,9 @@ model StorePage {
   slug      String?
   title     String?
   blocks    Json     @default("[]")
-  
+  html      String   @default("") @map("html")
+  briefJson Json?    @map("brief_json")
+
   // SEO Fields
   seoTitle       String? @map("seo_title")
   seoDescription String? @map("seo_description")

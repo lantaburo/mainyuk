@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { 
-  LayoutDashboard, 
-  Package, 
-  Tags, 
-  ShoppingCart, 
-  FileText, 
+import {
+  LayoutDashboard,
+  Package,
+  Tags,
+  ShoppingCart,
+  Wand2,
   Settings,
   LogOut,
   ExternalLink
@@ -30,7 +30,7 @@ export function DashboardNav({ store }: DashboardNavProps) {
     ...(config.showProductsMenu ? [{ href: "/dashboard/produk", label: "Produk", icon: Package }] : []),
     ...(config.showCategoriesMenu ? [{ href: "/dashboard/kategori", label: "Kategori", icon: Tags }] : []),
     ...(store.siteType === "storefront" ? [{ href: "/dashboard/pesanan", label: "Pesanan", icon: ShoppingCart }] : []),
-    { href: "/dashboard/halaman", label: "Halaman", icon: FileText },
+    { href: "/dashboard/ai-generator", label: "AI Website Generator", icon: Wand2 },
     { href: "/dashboard/pengaturan", label: "Pengaturan", icon: Settings },
   ];
 

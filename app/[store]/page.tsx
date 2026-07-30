@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getStoreBySlug, getStorePage } from "@/lib/store";
-import { BlockRenderer } from "@/components/storefront/blocks/BlockRenderer";
-import { parseBlocks } from "@/lib/blocks-types";
+import { StoreHtmlRenderer } from "@/components/storefront/StoreHtmlRenderer";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: { store: string } }): Promise<Metadata> {
@@ -28,13 +27,6 @@ export default async function StoreHomePage({ params }: { params: { store: strin
   if (!store) notFound();
 
   const page = await getStorePage(store.id, "home");
-  const blocks = parseBlocks(page?.blocks);
 
-  return (
-    <BlockRenderer
-      blocks={blocks}
-      storeSlug={store.slug}
-      whatsappNumber={store.settings?.whatsappNumber}
-    />
-  );
+  return <StoreHtmlRenderer html={page?.html ?? ""} storeId={store.id} storeSlug={store.slug} />;
 }

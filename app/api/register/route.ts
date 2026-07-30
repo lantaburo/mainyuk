@@ -72,7 +72,13 @@ export async function POST(req: Request) {
             : getDefaultContactBlocks();
 
       await tx.storePage.create({
-        data: { storeId: store.id, pageType: page.pageType, blocks: blocksToJson(blocks) },
+        data: {
+          storeId: store.id,
+          pageType: page.pageType,
+          blocks: blocksToJson(blocks),
+          // html left empty — new stores start blank until the owner runs
+          // the AI Website Generator (app/dashboard/ai-generator).
+        },
       });
     }
   });

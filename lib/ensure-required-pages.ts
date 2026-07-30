@@ -34,7 +34,12 @@ export async function ensureRequiredPages(
           : getDefaultContactBlocks();
 
     await prisma.storePage.create({
-      data: { storeId, pageType: page.pageType, blocks: blocksToJson(blocks) },
+      data: {
+        storeId,
+        pageType: page.pageType,
+        blocks: blocksToJson(blocks),
+        // html left empty — new pages start blank until generated via AI.
+      },
     });
   }
 }
