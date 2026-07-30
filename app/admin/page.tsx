@@ -1,24 +1,10 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
-import { SITE_TYPE_CONFIG } from "@/lib/site-types";
-import { updateStoreStatus, deleteStore } from "@/app/admin/actions";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
-import { StoreStatusSelect } from "@/components/admin/StoreStatusSelect";
 import { AdminTenantListClient } from "@/components/admin/AdminTenantListClient";
 import { Store, TrendingUp, Users, ShoppingCart } from "lucide-react";
 
 export default async function AdminPage() {
-  const session = await requireAdmin();
+  await requireAdmin();
 
   const stores = await prisma.store.findMany({
     include: {

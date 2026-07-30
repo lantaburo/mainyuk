@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { addOperator, deleteOperator } from "./actions";
 import { Users, Mail, Trash2, Search, ShieldAlert } from "lucide-react";
 
@@ -36,8 +36,12 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
       await addOperator(formData);
       setIsAdding(false);
       (e.target as HTMLFormElement).reset();
-    } catch (err: any) {
-      setError(err.message || "Gagal menambahkan operator");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Gagal menambahkan operator");
+      } else {
+        setError("Gagal menambahkan operator");
+      }
     } finally {
       setLoading(false);
     }
@@ -48,8 +52,12 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
 
     try {
       await deleteOperator(id);
-    } catch (err: any) {
-      alert(err.message || "Gagal menghapus operator");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message || "Gagal menghapus operator");
+      } else {
+        alert("Gagal menghapus operator");
+      }
     }
   }
 
@@ -134,7 +142,7 @@ export function OperatorListClient({ initialOperators }: { initialOperators: Ope
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/40">
-                  {filteredOperators.map((op, i) => {
+                  {filteredOperators.map((op) => {
                     // Generate pseudo-random gradient based on name length
                     const gradients = [
                       "from-indigo-500 to-purple-500",

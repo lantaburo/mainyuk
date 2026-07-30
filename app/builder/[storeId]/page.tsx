@@ -1,12 +1,11 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 import { ensureRequiredPages } from "@/lib/ensure-required-pages";
 import { parseBlocks } from "@/lib/blocks-types";
 import { VisualBuilder } from "@/components/admin/VisualBuilder";
-import type { Block } from "@/lib/blocks-types";
-import { updateAdminPageBlocks } from "@/app/admin/actions";
 import { SITE_TYPE_CONFIG } from "@/lib/site-types";
+
 
 export default async function BuilderPage({
   params,

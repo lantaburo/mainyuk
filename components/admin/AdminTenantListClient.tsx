@@ -30,7 +30,7 @@ type StoreData = {
   id: string;
   name: string;
   slug: string;
-  siteType: any;
+  siteType: string;
   planType: string;
   status: string;
   createdAt: Date;

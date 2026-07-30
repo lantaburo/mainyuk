@@ -41,7 +41,7 @@ function ProductBlockPlaceholder({ label }: { label: string }) {
   );
 }
 
-export function BlockRendererClient({ blocks, storeSlug, whatsappNumber }: BlockRendererClientProps) {
+export function BlockRendererClient({ blocks, whatsappNumber }: BlockRendererClientProps) {
   const sorted = [...blocks].sort((a, b) => a.order - b.order);
 
   return (

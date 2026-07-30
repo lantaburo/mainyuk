@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import {
   ArrowLeft, Save, LayoutTemplate, Sparkles, Code2,
   Plus, GripVertical, Trash2, Pencil, Check, X,
-  ChevronUp, ChevronDown, Palette
+  ChevronUp, ChevronDown
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -38,7 +38,7 @@ interface VisualBuilderProps {
 type BlockNames = Record<string, string>;
 
 export function VisualBuilder({
-  pageId, storeId, storeSlug, storeName, siteType,
+  pageId, storeId, storeSlug, storeName,
   initialBlocks, allowedBlocks, products, whatsappNumber,
 }: VisualBuilderProps) {
   const [blocks, setBlocks] = useState<Block[]>(() =>
@@ -51,7 +51,7 @@ export function VisualBuilder({
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId) || null;
 
-  function updateBlockData(id: string, data: any, styles?: any) {
+  function updateBlockData(id: string, data: unknown, styles?: unknown) {
     setBlocks((prev) =>
       prev.map((b) => (b.id === id ? { ...b, data, style_overrides: styles ?? b.style_overrides } : b))
     );
@@ -357,7 +357,7 @@ export function VisualBuilder({
 
 /* ─── Block Layer Item (Left Sidebar Row) ─── */
 function BlockLayerItem({
-  block, label, isSelected, isFirst, isLast,
+  label, isSelected, isFirst, isLast,
   onSelect, onRename, onMoveUp, onMoveDown, onDelete,
 }: {
   block: Block;
@@ -480,7 +480,7 @@ function BlockLayerItem({
 }
 
 /* ─── AI Prompt Tab ─── */
-function AiPromptTab({ block, storeId, onApply }: { block: Block; storeId: string; onApply: (data: any) => void }) {
+function AiPromptTab({ block, storeId, onApply }: { block: Block; storeId: string; onApply: (data: unknown) => void }) {
   const [prompt, setPrompt] = useState("");
   const [isPending, startTransition] = useTransition();
 

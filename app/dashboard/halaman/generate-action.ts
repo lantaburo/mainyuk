@@ -113,7 +113,7 @@ export async function generateSingleBlockAction(
   storeId: string,
   blockType: string,
   userPrompt: string
-): Promise<{ ok: true; data: any } | { ok: false; error: string }> {
+): Promise<{ ok: true; data: unknown } | { ok: false; error: string }> {
   const session = await getSession();
   if (!session) return { ok: false, error: "Not logged in" };
 
@@ -137,7 +137,7 @@ export async function generateSingleBlockAction(
     storeName: store.name,
     industry,
     businessDescription: userPrompt.trim(),
-    blockType: blockType as any,
+    blockType: blockType as string,
   });
 
   let rawText: string;
@@ -151,7 +151,7 @@ export async function generateSingleBlockAction(
     return { ok: false, error: msg };
   }
 
-  let parsed: any;
+  let parsed: unknown;
   try {
     parsed = extractJson(rawText);
   } catch {

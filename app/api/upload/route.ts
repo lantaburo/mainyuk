@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
   }
 
   const isVideo = ALLOWED_VIDEO_TYPES.includes(file.type);
-  const isImage = ALLOWED_IMAGE_TYPES.includes(file.type);
 
   if (!ALLOWED_TYPES.includes(file.type)) {
     return NextResponse.json(

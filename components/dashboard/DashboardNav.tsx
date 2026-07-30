@@ -9,7 +9,6 @@ import {
   Tags, 
   ShoppingCart, 
   FileText, 
-  Wand2, 
   Settings,
   LogOut,
   ExternalLink

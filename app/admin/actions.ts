@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin, requireSuperAdmin } from "@/lib/session";
+import { requireAdmin } from "@/lib/session";
 import { blocksToJson, type Block } from "@/lib/blocks-types";
 
 const statusSchema = z.enum(["active", "suspended", "trial"]);

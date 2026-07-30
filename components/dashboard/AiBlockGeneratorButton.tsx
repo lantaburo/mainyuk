@@ -42,7 +42,7 @@ export function AiBlockGeneratorButton({
         } else {
           toast.error(res.error);
         }
-      } catch (err) {
+      } catch {
         toast.error("Gagal menghubungi server");
       }
     });
