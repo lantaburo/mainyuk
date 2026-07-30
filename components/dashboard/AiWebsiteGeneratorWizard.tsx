@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, type CSSProperties } from "react";
+import { useEffect, useRef, useState, useTransition, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -12,12 +12,10 @@ import { Progress } from "@/components/ui/progress";
 import { TEMPLATE_STYLE, DEFAULT_TEMPLATE, isTemplatePreset } from "@/lib/templates";
 import { SITE_TYPE_CONFIG, type SiteType } from "@/lib/site-types";
 import type { DesignBrief } from "@/lib/ai-html-schema";
+import type { AiUsage } from "@/lib/ai-client";
+import { STREAM_DONE_MARKER } from "@/lib/streaming-protocol";
 import { cn } from "@/lib/utils";
-import {
-  generateBriefAction,
-  generateHtmlFromBriefAction,
-  applyGeneratedHtmlAction,
-} from "@/app/dashboard/ai-generator/actions";
+import { generateBriefAction, applyGeneratedHtmlAction } from "@/app/dashboard/ai-generator/actions";
 
 type Step = "form" | "brief" | "loading" | "result";
 
@@ -27,6 +25,15 @@ const STEP_LABELS: Record<Step, string> = {
   loading: "Generate",
   result: "Hasil",
 };
+
+function UsageBadge({ label, usage }: { label: string; usage: AiUsage | null }) {
+  if (!usage) return null;
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground">
+      {label}: <strong className="font-medium text-foreground">{usage.totalTokens.toLocaleString("id-ID")}</strong> token
+    </span>
+  );
+}
 
 export function AiWebsiteGeneratorWizard({
   storeId,
@@ -55,9 +62,18 @@ export function AiWebsiteGeneratorWizard({
   const [audience, setAudience] = useState(targetAudience ?? "");
   const [brief, setBrief] = useState<DesignBrief | null>(null);
   const [html, setHtml] = useState<string | null>(null);
+  const [briefUsage, setBriefUsage] = useState<AiUsage | null>(null);
+  const [htmlUsage, setHtmlUsage] = useState<AiUsage | null>(null);
+  const [streamingCode, setStreamingCode] = useState("");
+  const [isStreamingHtml, setIsStreamingHtml] = useState(false);
   const [isBriefPending, startBrief] = useTransition();
-  const [isHtmlPending, startHtml] = useTransition();
   const [isApplying, startApplying] = useTransition();
+
+  const codeBoxRef = useRef<HTMLPreElement>(null);
+
+  useEffect(() => {
+    codeBoxRef.current?.scrollTo({ top: codeBoxRef.current.scrollHeight });
+  }, [streamingCode]);
 
   function handleGenerateBrief() {
     if (!description.trim()) {
@@ -71,6 +87,7 @@ export function AiWebsiteGeneratorWizard({
         return;
       }
       setBrief(res.brief);
+      setBriefUsage(res.usage);
       setStep("brief");
     });
   }
@@ -87,19 +104,61 @@ export function AiWebsiteGeneratorWizard({
     });
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
     if (!brief) return;
     setStep("loading");
-    startHtml(async () => {
-      const res = await generateHtmlFromBriefAction(storeId, brief);
-      if (!res.ok) {
-        toast.error(res.error);
+    setStreamingCode("");
+    setIsStreamingHtml(true);
+
+    try {
+      const res = await fetch("/api/ai-generator/stream-html", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storeId, brief }),
+      });
+
+      if (!res.ok || !res.body) {
+        const text = await res.text().catch(() => "");
+        toast.error(text || "Gagal menghubungi AI.");
         setStep("brief");
         return;
       }
-      setHtml(res.html);
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let full = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        full += decoder.decode(value, { stream: true });
+        const markerIndex = full.indexOf(STREAM_DONE_MARKER);
+        setStreamingCode(markerIndex === -1 ? full : full.slice(0, markerIndex));
+      }
+
+      const markerIndex = full.indexOf(STREAM_DONE_MARKER);
+      if (markerIndex === -1) {
+        toast.error("Respons AI terputus, coba lagi.");
+        setStep("brief");
+        return;
+      }
+
+      const finalPayload = JSON.parse(full.slice(markerIndex + STREAM_DONE_MARKER.length));
+      if (finalPayload.error) {
+        toast.error(finalPayload.error);
+        setStep("brief");
+        return;
+      }
+
+      setHtml(finalPayload.html);
+      setHtmlUsage(finalPayload.usage ?? null);
       setStep("result");
-    });
+    } catch {
+      toast.error("Gagal menghubungi AI.");
+      setStep("brief");
+    } finally {
+      setIsStreamingHtml(false);
+    }
   }
 
   function handleApply() {
@@ -146,24 +205,32 @@ export function AiWebsiteGeneratorWizard({
         </div>
       )}
 
-      <ol className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-        {(Object.keys(STEP_LABELS) as Step[]).map((s, i) => (
-          <li key={s} className="flex items-center gap-1.5">
-            <span
-              className={cn(
-                "flex h-5 w-5 items-center justify-center rounded-full border text-[10px] font-medium",
-                step === s
-                  ? "border-indigo-600 bg-indigo-600 text-white"
-                  : "border-muted-foreground/30 text-muted-foreground"
-              )}
-            >
-              {i + 1}
-            </span>
-            <span className={cn(step === s && "font-semibold text-foreground")}>{STEP_LABELS[s]}</span>
-            {i < 3 && <span className="mx-1 text-muted-foreground/30">→</span>}
-          </li>
-        ))}
-      </ol>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <ol className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+          {(Object.keys(STEP_LABELS) as Step[]).map((s, i) => (
+            <li key={s} className="flex items-center gap-1.5">
+              <span
+                className={cn(
+                  "flex h-5 w-5 items-center justify-center rounded-full border text-[10px] font-medium",
+                  step === s
+                    ? "border-indigo-600 bg-indigo-600 text-white"
+                    : "border-muted-foreground/30 text-muted-foreground"
+                )}
+              >
+                {i + 1}
+              </span>
+              <span className={cn(step === s && "font-semibold text-foreground")}>{STEP_LABELS[s]}</span>
+              {i < 3 && <span className="mx-1 text-muted-foreground/30">→</span>}
+            </li>
+          ))}
+        </ol>
+        {(briefUsage || htmlUsage) && (
+          <div className="flex flex-wrap gap-1.5">
+            <UsageBadge label="Blueprint" usage={briefUsage} />
+            <UsageBadge label="Kode HTML" usage={htmlUsage} />
+          </div>
+        )}
+      </div>
 
       {step === "form" && (
         <div className="space-y-4 rounded-xl border p-5">
@@ -307,9 +374,22 @@ export function AiWebsiteGeneratorWizard({
       )}
 
       {step === "loading" && (
-        <div className="space-y-4 rounded-xl border p-10 text-center">
-          <p className="text-sm font-medium">AI sedang menyusun kode halaman website-mu…</p>
-          <Progress value={null} />
+        <div className="space-y-3 rounded-xl border p-5">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium">
+              {isStreamingHtml ? "AI sedang menyusun kode halaman website-mu…" : "Menyelesaikan…"}
+            </p>
+            <span className="text-xs text-muted-foreground">
+              {streamingCode.length.toLocaleString("id-ID")} karakter
+            </span>
+          </div>
+          <pre
+            ref={codeBoxRef}
+            className="max-h-[50vh] overflow-y-auto whitespace-pre-wrap break-all rounded-lg bg-zinc-950 p-4 font-mono text-[11px] leading-relaxed text-emerald-400"
+          >
+            {streamingCode || "Menghubungi AI…"}
+            {isStreamingHtml && <span className="animate-pulse">▌</span>}
+          </pre>
         </div>
       )}
 
@@ -330,7 +410,7 @@ export function AiWebsiteGeneratorWizard({
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setStep("brief")} disabled={isHtmlPending}>
+            <Button variant="outline" onClick={() => setStep("brief")} disabled={isStreamingHtml}>
               ← Ubah Blueprint
             </Button>
             <Button onClick={handleApply} disabled={isApplying} className="flex-1 bg-green-600 text-white hover:bg-green-700">

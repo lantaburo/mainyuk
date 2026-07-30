@@ -3,21 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireStoreOwner } from "@/lib/session";
-import { callAiProvider, extractJson, AiClientError } from "@/lib/ai-client";
-import {
-  buildBriefPrompt,
-  buildHtmlFromBriefPrompt,
-  buildElementEditPrompt,
-} from "@/lib/ai-html-prompt-generator";
+import { callAiProvider, extractJson, stripCodeFence, AiClientError, type AiUsage } from "@/lib/ai-client";
+import { buildBriefPrompt, buildElementEditPrompt } from "@/lib/ai-html-prompt-generator";
 import { designBriefSchema, type DesignBrief } from "@/lib/ai-html-schema";
 import { sanitizeStoreHtml } from "@/lib/html-sanitize";
 import { isIndustry, DEFAULT_INDUSTRY } from "@/lib/industry-content";
 
 export type BriefResult =
-  | { ok: true; brief: DesignBrief }
+  | { ok: true; brief: DesignBrief; usage: AiUsage | null }
   | { ok: false; error: string };
 
-export type HtmlResult = { ok: true; html: string } | { ok: false; error: string };
+export type HtmlResult =
+  | { ok: true; html: string; usage: AiUsage | null }
+  | { ok: false; error: string };
 
 async function getAiConfig() {
   const aiSettings = await prisma.aiSettings.findFirst();
@@ -54,16 +52,16 @@ export async function generateBriefAction(
     targetAudience,
   });
 
-  let rawText: string;
+  let result: Awaited<ReturnType<typeof callAiProvider>>;
   try {
-    rawText = await callAiProvider(config, prompt);
+    result = await callAiProvider(config, prompt);
   } catch (err) {
     return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
   }
 
   let parsed: unknown;
   try {
-    parsed = extractJson(rawText);
+    parsed = extractJson(result.content);
   } catch {
     return { ok: false, error: "Respons AI tidak bisa dibaca sebagai JSON." };
   }
@@ -78,50 +76,7 @@ export async function generateBriefAction(
     await prisma.store.update({ where: { id: storeId }, data: { targetAudience: targetAudience.trim() } });
   }
 
-  return { ok: true, brief: validated.data };
-}
-
-/** Tahap 3: blueprint -> satu fragment HTML. */
-export async function generateHtmlFromBriefAction(
-  storeId: string,
-  brief: DesignBrief
-): Promise<HtmlResult> {
-  const session = await requireStoreOwner();
-  if (session.user.storeId !== storeId) return { ok: false, error: "Akses ditolak" };
-
-  const store = await prisma.store.findUniqueOrThrow({
-    where: { id: storeId },
-    include: { settings: true },
-  });
-  const config = await getAiConfig();
-  if (!config) {
-    return { ok: false, error: "Konfigurasi AI belum diatur." };
-  }
-
-  const validatedBrief = designBriefSchema.safeParse(brief);
-  if (!validatedBrief.success) {
-    return { ok: false, error: "Blueprint tidak valid." };
-  }
-
-  const prompt = buildHtmlFromBriefPrompt(validatedBrief.data, {
-    storeName: store.name,
-    siteType: store.siteType,
-    whatsappNumber: store.settings?.whatsappNumber,
-  });
-
-  let rawText: string;
-  try {
-    rawText = await callAiProvider(config, prompt);
-  } catch (err) {
-    return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
-  }
-
-  const html = sanitizeStoreHtml(stripCodeFence(rawText));
-  if (!html.trim()) {
-    return { ok: false, error: "AI tidak menghasilkan HTML yang valid." };
-  }
-
-  return { ok: true, html };
+  return { ok: true, brief: validated.data, usage: result.usage };
 }
 
 /** Terapkan hasil generate ke halaman Beranda toko. */
@@ -191,22 +146,17 @@ export async function generateElementEditAction(
 
   const prompt = buildElementEditPrompt(currentOuterHtml, instruction, { storeName: store.name });
 
-  let rawText: string;
+  let result: Awaited<ReturnType<typeof callAiProvider>>;
   try {
-    rawText = await callAiProvider(config, prompt);
+    result = await callAiProvider(config, prompt);
   } catch (err) {
     return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
   }
 
-  const html = sanitizeStoreHtml(stripCodeFence(rawText));
+  const html = sanitizeStoreHtml(stripCodeFence(result.content));
   if (!html.trim()) {
     return { ok: false, error: "AI tidak menghasilkan elemen yang valid." };
   }
 
-  return { ok: true, html };
-}
-
-function stripCodeFence(text: string): string {
-  const fenced = text.match(/```(?:html)?\s*([\s\S]*?)```/i);
-  return (fenced ? fenced[1] : text).trim();
+  return { ok: true, html, usage: result.usage };
 }

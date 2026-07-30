@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Sparkles } from "lucide-react";
 import { generateElementEditAction } from "@/app/dashboard/ai-generator/actions";
+import type { AiUsage } from "@/lib/ai-client";
 
 /** Editor "AI" tab — instruct AI to rewrite just the selected element. */
 export function ElementAiEditTab({
@@ -19,6 +20,7 @@ export function ElementAiEditTab({
   onApply: (newOuterHtml: string) => void;
 }) {
   const [instruction, setInstruction] = useState("");
+  const [lastUsage, setLastUsage] = useState<AiUsage | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function handleGenerate() {
@@ -31,6 +33,7 @@ export function ElementAiEditTab({
       }
       onApply(res.html);
       setInstruction("");
+      setLastUsage(res.usage);
       toast.success("Elemen berhasil diubah AI!");
     });
   }
@@ -53,6 +56,11 @@ export function ElementAiEditTab({
         {isPending ? "Sedang mengubah…" : "Terapkan"}
       </Button>
       {isPending && <Progress value={null} />}
+      {lastUsage && !isPending && (
+        <p className="text-center text-[11px] text-zinc-500">
+          {lastUsage.totalTokens.toLocaleString("id-ID")} token terpakai
+        </p>
+      )}
     </div>
   );
 }

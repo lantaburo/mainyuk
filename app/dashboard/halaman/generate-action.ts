@@ -67,10 +67,12 @@ export async function generatePageBlocksAction(
 
   let rawText: string;
   try {
-    rawText = await callAiProvider(
-      { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model },
-      prompt
-    );
+    rawText = (
+      await callAiProvider(
+        { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model },
+        prompt
+      )
+    ).content;
   } catch (err) {
     const msg = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
     return { ok: false, error: msg };
@@ -143,10 +145,12 @@ export async function generateSingleBlockAction(
 
   let rawText: string;
   try {
-    rawText = await callAiProvider(
-      { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model },
-      prompt
-    );
+    rawText = (
+      await callAiProvider(
+        { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model },
+        prompt
+      )
+    ).content;
   } catch (err) {
     const msg = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
     return { ok: false, error: msg };
