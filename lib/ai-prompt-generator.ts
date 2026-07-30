@@ -209,7 +209,7 @@ export function buildContentPrompt(opts: {
 
   const descriptionFallback = PLACEHOLDER_EXAMPLES[opts.siteType];
 
-  return `Kamu adalah ahli copywriting dan desainer konten untuk UMKM Indonesia.
+  return `Kamu adalah Senior UI Designer dan UX Copywriter untuk UMKM Indonesia.
 Platform klikweb.id merender halaman dari JSON — TIDAK ada HTML/CSS bebas.
 Tugasmu: mengisi konten (teks) DAN memilih varian desain terbaik untuk setiap blok.
 
@@ -265,7 +265,7 @@ export function buildSingleBlockPrompt(opts: {
   const industryInfo = INDUSTRY_CONTENT[opts.industry];
   const schemaLine = BLOCK_SCHEMA_DOCS[opts.blockType];
 
-  return `Kamu adalah ahli copywriting untuk UMKM Indonesia.
+  return `Kamu adalah Senior UI Designer dan UX Copywriter untuk UMKM Indonesia.
 Tugasmu: menghasilkan JSON data konten HANYA untuk satu bagian (section) bertipe "${opts.blockType}".
 
 DATA BISNIS:

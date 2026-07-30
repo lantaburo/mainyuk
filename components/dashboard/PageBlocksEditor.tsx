@@ -25,6 +25,7 @@ export function PageBlocksEditor({
   siteType,
   pageType,
   pageLabel,
+  showAiGenerator = false,
   action,
 }: {
   pageId: string;
@@ -35,6 +36,7 @@ export function PageBlocksEditor({
   siteType: SiteType;
   pageType: string;
   pageLabel: string;
+  showAiGenerator?: boolean;
   action: (pageId: string, blocks: Block[]) => Promise<void>;
 }) {
   const [blocks, setBlocks] = useState<Block[]>(() =>
@@ -100,14 +102,16 @@ export function PageBlocksEditor({
 
   return (
     <div className="space-y-4">
-      <AiGeneratorPanel
-        pageId={pageId}
-        siteType={siteType}
-        pageType={pageType}
-        pageLabel={pageLabel}
-        hasExistingBlocks={blocks.length > 0}
-        onApply={handleAiApply}
-      />
+      {showAiGenerator && (
+        <AiGeneratorPanel
+          pageId={pageId}
+          siteType={siteType}
+          pageType={pageType}
+          pageLabel={pageLabel}
+          hasExistingBlocks={blocks.length > 0}
+          onApply={handleAiApply}
+        />
+      )}
 
       {sorted.length === 0 && (
         <p className="text-sm text-muted-foreground">Belum ada blok. Tambahkan di bawah.</p>
@@ -117,11 +121,13 @@ export function PageBlocksEditor({
           <div className="mb-3 flex items-center justify-between">
             <span className="text-sm font-medium">{BLOCK_TYPE_LABELS[block.type]}</span>
             <div className="flex gap-1 items-center">
-              <AiBlockGeneratorButton 
-                storeId={storeId} 
-                blockType={block.type} 
-                onApply={(data) => updateBlockData(block.id, data)} 
-              />
+              {showAiGenerator && (
+                <AiBlockGeneratorButton 
+                  storeId={storeId} 
+                  blockType={block.type} 
+                  onApply={(data) => updateBlockData(block.id, data)} 
+                />
+              )}
               <Button
                 type="button"
                 variant="ghost"

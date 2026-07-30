@@ -37,8 +37,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-[#F6F3EE] px-4 py-12 text-[#0B2B26]">
-      <div className="mx-auto w-full max-w-sm">
+    <div className="relative flex min-h-screen flex-col justify-center px-4 py-12 text-[#0B2B26] overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/hero-turtle.png"
+          alt="Background"
+          className="h-full w-full object-cover object-[72%_center] sm:object-[65%_center] lg:object-center opacity-40"
+        />
+        {/* Optional overlay to ensure form readability if image is bright */}
+        <div className="absolute inset-0 bg-[#F6F3EE]/80" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-sm">
         <AuthHeader />
 
         <div className="mb-6 text-center">

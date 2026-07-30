@@ -15,9 +15,13 @@ async function assertProductOwnership(productId: string, storeId: string) {
 
 export async function createProduct(formData: FormData) {
   const session = await requireStoreOwner();
+  
+  const slugInput = formData.get("slug")?.toString() || "";
+  const slug = slugInput.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
   const parsed = productSchema.safeParse({
     name: formData.get("name"),
-    slug: formData.get("slug"),
+    slug: slug,
     description: formData.get("description") || undefined,
     price: formData.get("price"),
     stock: formData.get("stock"),
@@ -26,8 +30,14 @@ export async function createProduct(formData: FormData) {
   });
   if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "Data tidak valid");
 
+  const imageUrl = formData.get("imageUrl")?.toString();
+
   const product = await prisma.product.create({
-    data: { ...parsed.data, storeId: session.user.storeId },
+    data: { 
+      ...parsed.data, 
+      storeId: session.user.storeId,
+      images: imageUrl ? { create: { url: imageUrl, order: 0 } } : undefined
+    },
   });
 
   revalidatePath("/dashboard/produk");
@@ -38,9 +48,12 @@ export async function updateProduct(productId: string, formData: FormData) {
   const session = await requireStoreOwner();
   await assertProductOwnership(productId, session.user.storeId);
 
+  const slugInput = formData.get("slug")?.toString() || "";
+  const slug = slugInput.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
   const parsed = productSchema.safeParse({
     name: formData.get("name"),
-    slug: formData.get("slug"),
+    slug: slug,
     description: formData.get("description") || undefined,
     price: formData.get("price"),
     stock: formData.get("stock"),

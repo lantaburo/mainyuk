@@ -187,6 +187,7 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                                 action={deleteStore.bind(null, store.id)}
                                 confirmText={`Hapus toko "${store.name}"? Semua produk, halaman, dan datanya akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.`}
                                 className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 p-2 text-sm rounded-sm font-medium"
+                                variant="ghost"
                               />
                             }
                           />

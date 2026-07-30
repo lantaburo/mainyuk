@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatRupiah } from "@/lib/format";
+import { ImageUploadField } from "@/components/dashboard/ImageUploadField";
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
   const session = await requireStoreOwner();
@@ -187,8 +188,8 @@ export default async function EditProductPage({ params }: { params: { id: string
         </div>
         <form action={addImageWithId} className="mt-4 flex flex-wrap items-end gap-2">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="imageUrl">URL Gambar</Label>
-            <Input id="imageUrl" name="url" type="url" required />
+            <Label>Upload Gambar</Label>
+            <ImageUploadField name="url" label="Pilih Gambar" />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="imageOrder">Urutan</Label>

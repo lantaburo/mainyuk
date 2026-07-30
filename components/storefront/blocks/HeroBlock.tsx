@@ -1,11 +1,13 @@
 import type { HeroData } from "@/lib/blocks-types";
+import { isVideoUrl } from "@/lib/media";
 
 export function HeroBlock({ data }: { data: HeroData }) {
   const align = data.align ?? "center";
   const style = data.style ?? "gradient";
-  const hasImage = Boolean(data.image_url);
+  const hasImage = Boolean(data.image_url) && !isVideoUrl(data.image_url);
+  const hasVideo = isVideoUrl(data.image_url);
 
-  // Background style
+  // Background style (only apply image if it's not a video)
   const bgStyle: React.CSSProperties = hasImage
     ? {
         backgroundImage: `linear-gradient(160deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.5) 100%), url(${data.image_url})`,
@@ -21,16 +23,16 @@ export function HeroBlock({ data }: { data: HeroData }) {
       };
 
   const textColor =
-    !hasImage && style === "light" ? "text-foreground" : "text-white";
+    !(hasImage || hasVideo) && style === "light" ? "text-foreground" : "text-white";
   const subtitleColor =
-    !hasImage && style === "light" ? "text-foreground/60" : "text-white/80";
+    !(hasImage || hasVideo) && style === "light" ? "text-foreground/60" : "text-white/80";
   const ctaTextColor =
     style === "light" ? "text-white" : undefined;
   const ctaBgColor =
     style === "light" ? "var(--store-primary)" : "white";
 
   // Split layout: text left, decorative right
-  if (align === "split" && !hasImage) {
+  if (align === "split" && !hasImage && !hasVideo) {
     return (
       <section
         className="relative overflow-hidden px-6 py-24"
@@ -56,7 +58,7 @@ export function HeroBlock({ data }: { data: HeroData }) {
                 <a
                   href={data.cta_link || "#"}
                   className="group inline-flex h-12 items-center gap-2 rounded-[var(--store-radius)] px-8 text-sm font-bold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl"
-                  style={{ background: ctaBgColor, color: ctaTextColor ?? "var(--store-primary)" }}
+                  style={{ background: "var(--sf-btn-bg, " + ctaBgColor + ")", color: "var(--sf-btn-text, " + (ctaTextColor ?? "var(--store-primary)") + ")" }}
                 >
                   {data.cta_text}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -85,11 +87,25 @@ export function HeroBlock({ data }: { data: HeroData }) {
 
   // Default centered layout
   return (
-    <section
+      <section
       className="relative flex min-h-[580px] flex-col items-center justify-center overflow-hidden px-6 py-24 text-center"
       style={bgStyle}
     >
-      {!hasImage && (
+      {hasVideo && (
+        <>
+          <div className="absolute inset-0 bg-black/50 z-0" />
+          <video
+            src={data.image_url}
+            className="absolute inset-0 w-full h-full object-cover -z-10"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        </>
+      )}
+
+      {!(hasImage || hasVideo) && (
         <>
           <div className="pointer-events-none absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl" style={{ background: "white" }} />
           <div className="pointer-events-none absolute -bottom-24 -left-24 h-[400px] w-[400px] rounded-full opacity-10 blur-3xl" style={{ background: "white" }} />
@@ -109,7 +125,7 @@ export function HeroBlock({ data }: { data: HeroData }) {
           <a
             href={data.cta_link || "#"}
             className="sf-animate sf-delay-2 group mt-2 inline-flex h-12 items-center gap-2 rounded-[var(--store-radius)] px-8 text-sm font-semibold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl"
-            style={{ background: ctaBgColor, color: ctaTextColor ?? "var(--store-primary)" }}
+            style={{ background: "var(--sf-btn-bg, " + ctaBgColor + ")", color: "var(--sf-btn-text, " + (ctaTextColor ?? "var(--store-primary)") + ")" }}
           >
             {data.cta_text}
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

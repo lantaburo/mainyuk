@@ -154,3 +154,17 @@
 .sf-delay-4 { animation-delay: 0.32s; }
 .sf-delay-5 { animation-delay: 0.40s; }
 .sf-delay-6 { animation-delay: 0.48s; }
+
+/* Visual Builder Style Overrides */
+.sf-style-wrapper[style*="background-color"] > section {
+  background-color: transparent !important;
+}
+.sf-style-wrapper[style*="color:"] :where(h1, h2, h3, h4, p, span, div:not(.bg-white)) {
+  color: inherit !important;
+}
+.sf-style-wrapper[style*="padding-"] > section {
+  padding-top: inherit !important;
+  padding-bottom: inherit !important;
+  padding-left: inherit !important;
+  padding-right: inherit !important;
+}

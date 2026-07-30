@@ -2,26 +2,25 @@
 
 import { useRef, useState, useCallback } from "react";
 import { toast } from "sonner";
+import { Film, Image as ImageIcon, X } from "lucide-react";
 
-const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
-const MAX_MB = 5;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/ogg", "video/quicktime"];
+const ALLOWED_TYPES = [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES];
 
-interface ImageUploadFieldProps {
-  /** Current image URL (controlled) */
+const MAX_IMAGE_MB = 5;
+const MAX_VIDEO_MB = 50;
+
+interface MediaUploadFieldProps {
   value?: string;
-  /** Initial image URL (uncontrolled) */
   defaultValue?: string;
-  /** Field name for HTML forms */
   name?: string;
-  /** Called with new public URL after upload, or "" when cleared */
   onChange?: (url: string) => void;
-  /** Optional label suffix */
   label?: string;
-  /** Optional storeId to scope the upload path (needed for admin/operator uploads) */
   storeId?: string;
 }
 
-export function ImageUploadField({ value, defaultValue, name, onChange, label = "Gambar", storeId }: ImageUploadFieldProps) {
+export function MediaUploadField({ value, defaultValue, name, onChange, label = "Media", storeId }: MediaUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const [isDragging, setIsDragging] = useState(false);
@@ -29,6 +28,7 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
 
   const isControlled = value !== undefined;
   const displayValue = isControlled ? value : internalValue;
+  const isVideo = displayValue?.match(/\.(mp4|webm|ogg|mov)$/i);
 
   const handleChange = useCallback(
     (newVal: string) => {
@@ -40,13 +40,17 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
 
   const uploadFile = useCallback(
     (file: File) => {
-      // Client-side validation
-      if (!ALLOWED_TYPES.includes(file.type)) {
-        toast.error("Format tidak didukung. Gunakan: JPEG, PNG, WebP, atau GIF.");
+      const isVid = ALLOWED_VIDEO_TYPES.includes(file.type);
+      const isImg = ALLOWED_IMAGE_TYPES.includes(file.type);
+
+      if (!isVid && !isImg) {
+        toast.error("Format tidak didukung. Gunakan: JPEG, PNG, WebP, GIF, MP4, WebM, atau OGG.");
         return;
       }
-      if (file.size > MAX_MB * 1024 * 1024) {
-        toast.error(`Ukuran file maksimal ${MAX_MB}MB.`);
+      
+      const maxMb = isVid ? MAX_VIDEO_MB : MAX_IMAGE_MB;
+      if (file.size > maxMb * 1024 * 1024) {
+        toast.error(`Ukuran file maksimal ${maxMb}MB untuk ${isVid ? "video" : "gambar"}.`);
         return;
       }
 
@@ -58,22 +62,19 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
 
       const xhr = new XMLHttpRequest();
 
-      // ─── Progress tracking ───────────────────────────────────────────
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
-          // Scale to 0–90% while uploading; the remaining 10% is server processing
           setProgress(Math.round((e.loaded / e.total) * 90));
         }
       };
 
-      // ─── Done ────────────────────────────────────────────────────────
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
           try {
             const { publicUrl } = JSON.parse(xhr.responseText);
             setProgress(null);
             handleChange(publicUrl);
-            toast.success("Gambar berhasil diupload!");
+            toast.success("Media berhasil diupload!");
           } catch {
             setProgress(null);
             toast.error("Respons server tidak valid.");
@@ -86,7 +87,6 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
         }
       };
 
-      // ─── Network error ────────────────────────────────────────────────
       xhr.onerror = () => {
         setProgress(null);
         toast.error("Koneksi gagal saat upload.");
@@ -97,7 +97,6 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
     },
     [handleChange, storeId]
   );
-
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
@@ -113,7 +112,6 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) uploadFile(file);
-      // Reset input so same file can be re-selected
       e.target.value = "";
     },
     [uploadFile]
@@ -123,7 +121,6 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
 
   return (
     <div className="space-y-2">
-      {/* Preview / Drop zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
         onDragLeave={() => setIsDragging(false)}
@@ -135,7 +132,6 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
             : "border-border bg-muted/30 hover:border-primary/50 hover:bg-muted/60"
         } ${isUploading ? "pointer-events-none opacity-70" : ""}`}
       >
-        {/* Progress bar */}
         {isUploading && (
           <div className="absolute inset-x-0 bottom-0 h-1 bg-muted">
             <div
@@ -146,20 +142,29 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
         )}
 
         {displayValue ? (
-          /* Image preview */
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={displayValue}
-              alt={label}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            {isVideo ? (
+              <video
+                src={displayValue}
+                className="absolute inset-0 h-full w-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={displayValue}
+                alt={label}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            )}
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity hover:opacity-100">
               <span className="text-xs font-semibold text-white">Klik untuk ganti</span>
             </div>
           </>
         ) : isUploading ? (
-          /* Uploading state */
           <div className="flex flex-col items-center gap-2 text-center">
             <div className="h-7 w-7 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             <span className="text-xs font-medium text-muted-foreground">
@@ -167,40 +172,29 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
             </span>
           </div>
         ) : (
-          /* Empty state */
           <div className="flex flex-col items-center gap-2 px-4 py-6 text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-muted-foreground/50"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-              />
-            </svg>
+            <div className="flex gap-2 text-muted-foreground/50 mb-1">
+              <ImageIcon className="h-6 w-6" />
+              <Film className="h-6 w-6" />
+            </div>
             <p className="text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground">Klik untuk upload</span> atau{" "}
+              <span className="font-semibold text-foreground">Klik</span> atau{" "}
               <span className="font-semibold text-foreground">drag & drop</span>
             </p>
-            <p className="text-[10px] text-muted-foreground">
-              PNG, JPG, WebP, GIF · maks. {MAX_MB}MB
+            <p className="text-[10px] text-muted-foreground leading-tight mt-1">
+              Gambar: JPG, PNG, WebP (maks {MAX_IMAGE_MB}MB)<br />
+              Video: MP4, WebM (maks {MAX_VIDEO_MB}MB)
             </p>
           </div>
         )}
       </div>
 
-      {/* URL input + clear button */}
       <div className="flex items-center gap-2">
         <input
           type="text"
           value={displayValue}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="Atau paste URL gambar langsung…"
+          placeholder="Atau paste URL media langsung…"
           className="h-8 flex-1 rounded-md border border-input bg-transparent px-3 text-xs text-muted-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
         />
         {displayValue && (
@@ -208,16 +202,13 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
             type="button"
             onClick={() => handleChange("")}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-input text-muted-foreground transition-colors hover:bg-destructive hover:text-white"
-            title="Hapus gambar"
+            title="Hapus media"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="h-3.5 w-3.5" />
           </button>
         )}
       </div>
 
-      {/* Hidden file input */}
       <input
         ref={inputRef}
         type="file"
@@ -225,7 +216,6 @@ export function ImageUploadField({ value, defaultValue, name, onChange, label = 
         className="hidden"
         onChange={handleFileChange}
       />
-      {/* Hidden input for HTML form submission if name is provided */}
       {name && <input type="hidden" name={name} value={displayValue} />}
     </div>
   );

@@ -6,10 +6,14 @@ export function ConfirmDeleteButton({
   action,
   confirmText,
   label = "Hapus",
+  className,
+  variant = "destructive",
 }: {
   action: () => Promise<void>;
   confirmText: string;
   label?: string;
+  className?: string;
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
 }) {
   return (
     <form
@@ -17,8 +21,9 @@ export function ConfirmDeleteButton({
       onSubmit={(e) => {
         if (!confirm(confirmText)) e.preventDefault();
       }}
+      className={className ? "w-full" : ""}
     >
-      <Button type="submit" variant="destructive" size="sm">
+      <Button type="submit" variant={variant} size="sm" className={className}>
         {label}
       </Button>
     </form>

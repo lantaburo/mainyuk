@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ImageUploadField } from "@/components/dashboard/ImageUploadField";
+import { MediaUploadField } from "@/components/dashboard/MediaUploadField";
 import type {
   Block,
   FeatureItem,
@@ -29,10 +29,12 @@ export function BlockFields({
   block,
   products,
   onChange,
+  storeId,
 }: {
   block: Block;
   products: ProductOption[];
   onChange: (data: Block["data"]) => void;
+  storeId?: string;
 }) {
   switch (block.type) {
     case "hero": {
@@ -48,11 +50,12 @@ export function BlockFields({
               onChange={(e) => onChange({ ...d, subtitle: e.target.value })}
             />
           </Field>
-          <Field label="Gambar Latar (opsional)">
-            <ImageUploadField
-              label="Gambar Hero"
+          <Field label="Media Latar (Gambar/Video) (opsional)">
+            <MediaUploadField
+              label="Media Latar"
               value={d.image_url ?? ""}
               onChange={(url) => onChange({ ...d, image_url: url })}
+              storeId={storeId}
             />
           </Field>
           <div className="grid grid-cols-2 gap-3">
@@ -93,11 +96,12 @@ export function BlockFields({
       const d = block.data;
       return (
         <div className="space-y-3">
-          <Field label="Gambar Banner">
-            <ImageUploadField
-              label="Gambar Banner"
+          <Field label="Media Banner (Gambar/Video)">
+            <MediaUploadField
+              label="Media Banner"
               value={d.image_url ?? ""}
               onChange={(url) => onChange({ ...d, image_url: url })}
+              storeId={storeId}
             />
           </Field>
           <Field label="Link (opsional)">

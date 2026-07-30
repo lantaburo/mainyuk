@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { ImageUploadField } from "@/components/dashboard/ImageUploadField";
 
 export default async function NewProductPage() {
   const session = await requireStoreOwner();
@@ -38,6 +39,10 @@ export default async function NewProductPage() {
             <Label htmlFor="stock">Stok</Label>
             <Input id="stock" name="stock" type="number" min={0} defaultValue={0} required />
           </div>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Gambar Produk Utama</Label>
+          <ImageUploadField name="imageUrl" label="Gambar Utama" />
         </div>
         {categories.length > 0 && (
           <div className="space-y-1.5">

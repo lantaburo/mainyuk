@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { BLOCK_TYPE_LABELS } from "@/lib/empty-block";
 import { SITE_TYPE_CONFIG, type SiteType } from "@/lib/site-types";
 import type { Block } from "@/lib/blocks-types";
+import { blockArraySchema } from "@/lib/block-schema";
 import { generatePageBlocksAction } from "@/app/dashboard/halaman/generate-action";
 
 /** Block sequence recommended per site type for the home page */
@@ -82,6 +83,30 @@ export function AiGeneratorPanel({
       setGeneratedBlocks(result.blocks);
       toast.success(`${result.blocks.length} section berhasil di-generate!`);
     });
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const json = JSON.parse(String(reader.result));
+        const result = blockArraySchema.safeParse(json);
+        if (!result.success) {
+          toast.error("File JSON tidak sesuai format block yang diharapkan.");
+          return;
+        }
+        setGeneratedBlocks(result.data);
+        toast.success(`Berhasil memuat ${result.data.length} section dari file.`);
+      } catch {
+        toast.error("File bukan JSON yang valid.");
+      }
+    };
+    reader.onerror = () => toast.error("Gagal membaca file.");
+    reader.readAsText(file);
   }
 
   function handleApply(mode: "replace" | "append") {
@@ -179,6 +204,22 @@ export function AiGeneratorPanel({
               "✨ Generate Section"
             )}
           </Button>
+
+          <div className="flex items-center gap-3 text-sm text-muted-foreground pt-2">
+            <div className="h-px flex-1 bg-border" />
+            atau
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <div className="space-y-1.5 pt-2">
+            <Label className="text-sm font-medium">Upload file JSON (dari AI lain)</Label>
+            <input
+              type="file"
+              accept=".json,application/json"
+              onChange={handleFileChange}
+              className="block w-full text-xs text-muted-foreground file:mr-3 file:rounded-md file:border file:bg-background file:px-3 file:py-1.5 file:text-xs file:font-medium hover:bg-muted"
+            />
+          </div>
 
           {/* Preview hasil */}
           {generatedBlocks && (

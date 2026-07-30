@@ -6,6 +6,7 @@ import {
   updateBankAccounts,
   updatePaymentSettings,
   updateWhatsAppApiSettings,
+  updateStoreSEO,
 } from "@/app/dashboard/pengaturan/actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -278,6 +279,47 @@ export default async function PengaturanPage() {
               Mode Produksi (bukan sandbox)
             </label>
             <Button type="submit">Simpan Pembayaran &amp; Ongkir</Button>
+          </form>
+
+          <Separator />
+
+          <form action={updateStoreSEO} className="space-y-4">
+            <h2 className="text-lg font-medium">Pengaturan SEO (Search Engine)</h2>
+            <p className="text-sm text-muted-foreground">
+              Tentukan bagaimana toko Anda tampil di hasil pencarian Google dan saat link di-share (WhatsApp/Medsos).
+            </p>
+            <div className="space-y-1.5">
+              <Label htmlFor="seoTitle">Meta Title (Judul SEO)</Label>
+              <Input
+                id="seoTitle"
+                name="seoTitle"
+                placeholder="mis. Toko Kopi Enak - Biji Kopi Premium"
+                defaultValue={store.seoTitle ?? ""}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="seoDescription">Meta Description</Label>
+              <Input
+                id="seoDescription"
+                name="seoDescription"
+                placeholder="mis. Dapatkan biji kopi premium dari petani lokal terbaik..."
+                defaultValue={store.seoDescription ?? ""}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="googleSiteVerification">Google Site Verification (Opsional)</Label>
+              <Input
+                id="googleSiteVerification"
+                name="googleSiteVerification"
+                placeholder="mis. 1234567890abcdef"
+                defaultValue={store.googleSiteVerification ?? ""}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Thumbnail Share (OpenGraph Image)</Label>
+              <ImageUploadField name="seoImage" defaultValue={store.seoImage ?? ""} label="Thumbnail SEO" />
+            </div>
+            <Button type="submit">Simpan Pengaturan SEO</Button>
           </form>
         </>
       )}

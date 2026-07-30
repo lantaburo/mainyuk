@@ -45,7 +45,11 @@ export function CtaBlock({
             target={isWaButton ? "_blank" : undefined}
             rel={isWaButton ? "noopener noreferrer" : undefined}
             className="sf-animate sf-delay-2 group mt-8 inline-flex h-12 items-center gap-2 rounded-[var(--store-radius)] border-2 px-8 text-sm font-bold transition-all duration-200 hover:scale-105"
-            style={{ borderColor: "var(--store-primary)", color: "var(--store-primary)" }}
+            style={{ 
+              borderColor: "var(--sf-btn-bg, var(--store-primary))", 
+              color: "var(--sf-btn-text, var(--store-primary))",
+              background: "var(--sf-btn-bg, transparent)"
+            }}
           >
             {isWaButton && <WaIcon />}
             {data.button_text}
@@ -78,7 +82,10 @@ export function CtaBlock({
             target={isWaButton ? "_blank" : undefined}
             rel={isWaButton ? "noopener noreferrer" : undefined}
             className="sf-animate sf-delay-2 group mt-8 inline-flex h-12 items-center gap-2 rounded-[var(--store-radius)] bg-white px-8 text-sm font-bold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl"
-            style={{ color: "var(--store-primary)" }}
+            style={{ 
+              background: "var(--sf-btn-bg, white)",
+              color: "var(--sf-btn-text, var(--store-primary))" 
+            }}
           >
             {isWaButton && <WaIcon />}
             {data.button_text}
@@ -108,7 +115,10 @@ export function CtaBlock({
           target={isWaButton ? "_blank" : undefined}
           rel={isWaButton ? "noopener noreferrer" : undefined}
           className="sf-animate sf-delay-2 group mt-8 inline-flex h-12 items-center gap-2 rounded-[var(--store-radius)] bg-white px-8 text-sm font-bold shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-xl"
-          style={{ color: "var(--store-primary)" }}
+          style={{ 
+            background: "var(--sf-btn-bg, white)",
+            color: "var(--sf-btn-text, var(--store-primary))" 
+          }}
         >
           {isWaButton && <WaIcon />}
           {data.button_text}

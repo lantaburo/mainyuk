@@ -2,6 +2,39 @@ import { notFound } from "next/navigation";
 import { getStoreBySlug } from "@/lib/store";
 import { prisma } from "@/lib/prisma";
 import { VariantSelector } from "@/components/storefront/VariantSelector";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { store: string; productSlug: string } }): Promise<Metadata> {
+  const store = await getStoreBySlug(params.store);
+  if (!store || store.siteType !== "storefront") return {};
+
+  const product = await prisma.product.findFirst({
+    where: { storeId: store.id, slug: params.productSlug, status: "published" },
+    include: { images: true },
+  });
+  if (!product) return {};
+
+  const title = product.seoTitle || product.name;
+  const description = product.seoDescription || product.description || `Beli ${product.name} di ${store.name}`;
+  const image = product.seoImage || product.images[0]?.url;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: image ? [{ url: image }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : [],
+    },
+  };
+}
 
 export default async function ProductDetailPage({
   params,
@@ -21,8 +54,30 @@ export default async function ProductDetailPage({
   });
   if (!product) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.seoTitle || product.name,
+    image: product.images.map(img => img.url),
+    description: product.seoDescription || product.description || product.name,
+    sku: product.id,
+    offers: {
+      "@type": "Offer",
+      url: `https://${store.slug}.klikweb.id/produk/${product.slug}`,
+      priceCurrency: "IDR",
+      price: Number(product.price),
+      itemCondition: "https://schema.org/NewCondition",
+      availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: store.name,
+      }
+    }
+  };
+
   return (
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 sm:grid-cols-2">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="space-y-3">
         <div className="aspect-square overflow-hidden rounded-lg bg-muted">
           {product.images[0] ? (

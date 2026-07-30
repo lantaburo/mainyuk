@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { ShieldCheck, Users, Settings, LayoutDashboard, LogOut } from "lucide-react";
+import { ShieldCheck, Users, Settings, LayoutDashboard, LogOut, Wand2 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface AdminNavProps {
   user: {
-    name: string | null;
-    email: string | null;
+    name?: string | null;
+    email?: string | null;
     role: string;
   };
 }
@@ -23,6 +23,7 @@ export function AdminNav({ user }: AdminNavProps) {
 
   const items = [
     { href: "/admin", label: "Daftar Tenant", icon: LayoutDashboard },
+    { href: "/admin/generator-ai", label: "Generator AI", icon: Wand2 },
     ...(isSuperAdmin ? [{ href: "/admin/operator", label: "Operator & Staf", icon: Users }] : []),
     ...(isSuperAdmin ? [{ href: "/admin/pengaturan-ai", label: "Pengaturan AI", icon: Settings }] : []),
   ];

@@ -172,3 +172,37 @@ export async function updateBankAccounts(accounts: z.infer<typeof bankAccountSch
 
   revalidatePath("/dashboard/pengaturan");
 }
+
+export async function updateStoreSEO(formData: FormData) {
+  const session = await requireStoreOwner();
+
+  const parsed = storeSettingsSchema
+    .pick({
+      seoTitle: true,
+      seoDescription: true,
+      seoImage: true,
+      googleSiteVerification: true,
+    })
+    .safeParse({
+      seoTitle: formData.get("seoTitle") || "",
+      seoDescription: formData.get("seoDescription") || "",
+      seoImage: formData.get("seoImage") || "",
+      googleSiteVerification: formData.get("googleSiteVerification") || "",
+    });
+  if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "Data tidak valid");
+
+  const { seoTitle, seoDescription, seoImage, googleSiteVerification } = parsed.data;
+
+  await prisma.store.update({
+    where: { id: session.user.storeId },
+    data: {
+      seoTitle: seoTitle || null,
+      seoDescription: seoDescription || null,
+      seoImage: seoImage || null,
+      googleSiteVerification: googleSiteVerification || null,
+    },
+  });
+
+  revalidatePath("/dashboard/pengaturan");
+  revalidatePath("/dashboard", "layout");
+}

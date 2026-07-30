@@ -86,6 +86,13 @@ model Store {
   owner        User        @relation(fields: [ownerId], references: [id])
   planType     PlanType    @default(basic) @map("plan_type")
   status       StoreStatus @default(trial)
+
+  // SEO Fields
+  seoTitle               String?  @map("seo_title")
+  seoDescription         String?  @map("seo_description")
+  seoImage               String?  @map("seo_image")
+  googleSiteVerification String?  @map("google_site_verification")
+
   createdAt    DateTime    @default(now()) @map("created_at")
   updatedAt    DateTime    @updatedAt @map("updated_at")
 
@@ -95,6 +102,7 @@ model Store {
   categories Category[]
   customers  Customer[]
   orders     Order[]
+  articles   Article[]
 
   @@index([ownerId])
   @@map("stores")
@@ -108,6 +116,12 @@ model StorePage {
   slug      String?
   title     String?
   blocks    Json     @default("[]")
+  
+  // SEO Fields
+  seoTitle       String? @map("seo_title")
+  seoDescription String? @map("seo_description")
+  seoImage       String? @map("seo_image")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -169,6 +183,12 @@ model Product {
   variants    ProductVariant[]
   images      ProductImage[]
   orderItems  OrderItem[]
+
+  // SEO Fields
+  seoTitle       String? @map("seo_title")
+  seoDescription String? @map("seo_description")
+  seoImage       String? @map("seo_image")
+
   createdAt   DateTime        @default(now()) @map("created_at")
   updatedAt   DateTime        @updatedAt @map("updated_at")
 
@@ -277,4 +297,28 @@ model AiSettings {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("ai_settings")
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  storeId     String   @map("store_id")
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  title       String
+  slug        String
+  content     String   // HTML or markdown
+  excerpt     String?
+  thumbnail   String?
+  
+  // SEO Fields
+  seoTitle       String? @map("seo_title")
+  seoDescription String? @map("seo_description")
+  
+  status      ProductStatus @default(draft)
+  publishedAt DateTime?     @map("published_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+  @@map("articles")
 }

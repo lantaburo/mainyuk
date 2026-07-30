@@ -1,10 +1,41 @@
 import type { BlockType } from "@/lib/site-types";
 
+/** Style overrides applied to any block via the Visual Builder Style Panel */
+export interface BlockStyleOverrides {
+  // ─── Colors ──────────────────────────────────────────────
+  bg_color?: string;         // hex / rgba
+  text_color?: string;
+  btn_color?: string;
+  btn_text_color?: string;
+  // ─── Typography ──────────────────────────────────────────
+  font_family?: string;      // preset name, e.g. "Inter", "Poppins"
+  font_style?: "normal" | "italic" | "bold" | "bold-italic";
+  font_size?: "sm" | "base" | "lg" | "xl" | "2xl";
+  // ─── Spacing ─────────────────────────────────────────────
+  padding_top?: number;      // px
+  padding_bottom?: number;
+  padding_x?: number;
+  // ─── Alignment ───────────────────────────────────────────
+  text_align?: "left" | "center" | "right";
+  content_align?: "left" | "center" | "right";
+  // ─── Animation ───────────────────────────────────────────
+  animation?: "none" | "fade-up" | "fade-in" | "slide-left" | "slide-right" | "zoom-in";
+  animation_delay?: number;  // ms
+  // ─── Background Media ────────────────────────────────────
+  bg_video_url?: string;     // autoplay muted loop background video
+  bg_video_loop?: boolean;
+  // ─── Video Player ────────────────────────────────────────
+  video_url?: string;        // embed video player inside block
+  video_loop?: boolean;
+  video_autoplay?: boolean;
+}
+
 interface BlockBase<T extends BlockType, D> {
   id: string;
   type: T;
   order: number;
   data: D;
+  style_overrides?: BlockStyleOverrides;
 }
 
 export interface HeroData {

@@ -45,6 +45,18 @@ export const categorySchema = z.object({
 });
 export type CategoryInput = z.infer<typeof categorySchema>;
 
+export const articleSchema = z.object({
+  title: z.string().min(2, "Judul artikel minimal 2 karakter"),
+  slug: slugSchema,
+  content: z.string().min(5, "Konten wajib diisi"),
+  excerpt: z.string().optional().or(z.literal("")),
+  thumbnail: z.string().url().optional().or(z.literal("")),
+  seoTitle: z.string().optional().or(z.literal("")),
+  seoDescription: z.string().optional().or(z.literal("")),
+  status: z.enum(["draft", "published"]),
+});
+export type ArticleInput = z.infer<typeof articleSchema>;
+
 export const storeSettingsSchema = z.object({
   name: z.string().min(2),
   themeColor: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Format warna harus HEX, contoh #16a34a"),
@@ -64,6 +76,10 @@ export const storeSettingsSchema = z.object({
   whatsappApiKeyPrefix: z.string().optional(),
   whatsappTargetField: z.string().min(1).optional(),
   whatsappMessageField: z.string().min(1).optional(),
+  seoTitle: z.string().optional().or(z.literal("")),
+  seoDescription: z.string().optional().or(z.literal("")),
+  seoImage: z.string().url().optional().or(z.literal("")),
+  googleSiteVerification: z.string().optional().or(z.literal("")),
 });
 export type StoreSettingsInput = z.infer<typeof storeSettingsSchema>;
 

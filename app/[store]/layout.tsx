@@ -15,7 +15,32 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const store = await getStoreBySlug(params.store);
   if (!store) return {};
-  return { title: store.name };
+  
+  const title = store.seoTitle || store.name;
+  const description = store.seoDescription || `Selamat datang di ${store.name}`;
+  
+  return { 
+    title: {
+      template: `%s | ${title}`,
+      default: title,
+    },
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: store.seoImage ? [{ url: store.seoImage }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: store.seoImage ? [store.seoImage] : [],
+    },
+    verification: {
+      google: store.googleSiteVerification,
+    }
+  };
 }
 
 export default async function StoreLayout({
@@ -39,8 +64,20 @@ export default async function StoreLayout({
     "--store-shadow": templateStyle.shadow,
   } as CSSProperties;
 
+  // JSON-LD LocalBusiness Schema
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: store.name,
+    image: store.seoImage || store.logoUrl || "",
+    description: store.seoDescription || `Selamat datang di ${store.name}`,
+    url: `https://${store.slug}.klikweb.id`,
+    telephone: store.settings?.whatsappNumber || "",
+  };
+
   const body = (
     <div style={themeStyle} className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <StorefrontHeader store={store} config={config} />
       <main>{children}</main>
       <StorefrontFooter store={store} />

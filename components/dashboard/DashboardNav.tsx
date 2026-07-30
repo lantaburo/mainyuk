@@ -32,7 +32,6 @@ export function DashboardNav({ store }: DashboardNavProps) {
     ...(config.showCategoriesMenu ? [{ href: "/dashboard/kategori", label: "Kategori", icon: Tags }] : []),
     ...(store.siteType === "storefront" ? [{ href: "/dashboard/pesanan", label: "Pesanan", icon: ShoppingCart }] : []),
     { href: "/dashboard/halaman", label: "Halaman", icon: FileText },
-    { href: "/dashboard/generator-ai", label: "Generator AI", icon: Wand2 },
     { href: "/dashboard/pengaturan", label: "Pengaturan", icon: Settings },
   ];
 
