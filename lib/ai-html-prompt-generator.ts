@@ -88,12 +88,12 @@ ${JSON.stringify(brief, null, 2)}
 --- SELESAI BLUEPRINT DESAIN ---
 
 PANDUAN KUALITAS DESAIN (WAJIB DITERAPKAN, INI YANG MEMBEDAKAN HASIL PROFESIONAL VS TEMPLATE):
-1. Jangan pakai pola hero paling default (judul center + subjudul + 1 tombol rounded di tengah) kecuali blueprint.signatureElement memang mengarah ke situ. Wujudkan signatureElement secara nyata di layout, bukan cuma sebagai dekorasi kecil.
-2. Buat hierarki visual yang jelas: judul utama harus paling menonjol (ukuran, ketebalan, warna), lalu subjudul, lalu isi. Jangan semua teks ukurannya mirip-mirip.
-3. Beri jarak (padding/margin) yang cukup lega antar section dan antar elemen — desain yang sumpek/rapat terkesan murah dan tidak profesional.
-4. Maksimal satu tombol CTA yang benar-benar menonjol per section — kalau ada CTA kedua, buat lebih halus (outline/ghost), jangan bersaing dengan yang utama.
-5. Tulis semua copy dari sudut pandang pelanggan yang membaca (apa yang mereka dapat, bukan klaim generik seperti "terbaik"/"terpercaya" tanpa konteks) dan sesuai tone dari blueprint.
-6. Pastikan tampilan responsif: gunakan Tailwind breakpoint (sm:, md:, lg:) supaya layout tetap rapi di layar HP, karena mayoritas pengunjung membuka dari HP.
+1. BERPIKIR SEPERTI SENIOR UI/UX DESIGNER: Jangan pakai pola hero paling default (judul center + subjudul + 1 tombol rounded di tengah) kecuali blueprint.signatureElement mengarah ke situ. Wujudkan signatureElement secara nyata di layout (misal bento-grid, asimetris, split-screen, dll).
+2. VARIASI WARNA BACKGROUND: JANGAN buat semua section putih, dan JANGAN menumpuk warna utama toko (var(--store-primary)) sebagai background seluruh section (kecuali untuk CTA banner kecil). Gunakan warna netral elegan bergantian antar section (contoh: putih bergantian dengan abu-abu super terang seperti #f8fafc atau #f1f5f9, atau section gelap premium seperti #0f172a atau #18181b). Gunakan warna toko (var(--store-primary)) sebagai AKSEN CERDAS: untuk tombol, border-bottom, highlight teks, atau gradien tipis.
+3. ELEMEN MODERN & PREMIUM: Wajib gunakan Tailwind utility classes untuk border radius modern (contoh: \`rounded-2xl\`, \`rounded-3xl\`, \`rounded-full\`), bayangan lembut (contoh: \`shadow-lg\`, \`shadow-xl\`, \`shadow-black/5\`), dan card-based design dengan border halus (contoh: border dengan style="border-color: #e2e8f0").
+4. HIERARKI TIPOGRAFI ESTETIS: Judul utama harus tebal dan elegan (gunakan \`tracking-tight\`, ukuran besar). Deskripsi dan paragraf gunakan \`leading-relaxed\` dengan warna teks abu-abu elegan (style="color: #475569" atau #64748b untuk tema terang, #94a3b8 untuk tema gelap) agar tidak terlalu kontras dan tampak mahal.
+5. RUANG NEGATIF (WHITE SPACE): Beri padding yang sangat lega (contoh: \`py-20\`, \`py-24\`, atau \`py-32\`) antar section dan antar elemen. Desain yang sumpek/rapat terkesan murah. Gunakan gap (contoh: \`gap-8\`, \`gap-12\`) yang proporsional.
+6. RESPONSIVITAS SEMPURNA: Pastikan tampilan sangat rapi di layar HP menggunakan Tailwind breakpoint (\`sm:\`, \`md:\`, \`lg:\`). Gunakan \`flex-col lg:flex-row\` atau grid responsif dengan cerdas.
 
 ATURAN TEKNIS WAJIB (pelanggaran akan ditolak sistem):
 1. Output HANYA HTML mentah, TANPA markdown fence, TANPA komentar, TANPA teks penjelasan di luar HTML.

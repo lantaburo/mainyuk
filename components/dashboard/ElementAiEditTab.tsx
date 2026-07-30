@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Sparkles } from "lucide-react";
-import { generateElementEditAction } from "@/app/dashboard/ai-generator/actions";
+import { generateElementEditAction } from "@/lib/ai-actions";
 import type { AiUsage } from "@/lib/ai-client";
 
 /** Editor "AI" tab — instruct AI to rewrite just the selected element. */

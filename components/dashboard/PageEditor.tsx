@@ -14,7 +14,7 @@ import { annotateSelectableElements, getCleanHtml, findById, EDITOR_ID_ATTR } fr
 import { EditorLayersPanel } from "@/components/dashboard/EditorLayersPanel";
 import { ElementStylePanel, type ElementStyleValues } from "@/components/dashboard/ElementStylePanel";
 import { ElementAiEditTab } from "@/components/dashboard/ElementAiEditTab";
-import { saveEditedHtmlAction } from "@/app/dashboard/ai-generator/actions";
+import { saveEditedHtmlAction } from "@/lib/ai-actions";
 
 type Tab = "preview" | "design" | "code";
 type Device = "desktop" | "tablet" | "mobile";

@@ -15,7 +15,7 @@ import type { DesignBrief } from "@/lib/ai-html-schema";
 import type { AiUsage } from "@/lib/ai-client";
 import { STREAM_DONE_MARKER } from "@/lib/streaming-protocol";
 import { cn } from "@/lib/utils";
-import { generateBriefAction, applyGeneratedHtmlAction } from "@/app/dashboard/ai-generator/actions";
+import { generateBriefAction, applyGeneratedHtmlAction } from "@/lib/ai-actions";
 
 type Step = "form" | "brief" | "loading" | "result";
 
@@ -332,7 +332,7 @@ export function AiWebsiteGeneratorWizard({
 
           <div className="space-y-1.5">
             <Label htmlFor="ai-gen-audience" className="text-sm font-medium">
-              Segmen Pasar / Target Pengunjung <span className="font-normal text-muted-foreground">(opsional)</span>
+              Target Pengunjung / Gaya Desain <span className="font-normal text-muted-foreground">(opsional)</span>
             </Label>
             <Textarea
               id="ai-gen-audience"
@@ -343,8 +343,28 @@ export function AiWebsiteGeneratorWizard({
               disabled={isBriefPending}
               className="resize-none"
             />
-            <p className="text-xs text-muted-foreground">
-              Menentukan gaya warna, tipografi, dan nada tulisan yang direkomendasikan AI.
+            <div className="flex flex-wrap gap-2 pt-1">
+              <span className="text-xs text-muted-foreground self-center mr-1">Rekomendasi gaya:</span>
+              {[
+                "Minimalis Elegan",
+                "Playful & Vibrant",
+                "Premium Dark Mode",
+                "Corporate Profesional",
+                "Soft Pastel",
+                "Modern Glassmorphism"
+              ].map(style => (
+                <button
+                  key={style}
+                  type="button"
+                  onClick={() => setAudience(prev => prev ? `${prev}, Gaya: ${style}` : `Gaya: ${style}`)}
+                  className="rounded-full border border-indigo-100 bg-indigo-50/50 px-2.5 py-1 text-[10px] font-medium text-indigo-700 transition-colors hover:bg-indigo-100 dark:border-indigo-800/50 dark:bg-indigo-900/20 dark:text-indigo-300 dark:hover:bg-indigo-900/40"
+                >
+                  + {style}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Menentukan gaya visual (modern, dark mode, dll), warna, tipografi, dan nada tulisan dari AI.
             </p>
           </div>
 
