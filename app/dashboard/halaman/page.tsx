@@ -46,9 +46,10 @@ export default async function HalamanPage() {
       <div className="mt-6 space-y-6">
         {config.pages.length > 1 && (
           <AiGenerateAllPagesButton
-            storeId={store.id}
             siteType={store.siteType}
-            pages={config.pages}
+            pages={config.pages
+              .filter((p) => pagesByType.has(p.pageType))
+              .map((p) => ({ pageId: pagesByType.get(p.pageType)!.id, label: p.label }))}
             {...themeProps}
           />
         )}

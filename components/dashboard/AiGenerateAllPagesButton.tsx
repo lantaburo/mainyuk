@@ -6,17 +6,19 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import type { SiteType } from "@/lib/site-types";
 import {
-  generateAllPagesAction,
-  type GenerateAllPagesResult,
+  generatePageBlocksAction,
+  type GenerateResult,
 } from "@/app/dashboard/halaman/generate-action";
 import { updatePageBlocks } from "@/app/dashboard/halaman/actions";
 import { BlocksPreview } from "@/components/dashboard/BlocksPreview";
 import { SITE_TYPE_PROMPT_PLACEHOLDERS } from "@/lib/ai-prompt-placeholders";
 
+type PageResult = { pageId: string; pageLabel: string; result: GenerateResult };
+
 export function AiGenerateAllPagesButton({
-  storeId,
   siteType,
   pages,
   storeSlug,
@@ -24,9 +26,8 @@ export function AiGenerateAllPagesButton({
   templateId,
   whatsappNumber,
 }: {
-  storeId: string;
   siteType: SiteType;
-  pages: { pageType: string; label: string }[];
+  pages: { pageId: string; label: string }[];
   storeSlug: string;
   themeColor: string;
   templateId: string | null;
@@ -35,8 +36,9 @@ export function AiGenerateAllPagesButton({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const [results, setResults] = useState<GenerateAllPagesResult[] | null>(null);
+  const [results, setResults] = useState<PageResult[] | null>(null);
   const [previewPageId, setPreviewPageId] = useState<string | null>(null);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [isGenerating, startGenerating] = useTransition();
   const [isApplying, startApplying] = useTransition();
 
@@ -44,17 +46,21 @@ export function AiGenerateAllPagesButton({
     startGenerating(async () => {
       setResults(null);
       setPreviewPageId(null);
-      const res = await generateAllPagesAction(storeId, prompt);
-      if (!res.ok) {
-        toast.error(res.error);
-        return;
+      setProgress({ done: 0, total: pages.length });
+
+      const collected: PageResult[] = [];
+      for (const p of pages) {
+        const result = await generatePageBlocksAction(p.pageId, prompt);
+        collected.push({ pageId: p.pageId, pageLabel: p.label, result });
+        setProgress({ done: collected.length, total: pages.length });
+        setResults([...collected]);
       }
-      setResults(res.pages);
-      const okCount = res.pages.filter((p) => p.result.ok).length;
+
+      const okCount = collected.filter((p) => p.result.ok).length;
       if (okCount === 0) {
         toast.error("AI gagal generate semua halaman.");
       } else {
-        toast.success(`${okCount} dari ${res.pages.length} halaman berhasil di-generate!`);
+        toast.success(`${okCount} dari ${collected.length} halaman berhasil di-generate!`);
       }
     });
   }
@@ -75,6 +81,7 @@ export function AiGenerateAllPagesButton({
         setOpen(false);
         setResults(null);
         setPreviewPageId(null);
+        setProgress(null);
         setPrompt("");
         router.refresh();
       } catch {
@@ -116,6 +123,7 @@ export function AiGenerateAllPagesButton({
               placeholder={SITE_TYPE_PROMPT_PLACEHOLDERS[siteType]}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
+              disabled={isGenerating}
               className="resize-none bg-white dark:bg-background"
             />
             <p className="text-xs text-muted-foreground">
@@ -129,15 +137,19 @@ export function AiGenerateAllPagesButton({
             disabled={isGenerating}
             className="w-full bg-indigo-600 text-white hover:bg-indigo-700"
           >
-            {isGenerating ? (
-              <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                Sedang Generate Semua Halaman…
-              </span>
-            ) : (
-              "🪄 Generate Semua Halaman"
-            )}
+            {isGenerating ? "Sedang Generate…" : "🪄 Generate Semua Halaman"}
           </Button>
+
+          {progress && (
+            <div className="space-y-1.5">
+              <Progress value={isGenerating ? (progress.done / progress.total) * 100 : 100} />
+              <p className="text-center text-xs text-muted-foreground">
+                {isGenerating
+                  ? `Generate halaman ${progress.done + 1} dari ${progress.total}…`
+                  : `${progress.done} dari ${progress.total} halaman diproses`}
+              </p>
+            </div>
+          )}
 
           {results && (
             <div className="space-y-3 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950/20">
@@ -182,18 +194,22 @@ export function AiGenerateAllPagesButton({
                 ))}
               </ul>
 
-              <Button
-                type="button"
-                size="sm"
-                className="w-full bg-green-600 text-white hover:bg-green-700"
-                onClick={handleApplyAll}
-                disabled={isApplying || results.every((p) => !p.result.ok)}
-              >
-                {isApplying ? "Menerapkan…" : "Terapkan ke Semua Halaman (Ganti Semua)"}
-              </Button>
-              <p className="text-xs text-muted-foreground">
-                Ini akan mengganti isi setiap halaman yang berhasil di-generate. Halaman yang gagal tidak berubah.
-              </p>
+              {!isGenerating && (
+                <>
+                  <Button
+                    type="button"
+                    size="sm"
+                    className="w-full bg-green-600 text-white hover:bg-green-700"
+                    onClick={handleApplyAll}
+                    disabled={isApplying || results.every((p) => !p.result.ok)}
+                  >
+                    {isApplying ? "Menerapkan…" : "Terapkan ke Semua Halaman (Ganti Semua)"}
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Ini akan mengganti isi setiap halaman yang berhasil di-generate. Halaman yang gagal tidak berubah.
+                  </p>
+                </>
+              )}
             </div>
           )}
         </div>

@@ -21,6 +21,7 @@ import { updateAdminPageBlocks } from "@/app/admin/actions";
 import { generateSingleBlockAction, generatePageBlocksAction } from "@/app/dashboard/halaman/generate-action";
 import { SITE_TYPE_PROMPT_PLACEHOLDERS } from "@/lib/ai-prompt-placeholders";
 import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 import {
   Dialog,
   DialogContent,
@@ -192,6 +193,7 @@ export function VisualBuilder({
             disabled={isGeneratingPage}
             className="resize-none"
           />
+          {isGeneratingPage && <Progress value={null} />}
           <DialogFooter>
             <Button
               onClick={handleGenerateFullPage}
@@ -634,6 +636,12 @@ function AiPromptTab({ block, storeId, onApply }: { block: Block; storeId: strin
           </Button>
         </div>
       </div>
+      {isPending && (
+        <Progress
+          value={null}
+          className="[&_[data-slot=progress-track]]:bg-zinc-800"
+        />
+      )}
       <p className="text-[10px] text-center text-zinc-500">
         Tekan Enter untuk kirim · Shift+Enter untuk baris baru
       </p>

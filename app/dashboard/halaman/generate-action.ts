@@ -109,51 +109,6 @@ export async function generatePageBlocksAction(
   return { ok: true, blocks: reordered };
 }
 
-export type GenerateAllPagesResult = {
-  pageId: string;
-  pageType: string;
-  pageLabel: string;
-  result: GenerateResult;
-};
-
-/**
- * Generate blocks for every page of a multi-page site in one go
- * (e.g. company_profile's home/about/contact), reusing the same
- * per-page generation logic as generatePageBlocksAction.
- */
-export async function generateAllPagesAction(
-  storeId: string,
-  userPrompt: string
-): Promise<{ ok: true; pages: GenerateAllPagesResult[] } | { ok: false; error: string }> {
-  const session = await getSession();
-  if (!session) return { ok: false, error: "Not logged in" };
-  if (session.user.role === "store_owner" && session.user.storeId !== storeId) {
-    return { ok: false, error: "Akses ditolak" };
-  }
-
-  const store = await prisma.store.findUnique({ where: { id: storeId } });
-  if (!store) return { ok: false, error: "Toko tidak ditemukan." };
-
-  const config = SITE_TYPE_CONFIG[store.siteType];
-  const pages = await prisma.storePage.findMany({ where: { storeId } });
-  const pagesByType = new Map(pages.map((p) => [p.pageType, p]));
-
-  const results: GenerateAllPagesResult[] = [];
-  for (const pageConfig of config.pages) {
-    const page = pagesByType.get(pageConfig.pageType);
-    if (!page) continue;
-    const result = await generatePageBlocksAction(page.id, userPrompt);
-    results.push({
-      pageId: page.id,
-      pageType: pageConfig.pageType,
-      pageLabel: pageConfig.label,
-      result,
-    });
-  }
-
-  return { ok: true, pages: results };
-}
-
 export async function generateSingleBlockAction(
   storeId: string,
   blockType: string,

@@ -11,6 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { generateSingleBlockAction } from "@/app/dashboard/halaman/generate-action";
+import { Progress } from "@/components/ui/progress";
 import type { BlockType } from "@/lib/site-types";
 import type { Block } from "@/lib/blocks-types";
 
@@ -88,6 +89,7 @@ export function AiBlockGeneratorButton({
               "Generate"
             )}
           </Button>
+          {isPending && <Progress value={null} />}
         </form>
       </PopoverContent>
     </Popover>

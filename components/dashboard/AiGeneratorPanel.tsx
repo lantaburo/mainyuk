@@ -11,6 +11,7 @@ import type { Block } from "@/lib/blocks-types";
 import { blockArraySchema } from "@/lib/block-schema";
 import { generatePageBlocksAction } from "@/app/dashboard/halaman/generate-action";
 import { BlocksPreview } from "@/components/dashboard/BlocksPreview";
+import { Progress } from "@/components/ui/progress";
 import { SITE_TYPE_PROMPT_PLACEHOLDERS } from "@/lib/ai-prompt-placeholders";
 
 /** Block sequence recommended per site type for the home page */
@@ -206,6 +207,8 @@ export function AiGeneratorPanel({
               "✨ Generate Section"
             )}
           </Button>
+
+          {isPending && <Progress value={null} />}
 
           <div className="flex items-center gap-3 text-sm text-muted-foreground pt-2">
             <div className="h-px flex-1 bg-border" />
