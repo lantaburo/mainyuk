@@ -33,6 +33,7 @@ interface StylePanelProps {
 }
 
 export function StylePanel({ styles = {}, onChange, storeId }: StylePanelProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateStyle = (key: keyof BlockStyleOverrides, value: any) => {
     onChange({ ...styles, [key]: value });
   };

@@ -51,6 +51,7 @@ export function VisualBuilder({
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId) || null;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function updateBlockData(id: string, data: any, styles?: any) {
     setBlocks((prev) =>
       prev.map((b) => (b.id === id ? { ...b, data, style_overrides: styles ?? b.style_overrides } : b))

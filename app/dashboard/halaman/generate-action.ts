@@ -137,6 +137,7 @@ export async function generateSingleBlockAction(
     storeName: store.name,
     industry,
     businessDescription: userPrompt.trim(),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     blockType: blockType as any,
   });
 

@@ -35,6 +35,7 @@ export function AiBlockGeneratorButton({
       try {
         const res = await generateSingleBlockAction(storeId, blockType, prompt);
         if (res.ok) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onApply(res.data as any);
           toast.success("Blok berhasil di-generate dengan AI!");
           setOpen(false);
