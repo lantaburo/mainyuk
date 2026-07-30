@@ -99,8 +99,8 @@ ATURAN TEKNIS WAJIB (pelanggaran akan ditolak sistem):
 1. Output HANYA HTML mentah, TANPA markdown fence, TANPA komentar, TANPA teks penjelasan di luar HTML.
 2. DILARANG KERAS menulis tag <html>, <head>, <body>, <script>, <iframe>, <form>, <style>, atau atribut "on*" (onclick dkk) — fragment ini di-suntikkan ke halaman yang sudah punya header/footer sendiri.
 3. DILARANG KERAS href="javascript:..." atau skema URL apapun selain http://, https://, tel:, mailto:, atau "#".
-4. Gunakan Tailwind CSS utility classes untuk layout/spacing/warna/tipografi (class biasa seperti "px-6 py-24 flex flex-col gap-4" dst — SUDAH tersedia di halaman, tidak perlu di-import).
-5. Untuk warna brand, gunakan CSS variable yang SUDAH di-set oleh sistem lewat inline style, contoh: style="color: var(--store-primary)" atau style="background: var(--store-primary)" — supaya konsisten dengan tema toko, JANGAN hardcode warna brand di luar palet blueprint di atas.
+4. Gunakan Tailwind CSS utility classes HANYA untuk layout, spacing, flexbox/grid, dan tipografi (contoh: "px-6 py-24 flex flex-col gap-4 text-sm font-bold"). JANGAN gunakan Tailwind untuk warna apapun (bg-*, text-*[warna], border-*[warna]) karena kelas yang tidak ada di source code akan hilang dari build.
+5. WAJIB gunakan inline style untuk SEMUA warna — baik background section, teks, tombol, border berwarna, maupun dekorasi: style="background: #1a1a2e" atau style="color: #fff" atau style="background: var(--store-primary)". Untuk warna brand/tema, WAJIB pakai var(--store-primary) supaya konsisten dengan pilihan warna toko.
 6. Setiap section dari blueprint.sections harus jadi satu <section> dengan urutan yang sama seperti di blueprint.
 7. Semua teks (headline, deskripsi, label tombol) HARUS bahasa Indonesia, sesuai "tone" di blueprint, dan sesuai "contentOutline" tiap section — JANGAN tulis placeholder seperti "Lorem ipsum" atau "[isi di sini]".
 8. Link tombol boleh pakai href="#" untuk yang tidak diketahui tujuannya.${
@@ -140,7 +140,7 @@ ATURAN WAJIB:
 1. Output HANYA HTML mentah untuk elemen pengganti, TANPA markdown fence, TANPA teks penjelasan.
 2. Balikin TEPAT SATU elemen root dengan tag yang SAMA seperti elemen semula (jangan ganti mis. <h2> jadi <div>), kecuali instruksi eksplisit minta ganti tag.
 3. DILARANG KERAS <script>, <iframe>, <form>, atribut "on*" (onclick dkk), atau href="javascript:...".
-4. Boleh ubah Tailwind class, inline style (termasuk var(--store-primary) dkk untuk warna brand — pertahankan pemakaian var(), jangan diganti hex hardcode kecuali diminta eksplisit), dan teks di dalamnya sesuai instruksi.
+4. Untuk WARNA: gunakan inline style (style="background: #hex" atau style="color: #hex" atau style="background: var(--store-primary)") — JANGAN gunakan Tailwind bg-*/text-*[warna] karena tidak dijamin tersedia. Untuk layout/spacing/tipografi, boleh gunakan Tailwind class (flex, px-6, text-sm, font-bold, dsb).
 5. Pertahankan semua atribut "id" dan "data-*" yang sudah ada di elemen semula (termasuk data-klikweb-widget kalau ada), kecuali instruksi eksplisit minta mengubahnya.
 6. Kalau instruksi tidak jelas/tidak mungkin dilakukan pada elemen ini, kembalikan elemen semula apa adanya.
 

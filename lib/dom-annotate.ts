@@ -38,3 +38,37 @@ export function getCleanHtml(root: Element): string {
 export function findById(root: Element, id: string): HTMLElement | null {
   return root.querySelector(`[${EDITOR_ID_ATTR}="${id}"]`);
 }
+
+/**
+ * True if `el` has element children (icons, decorative wrappers, nested
+ * text elements, etc). Overwriting such an element's textContent — even
+ * with a string that looks unchanged — silently deletes all of that nested
+ * markup and replaces it with a single text node. Only elements WITHOUT
+ * element children are safe to edit as plain text.
+ */
+export function isContainerElement(el: Element): boolean {
+  return el.children.length > 0;
+}
+
+export interface NestedTextField {
+  id: string;
+  tag: string;
+  text: string;
+}
+
+/**
+ * For a container element, lists its selectable descendants that are
+ * themselves leaves (no element children of their own) — the actual
+ * text-bearing pieces inside it — so the editor can offer a field per
+ * real piece of content instead of one destructive flattened textarea.
+ */
+export function getNestedTextFields(root: Element): NestedTextField[] {
+  const fields: NestedTextField[] = [];
+  root.querySelectorAll(`[${EDITOR_ID_ATTR}]`).forEach((el) => {
+    if (isContainerElement(el)) return;
+    const text = el.textContent?.trim();
+    if (!text) return;
+    fields.push({ id: el.getAttribute(EDITOR_ID_ATTR)!, tag: el.tagName.toLowerCase(), text });
+  });
+  return fields;
+}

@@ -2,6 +2,14 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* ─── Safelist untuk HTML hasil AI yang disimpan di database ─── */
+/* Tailwind v4 tree-shakes classes tidak ditemukan di source files,  */
+/* sehingga HTML dari database perlu didaftarkan di sini secara eksplisit. */
+@source inline("{bg,text,border}-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,white,black}-{50,100,200,300,400,500,600,700,800,900,950}");
+@source inline("bg-{white,black,transparent} text-{white,black}");
+@source inline("{opacity,rounded,shadow}-{none,sm,md,lg,xl,2xl,3xl,full}");
+
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

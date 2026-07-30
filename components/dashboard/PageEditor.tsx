@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import {
-  ArrowLeft, Save, Undo2, Redo2, Monitor, Tablet, Smartphone, Trash2, X,
+  ArrowLeft, Save, Undo2, Redo2, Monitor, Tablet, Smartphone, Trash2, X, GripVertical,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,6 +64,8 @@ function applyStylePatch(el: HTMLElement, patch: Partial<ElementStyleValues>) {
   if (patch.borderRadius !== undefined) el.style.setProperty("border-radius", `${patch.borderRadius}px`);
 }
 
+const DEFAULT_PANEL_POS = { x: -1, y: -1 }; // -1 = use CSS default position (right-6 top-[88px])
+
 export function PageEditor({
   pageId,
   storeId,
@@ -91,6 +93,11 @@ export function PageEditor({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [rightTab, setRightTab] = useState<RightTab>("teks");
   const [styleValues, setStyleValues] = useState<ElementStyleValues | null>(null);
+
+  // Draggable panel state
+  const [panelPos, setPanelPos] = useState(DEFAULT_PANEL_POS);
+  const panelDragRef = useRef<{ startX: number; startY: number; startPanelX: number; startPanelY: number } | null>(null);
+  const panelRef = useRef<HTMLElement>(null);
   const [textValue, setTextValue] = useState("");
   const [codeText, setCodeText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -149,6 +156,7 @@ export function PageEditor({
     setStyleValues(readStyleValues(el));
     setTextValue(el.tagName === "IMG" ? "" : (el.textContent ?? ""));
     setRightTab("teks");
+    setPanelPos(DEFAULT_PANEL_POS); // reset to default position on new selection
   }
 
   function getSelectedElement(): HTMLElement | null {
@@ -173,6 +181,38 @@ export function PageEditor({
     setStyleValues((prev) => (prev ? { ...prev, ...patch } : prev));
     pushHistory();
   }
+
+  // ── Panel drag handlers ─────────────────────────────────────────────
+  const handlePanelPointerDown = useCallback((e: React.PointerEvent) => {
+    if (!panelRef.current) return;
+    e.preventDefault();
+    const rect = panelRef.current.getBoundingClientRect();
+    // If panel is still at CSS default pos, calculate its actual rendered position
+    const currentX = panelPos.x >= 0 ? panelPos.x : rect.left;
+    const currentY = panelPos.y >= 0 ? panelPos.y : rect.top;
+    panelDragRef.current = { startX: e.clientX, startY: e.clientY, startPanelX: currentX, startPanelY: currentY };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, [panelPos]);
+
+  const handlePanelPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!panelDragRef.current) return;
+    const dx = e.clientX - panelDragRef.current.startX;
+    const dy = e.clientY - panelDragRef.current.startY;
+    const newX = panelDragRef.current.startPanelX + dx;
+    const newY = panelDragRef.current.startPanelY + dy;
+    // Clamp within viewport
+    const panelW = panelRef.current?.offsetWidth ?? 384;
+    const panelH = panelRef.current?.offsetHeight ?? 300;
+    setPanelPos({
+      x: Math.max(8, Math.min(newX, window.innerWidth - panelW - 8)),
+      y: Math.max(8, Math.min(newY, window.innerHeight - panelH - 8)),
+    });
+  }, []);
+
+  const handlePanelPointerUp = useCallback(() => {
+    panelDragRef.current = null;
+  }, []);
+  // ────────────────────────────────────────────────────────────────────
 
   function handleAiApply(newOuterHtml: string) {
     const el = getSelectedElement();
@@ -368,15 +408,36 @@ export function PageEditor({
         </main>
 
         {activeTab === "design" && selectedId && selectedElement && (
-          <aside className="absolute right-6 top-6 w-96 rounded-xl border border-zinc-800/80 bg-zinc-900/95 backdrop-blur-md shadow-2xl flex flex-col max-h-[calc(100vh-6rem)] z-30">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
-              <div>
-                <span className="text-[10px] font-bold tracking-wider text-indigo-400 uppercase block">
-                  {selectedTag}
-                </span>
-                <span className="text-sm font-semibold text-white">Elemen Terpilih</span>
+          <aside
+            ref={panelRef}
+            className="w-96 rounded-xl border border-zinc-800/80 bg-zinc-900/95 backdrop-blur-md shadow-2xl flex flex-col z-30"
+            style={{
+              position: "fixed",
+              maxHeight: "calc(100vh - 3rem)",
+              ...(panelPos.x >= 0
+                ? { left: panelPos.x, top: panelPos.y }
+                : { right: 24, top: 88 }), // default: top-right, below header
+            }}
+          >
+            {/* ── Drag handle header ── */}
+            <div
+              className="flex items-center justify-between px-3 py-2.5 border-b border-zinc-800 cursor-grab active:cursor-grabbing select-none"
+              onPointerDown={handlePanelPointerDown}
+              onPointerMove={handlePanelPointerMove}
+              onPointerUp={handlePanelPointerUp}
+              onPointerCancel={handlePanelPointerUp}
+              title="Seret untuk memindahkan panel"
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <GripVertical className="h-4 w-4 shrink-0 text-zinc-600" />
+                <div className="min-w-0">
+                  <span className="text-[10px] font-bold tracking-wider text-indigo-400 uppercase block">
+                    {selectedTag}
+                  </span>
+                  <span className="text-sm font-semibold text-white">Elemen Terpilih</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 shrink-0" onPointerDown={(e) => e.stopPropagation()}>
                 <Button
                   variant="ghost" size="icon"
                   className="h-8 w-8 text-red-400 hover:text-red-300 hover:bg-red-950/50"
