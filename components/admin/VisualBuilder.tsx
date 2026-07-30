@@ -6,19 +6,29 @@ import { toast } from "sonner";
 import {
   ArrowLeft, Save, LayoutTemplate, Sparkles, Code2,
   Plus, GripVertical, Trash2, Pencil, Check, X,
-  ChevronUp, ChevronDown
+  ChevronUp, ChevronDown, Wand2
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Block } from "@/lib/blocks-types";
 import type { BlockType, SiteType } from "@/lib/site-types";
+import { SITE_TYPE_CONFIG } from "@/lib/site-types";
 import { BLOCK_TYPE_LABELS, createEmptyBlock } from "@/lib/empty-block";
 import { BlockRendererClient } from "@/components/storefront/blocks/BlockRendererClient";
 import { BlockFields } from "@/components/dashboard/blocks/BlockFields";
 import { StylePanel } from "@/components/dashboard/StylePanel";
 import { updateAdminPageBlocks } from "@/app/admin/actions";
-import { generateSingleBlockAction } from "@/app/dashboard/halaman/generate-action";
+import { generateSingleBlockAction, generatePageBlocksAction } from "@/app/dashboard/halaman/generate-action";
+import { SITE_TYPE_PROMPT_PLACEHOLDERS } from "@/lib/ai-prompt-placeholders";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 interface ProductOption { id: string; name: string; }
 
@@ -38,7 +48,7 @@ interface VisualBuilderProps {
 type BlockNames = Record<string, string>;
 
 export function VisualBuilder({
-  pageId, storeId, storeSlug, storeName,
+  pageId, storeId, storeSlug, storeName, siteType,
   initialBlocks, allowedBlocks, products, whatsappNumber,
 }: VisualBuilderProps) {
   const [blocks, setBlocks] = useState<Block[]>(() =>
@@ -48,6 +58,29 @@ export function VisualBuilder({
   const [activeTab, setActiveTab] = useState<"prompt" | "edit" | "style" | "code">("prompt");
   const [blockNames, setBlockNames] = useState<BlockNames>({});
   const [isPending, startTransition] = useTransition();
+
+  const [genDialogOpen, setGenDialogOpen] = useState(false);
+  const [genPrompt, setGenPrompt] = useState("");
+  const [isGeneratingPage, startGeneratingPage] = useTransition();
+
+  function handleGenerateFullPage() {
+    if (blocks.length > 0 && !window.confirm(
+      "Ini akan mengganti semua section yang ada saat ini dengan hasil generate AI. Lanjutkan?"
+    )) {
+      return;
+    }
+    startGeneratingPage(async () => {
+      const result = await generatePageBlocksAction(pageId, genPrompt);
+      if (!result.ok) {
+        toast.error(result.error);
+        return;
+      }
+      setBlocks(result.blocks);
+      setSelectedBlockId(null);
+      setGenDialogOpen(false);
+      toast.success(`${result.blocks.length} section berhasil di-generate! Publish untuk menyimpan.`);
+    });
+  }
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId) || null;
 
@@ -115,16 +148,61 @@ export function VisualBuilder({
             <span className="rounded bg-zinc-800 px-2 py-0.5 text-xs text-zinc-400">Live Editor</span>
           </div>
         </div>
-        <Button
-          size="sm"
-          onClick={handleSave}
-          disabled={isPending}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-900/20"
-        >
-          <Save className="mr-2 h-4 w-4" />
-          {isPending ? "Menyimpan..." : "Publish"}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setGenDialogOpen(true)}
+            className="border-violet-500/30 bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 hover:text-violet-200"
+          >
+            <Wand2 className="mr-2 h-4 w-4" />
+            {blocks.length > 0 ? "Generate Ulang dengan AI" : "Generate Halaman Penuh AI"}
+          </Button>
+          <Button
+            size="sm"
+            onClick={handleSave}
+            disabled={isPending}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-900/20"
+          >
+            <Save className="mr-2 h-4 w-4" />
+            {isPending ? "Menyimpan..." : "Publish"}
+          </Button>
+        </div>
       </header>
+
+      <Dialog open={genDialogOpen} onOpenChange={setGenDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Wand2 className="h-4 w-4 text-violet-500" />
+              Generate Halaman Penuh dengan AI
+            </DialogTitle>
+            <DialogDescription>
+              AI akan mengisi seluruh section halaman ini sesuai jenis situs{" "}
+              <strong>{SITE_TYPE_CONFIG[siteType].label}</strong>. Hasilnya langsung tampil di
+              kanvas sebagai pratinjau — belum tersimpan sampai kamu klik Publish. Setelah itu
+              kamu masih bisa edit per section atau generate ulang.
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            rows={4}
+            placeholder={SITE_TYPE_PROMPT_PLACEHOLDERS[siteType]}
+            value={genPrompt}
+            onChange={(e) => setGenPrompt(e.target.value)}
+            disabled={isGeneratingPage}
+            className="resize-none"
+          />
+          <DialogFooter>
+            <Button
+              onClick={handleGenerateFullPage}
+              disabled={isGeneratingPage}
+              className="bg-violet-600 text-white hover:bg-violet-700"
+            >
+              {isGeneratingPage ? "Sedang Generate…" : "✨ Generate"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <div className="flex flex-1 overflow-hidden relative">
         {/* ─── Left Sidebar ─── */}
@@ -179,6 +257,28 @@ export function VisualBuilder({
         >
           <div className="absolute inset-0 overflow-y-auto scrollbar-hide">
             <div className="min-h-full flex flex-col bg-white">
+              {sorted.length === 0 && (
+                <div className="flex flex-1 flex-col items-center justify-center gap-4 py-24 text-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-100">
+                    <Wand2 className="h-7 w-7 text-violet-600" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-zinc-900">Halaman ini masih kosong</p>
+                    <p className="text-xs text-zinc-500">
+                      Generate seluruh section sekaligus dengan AI, sesuai jenis situs{" "}
+                      {SITE_TYPE_CONFIG[siteType].label}.
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={(e) => { e.stopPropagation(); setGenDialogOpen(true); }}
+                    className="bg-violet-600 text-white hover:bg-violet-700"
+                  >
+                    <Wand2 className="mr-2 h-4 w-4" />
+                    Generate Halaman Penuh AI
+                  </Button>
+                </div>
+              )}
               {sorted.map((block) => {
                 const isSelected = selectedBlockId === block.id;
                 return (

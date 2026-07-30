@@ -13,17 +13,7 @@ import {
 } from "@/app/dashboard/halaman/generate-action";
 import { updatePageBlocks } from "@/app/dashboard/halaman/actions";
 import { BlocksPreview } from "@/components/dashboard/BlocksPreview";
-
-const PLACEHOLDER_EXAMPLES: Record<SiteType, string> = {
-  storefront:
-    "Contoh: Toko fashion lokal menjual kaos distro dan jaket streetwear, target anak muda 18-30 tahun, bahan premium, harga 150-400rb.",
-  sales_page:
-    "Contoh: Jual suplemen herbal pelangsing alami, sudah terjual 5.000+ botol, aman tanpa efek samping, garansi uang kembali 30 hari.",
-  landing_page:
-    "Contoh: Kursus desain grafis online untuk pemula, 30 modul video, sertifikat, mentor berpengalaman, harga promo Rp 299.000.",
-  company_profile:
-    "Contoh: PT Maju Bersama, perusahaan konsultan IT berdiri 2010, melayani 200+ klien korporat, spesialis transformasi digital.",
-};
+import { SITE_TYPE_PROMPT_PLACEHOLDERS } from "@/lib/ai-prompt-placeholders";
 
 export function AiGenerateAllPagesButton({
   storeId,
@@ -123,7 +113,7 @@ export function AiGenerateAllPagesButton({
             <Textarea
               id="ai-all-pages-prompt"
               rows={3}
-              placeholder={PLACEHOLDER_EXAMPLES[siteType]}
+              placeholder={SITE_TYPE_PROMPT_PLACEHOLDERS[siteType]}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="resize-none bg-white dark:bg-background"
