@@ -69,6 +69,53 @@ export function AiWebsiteGeneratorWizard({
   const [isBriefPending, startBrief] = useTransition();
   const [isApplying, startApplying] = useTransition();
 
+  // Animated progress for blueprint generation
+  const [briefProgress, setBriefProgress] = useState(0);
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const BRIEF_PHASES = [
+    { label: "Menganalisis deskripsi bisnis…", from: 0,  to: 30, duration: 4000 },
+    { label: "Merancang identitas visual…",   from: 30, to: 65, duration: 6000 },
+    { label: "Menyusun blueprint section…",   from: 65, to: 88, duration: 5000 },
+    { label: "Menyelesaikan blueprint…",       from: 88, to: 95, duration: 4000 },
+  ];
+
+  useEffect(() => {
+    if (isBriefPending) {
+      setBriefProgress(0);
+      let phaseIdx = 0;
+      let startTime = Date.now();
+
+      progressIntervalRef.current = setInterval(() => {
+        const phase = BRIEF_PHASES[phaseIdx];
+        if (!phase) return;
+        const elapsed = Date.now() - startTime;
+        const ratio = Math.min(elapsed / phase.duration, 1);
+        // Ease-out: fast start, slow finish
+        const eased = 1 - Math.pow(1 - ratio, 3);
+        const value = phase.from + (phase.to - phase.from) * eased;
+        setBriefProgress(Math.round(value));
+        if (ratio >= 1 && phaseIdx < BRIEF_PHASES.length - 1) {
+          phaseIdx++;
+          startTime = Date.now();
+        }
+      }, 60);
+    } else {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+        progressIntervalRef.current = null;
+      }
+      // Snap to 100 briefly then reset
+      setBriefProgress(100);
+      const t = setTimeout(() => setBriefProgress(0), 500);
+      return () => clearTimeout(t);
+    }
+    return () => {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isBriefPending]);
+
   const codeBoxRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
@@ -277,7 +324,28 @@ export function AiWebsiteGeneratorWizard({
           <Button onClick={handleGenerateBrief} disabled={isBriefPending} className="w-full">
             {isBriefPending ? "Menyusun Blueprint…" : "Perbaiki Prompt"}
           </Button>
-          {isBriefPending && <Progress value={null} />}
+          {isBriefPending && (
+            <div className="space-y-2 pt-1">
+              {/* Label fase */}
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground animate-pulse">
+                  {BRIEF_PHASES.find((p) => briefProgress >= p.from && briefProgress < p.to)?.label
+                    ?? (briefProgress >= 95 ? "Menyelesaikan blueprint…" : "Memulai…")}
+                </span>
+                <span className="tabular-nums font-semibold text-foreground">{briefProgress}%</span>
+              </div>
+              {/* Progress bar */}
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  className="h-full rounded-full transition-all duration-200"
+                  style={{
+                    width: `${briefProgress}%`,
+                    background: "linear-gradient(90deg, var(--store-primary, #6366f1) 0%, color-mix(in srgb, var(--store-primary, #6366f1) 70%, #a78bfa) 100%)",
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
 
