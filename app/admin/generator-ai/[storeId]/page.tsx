@@ -52,7 +52,7 @@ export default async function AdminAiGeneratorPage({
           templateId={store.templateId}
           targetAudience={store.targetAudience}
           hasExistingHtml={Boolean(homePage.html?.trim())}
-          afterApplyUrl={`/admin/editor/${store.id}`}
+          afterApplyUrl={`/admin-editor/${store.id}`}
         />
       </div>
     </div>

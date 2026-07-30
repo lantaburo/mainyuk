@@ -85,7 +85,6 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                 <TableHead className="font-semibold text-slate-700">Jenis Situs</TableHead>
                 <TableHead className="font-semibold text-slate-700">Status</TableHead>
                 <TableHead className="font-semibold text-slate-700">Pemilik</TableHead>
-                <TableHead className="font-semibold text-slate-700 text-center">Metrik</TableHead>
                 <TableHead className="font-semibold text-slate-700">Dibuat</TableHead>
                 <TableHead className="font-semibold text-slate-700 text-right">Aksi</TableHead>
               </TableRow>
@@ -137,14 +136,6 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                       <div className="text-sm font-semibold text-slate-800">{store.owner.name}</div>
                       <div className="text-xs text-slate-500">{store.owner.email}</div>
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-center gap-4 text-xs text-slate-500">
-                        <div className="flex flex-col items-center gap-1 bg-white/50 px-2.5 py-1.5 rounded-lg shadow-sm border border-white" title={`${store._count.products} Produk`}>
-                          <ShoppingBag className="h-3.5 w-3.5 text-slate-400" />
-                          <span className="font-bold text-slate-700">{store._count.products}</span>
-                        </div>
-                      </div>
-                    </TableCell>
                     <TableCell className="text-sm font-medium text-slate-500 whitespace-nowrap">
                       {mounted 
                         ? new Date(store.createdAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })
@@ -154,43 +145,31 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger
-                          render={
-                            <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-white shadow-sm border border-transparent hover:border-slate-200 transition-all">
-                              <span className="sr-only">Buka menu</span>
-                              <MoreHorizontal className="h-4 w-4 text-slate-600" />
-                            </Button>
-                          }
-                        />
+                          render={<Button variant="ghost" className="h-8 w-8 p-0 hover:bg-white shadow-sm border border-transparent hover:border-slate-200 transition-all" />}
+                        >
+                          <span className="sr-only">Buka menu</span>
+                          <MoreHorizontal className="h-4 w-4 text-slate-600" />
+                        </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-[160px] bg-white/90 backdrop-blur-xl border-white/50 shadow-xl">
                           <DropdownMenuLabel className="font-bold text-slate-700">Aksi Tenant</DropdownMenuLabel>
                           <DropdownMenuSeparator className="bg-slate-100" />
-                          <DropdownMenuItem
-                            render={
-                              <Link href={`/admin/generator-ai/${store.id}`} className="cursor-pointer flex items-center font-medium">
-                                <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
-                                <span className="text-indigo-900">AI Generator</span>
-                              </Link>
-                            }
-                          />
-                          <DropdownMenuItem
-                            render={
-                              <Link href={`/admin/halaman/${store.id}`} className="cursor-pointer flex items-center font-medium">
-                                <PenSquare className="mr-2 h-4 w-4 text-slate-500" />
-                                <span className="text-slate-700">Edit Halaman</span>
-                              </Link>
-                            }
-                          />
+                          <DropdownMenuItem render={<Link href={`/admin/generator-ai/${store.id}`} className="cursor-pointer font-medium w-full" />}>
+                            <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
+                            <span className="text-indigo-900">AI Generator</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem render={<Link href={`/admin-editor/${store.id}`} className="cursor-pointer font-medium w-full" />}>
+                            <PenSquare className="mr-2 h-4 w-4 text-slate-500" />
+                            <span className="text-slate-700">Edit Halaman</span>
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator className="bg-slate-100" />
-                          <DropdownMenuItem
-                            render={
-                              <ConfirmDeleteButton
-                                action={deleteStore.bind(null, store.id)}
-                                confirmText={`Hapus toko "${store.name}"? Semua produk, halaman, dan datanya akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.`}
-                                className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 p-2 text-sm rounded-sm font-medium"
-                                variant="ghost"
-                              />
-                            }
-                          />
+                          <DropdownMenuItem className="p-0" onSelect={(e) => e.preventDefault()}>
+                            <ConfirmDeleteButton
+                              action={deleteStore.bind(null, store.id)}
+                              confirmText={`Hapus toko "${store.name}"? Semua produk, halaman, dan datanya akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.`}
+                              className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 p-2 text-sm rounded-sm font-medium"
+                              variant="ghost"
+                            />
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
