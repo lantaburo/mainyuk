@@ -17,50 +17,58 @@ export interface AiCallResult {
 
 export class AiClientError extends Error {}
 
-export async function callAiProvider(config: AiProviderConfig, prompt: string): Promise<AiCallResult> {
-  const url = `${config.baseUrl.replace(/\/+$/, "")}/chat/completions`;
+export async function callAiProvider(configs: AiProviderConfig | AiProviderConfig[], prompt: string): Promise<AiCallResult> {
+  const configArray = Array.isArray(configs) ? configs : [configs];
+  let lastError: Error | unknown;
 
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${config.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: config.model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
-      }),
-    });
-  } catch {
-    throw new AiClientError(`Gagal menghubungi ${url}. Periksa Base URL.`);
-  }
+  for (const config of configArray) {
+    const url = `${config.baseUrl.replace(/\/+$/, "")}/chat/completions`;
+    let res: Response;
+    try {
+      res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: config.model,
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.7,
+        }),
+      });
 
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new AiClientError(
-      `Provider AI mengembalikan error ${res.status}: ${body.slice(0, 300) || res.statusText}`
-    );
-  }
-
-  const json = await res.json().catch(() => null);
-  const content = json?.choices?.[0]?.message?.content;
-  if (typeof content !== "string" || !content.trim()) {
-    throw new AiClientError("Respons AI kosong atau formatnya tidak dikenali.");
-  }
-
-  const rawUsage = json?.usage;
-  const usage: AiUsage | null = rawUsage
-    ? {
-        promptTokens: rawUsage.prompt_tokens ?? 0,
-        completionTokens: rawUsage.completion_tokens ?? 0,
-        totalTokens: rawUsage.total_tokens ?? (rawUsage.prompt_tokens ?? 0) + (rawUsage.completion_tokens ?? 0),
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        throw new AiClientError(
+          `Provider AI mengembalikan error ${res.status}: ${body.slice(0, 300) || res.statusText}`
+        );
       }
-    : null;
 
-  return { content, usage };
+      const json = await res.json().catch(() => null);
+      const content = json?.choices?.[0]?.message?.content;
+      if (typeof content !== "string" || !content.trim()) {
+        throw new AiClientError("Respons AI kosong atau formatnya tidak dikenali.");
+      }
+
+      const rawUsage = json?.usage;
+      const usage: AiUsage | null = rawUsage
+        ? {
+            promptTokens: rawUsage.prompt_tokens ?? 0,
+            completionTokens: rawUsage.completion_tokens ?? 0,
+            totalTokens: rawUsage.total_tokens ?? (rawUsage.prompt_tokens ?? 0) + (rawUsage.completion_tokens ?? 0),
+          }
+        : null;
+
+      return { content, usage };
+    } catch (e) {
+      lastError = e;
+      console.warn(`[AI] Provider ${config.baseUrl} failed, falling back...`, (e as Error).message || e);
+      continue;
+    }
+  }
+
+  throw lastError || new AiClientError("Semua konfigurasi AI gagal.");
 }
 
 export type AiStreamEvent = { type: "delta"; text: string } | { type: "usage"; usage: AiUsage };
@@ -74,83 +82,98 @@ export type AiStreamEvent = { type: "delta"; text: string } | { type: "usage"; u
  * that needs guaranteed usage numbers should use callAiProvider instead.
  */
 export async function* streamAiProvider(
-  config: AiProviderConfig,
+  configs: AiProviderConfig | AiProviderConfig[],
   prompt: string
 ): AsyncGenerator<AiStreamEvent> {
-  const url = `${config.baseUrl.replace(/\/+$/, "")}/chat/completions`;
+  const configArray = Array.isArray(configs) ? configs : [configs];
+  let lastError: Error | unknown;
 
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${config.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: config.model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
-        stream: true,
-      }),
-    });
-  } catch {
-    throw new AiClientError(`Gagal menghubungi ${url}. Periksa Base URL.`);
-  }
+  for (const config of configArray) {
+    const url = `${config.baseUrl.replace(/\/+$/, "")}/chat/completions`;
+    let res: Response;
+    try {
+      res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: config.model,
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.7,
+          stream: true,
+        }),
+      });
 
-  if (!res.ok || !res.body) {
-    const body = await res.text().catch(() => "");
-    throw new AiClientError(
-      `Provider AI mengembalikan error ${res.status}: ${body.slice(0, 300) || res.statusText}`
-    );
-  }
-
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = "";
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed.startsWith("data:")) continue;
-      const payload = trimmed.slice(5).trim();
-      if (payload === "[DONE]") continue;
-
-      let json: {
-        choices?: { delta?: { content?: string } }[];
-        usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number };
-      } | null;
-      try {
-        json = JSON.parse(payload);
-      } catch {
-        continue;
+      if (!res.ok || !res.body) {
+        const body = await res.text().catch(() => "");
+        throw new AiClientError(
+          `Provider AI mengembalikan error ${res.status}: ${body.slice(0, 300) || res.statusText}`
+        );
       }
+    } catch (e) {
+      lastError = e;
+      console.warn(`[AI] Provider ${config.baseUrl} stream failed, falling back...`, (e as Error).message || e);
+      continue;
+    }
 
-      const delta = json?.choices?.[0]?.delta?.content;
-      if (typeof delta === "string" && delta.length > 0) {
-        yield { type: "delta", text: delta };
-      }
+    // If we reach here, we are successfully connected to the stream.
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
 
-      if (json?.usage) {
-        yield {
-          type: "usage",
-          usage: {
-            promptTokens: json.usage.prompt_tokens ?? 0,
-            completionTokens: json.usage.completion_tokens ?? 0,
-            totalTokens:
-              json.usage.total_tokens ?? (json.usage.prompt_tokens ?? 0) + (json.usage.completion_tokens ?? 0),
-          },
-        };
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith("data:")) continue;
+          const payload = trimmed.slice(5).trim();
+          if (payload === "[DONE]") continue;
+
+          let json: {
+            choices?: { delta?: { content?: string } }[];
+            usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number };
+          } | null;
+          try {
+            json = JSON.parse(payload);
+          } catch {
+            continue;
+          }
+
+          const delta = json?.choices?.[0]?.delta?.content;
+          if (typeof delta === "string" && delta.length > 0) {
+            yield { type: "delta", text: delta };
+          }
+
+          if (json?.usage) {
+            yield {
+              type: "usage",
+              usage: {
+                promptTokens: json.usage.prompt_tokens ?? 0,
+                completionTokens: json.usage.completion_tokens ?? 0,
+                totalTokens:
+                  json.usage.total_tokens ?? (json.usage.prompt_tokens ?? 0) + (json.usage.completion_tokens ?? 0),
+              },
+            };
+          }
+        }
       }
+      return; // Successfully finished streaming, break the config loop
+    } catch (e) {
+      // If reading the stream fails midway, we just throw, because falling back midway is too messy.
+      throw e;
     }
   }
+
+  throw lastError || new AiClientError("Semua konfigurasi AI gagal.");
 }
 
 /** Strips <think>...</think> reasoning blocks some models prepend before their actual answer. */

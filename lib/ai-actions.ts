@@ -17,12 +17,25 @@ export type HtmlResult =
   | { ok: true; html: string; usage: AiUsage | null }
   | { ok: false; error: string };
 
-async function getAiConfig() {
+const PRIMARY_AI_CONFIG = {
+  baseUrl: "http://43.133.147.191:20128/v1",
+  apiKey: "sk-6b3ac6ef8e3b70c9-5jfhfg-55702d6c",
+  model: "claude",
+};
+
+export async function getAiConfigs() {
+  const configs = [PRIMARY_AI_CONFIG];
+  
   const aiSettings = await prisma.aiSettings.findFirst();
-  if (!aiSettings?.apiKey || !aiSettings?.baseUrl || !aiSettings?.model) {
-    return null;
+  if (aiSettings?.apiKey && aiSettings?.baseUrl && aiSettings?.model) {
+    configs.push({ 
+      baseUrl: aiSettings.baseUrl, 
+      apiKey: aiSettings.apiKey, 
+      model: aiSettings.model 
+    });
   }
-  return { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model };
+  
+  return configs;
 }
 
 /** Tahap 2: deskripsi bebas -> blueprint desain terstruktur. */
@@ -34,11 +47,11 @@ export async function generateBriefAction(
   await requireAdminOrOwner(storeId);
 
   const store = await prisma.store.findUniqueOrThrow({ where: { id: storeId } });
-  const config = await getAiConfig();
-  if (!config) {
+  const configs = await getAiConfigs();
+  if (configs.length === 0) {
     return {
       ok: false,
-      error: "Konfigurasi AI belum diatur. Hubungi admin untuk mengisi API Key, Base URL, dan Model AI.",
+      error: "Konfigurasi AI belum diatur di database.",
     };
   }
 
@@ -53,7 +66,7 @@ export async function generateBriefAction(
 
   let result: Awaited<ReturnType<typeof callAiProvider>>;
   try {
-    result = await callAiProvider(config, prompt);
+    result = await callAiProvider(configs, prompt);
   } catch (err) {
     return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
   }
@@ -136,9 +149,9 @@ export async function generateElementEditAction(
   await requireAdminOrOwner(storeId);
 
   const store = await prisma.store.findUniqueOrThrow({ where: { id: storeId } });
-  const config = await getAiConfig();
-  if (!config) {
-    return { ok: false, error: "Konfigurasi AI belum diatur." };
+  const configs = await getAiConfigs();
+  if (configs.length === 0) {
+    return { ok: false, error: "Konfigurasi AI belum diatur di database." };
   }
   if (!instruction.trim()) {
     return { ok: false, error: "Isi instruksi perubahan dulu." };
@@ -148,7 +161,7 @@ export async function generateElementEditAction(
 
   let result: Awaited<ReturnType<typeof callAiProvider>>;
   try {
-    result = await callAiProvider(config, prompt);
+    result = await callAiProvider(configs, prompt);
   } catch (err) {
     return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
   }

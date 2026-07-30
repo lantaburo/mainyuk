@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { streamAiProvider, stripCodeFence, AiClientError, type AiUsage } from "@/lib/ai-client";
+import { getAiConfigs } from "@/lib/ai-actions";
 import { buildHtmlFromBriefPrompt } from "@/lib/ai-html-prompt-generator";
 import { designBriefSchema } from "@/lib/ai-html-schema";
 import { sanitizeStoreHtml } from "@/lib/html-sanitize";
@@ -46,11 +47,10 @@ export async function POST(req: NextRequest) {
     include: { settings: true },
   });
 
-  const aiSettings = await prisma.aiSettings.findFirst();
-  if (!aiSettings?.apiKey || !aiSettings?.baseUrl || !aiSettings?.model) {
+  const configs = await getAiConfigs();
+  if (configs.length === 0) {
     return new Response("Konfigurasi AI belum diatur.", { status: 400 });
   }
-  const config = { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model };
 
   const prompt = buildHtmlFromBriefPrompt(validatedBrief.data, {
     storeName: store.name,
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       let full = "";
       let usage: AiUsage | null = null;
       try {
-        for await (const event of streamAiProvider(config, prompt)) {
+        for await (const event of streamAiProvider(configs, prompt)) {
           if (event.type === "delta") {
             full += event.text;
             controller.enqueue(encoder.encode(event.text));
