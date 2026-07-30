@@ -2,7 +2,9 @@
 
 import { useRef, useState, useCallback } from "react";
 import { toast } from "sonner";
-import { Film, Image as ImageIcon, X } from "lucide-react";
+import { Film, Image as ImageIcon, X, Wand2, RefreshCw } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
 const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/ogg", "video/quicktime"];
@@ -25,6 +27,8 @@ export function MediaUploadField({ value, defaultValue, name, onChange, label = 
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
   const [isDragging, setIsDragging] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const isControlled = value !== undefined;
   const displayValue = isControlled ? value : internalValue;
@@ -189,25 +193,74 @@ export function MediaUploadField({ value, defaultValue, name, onChange, label = 
         )}
       </div>
 
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
-          value={displayValue}
-          onChange={(e) => handleChange(e.target.value)}
-          placeholder="Atau paste URL media langsung…"
-          className="h-8 flex-1 rounded-md border border-input bg-transparent px-3 text-xs text-muted-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
-        />
-        {displayValue && (
-          <button
-            type="button"
-            onClick={() => handleChange("")}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-input text-muted-foreground transition-colors hover:bg-destructive hover:text-white"
-            title="Hapus media"
-          >
-            <X className="h-3.5 w-3.5" />
-          </button>
-        )}
-      </div>
+      <Tabs defaultValue="upload" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 h-7 p-0.5 mb-1.5 bg-muted/50">
+          <TabsTrigger value="upload" className="text-[10px] h-6 px-2">Upload / URL</TabsTrigger>
+          <TabsTrigger value="ai" className="text-[10px] h-6 px-2">
+            <Wand2 className="w-3 h-3 mr-1" /> AI Image
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="upload" className="mt-0">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={displayValue}
+              onChange={(e) => handleChange(e.target.value)}
+              placeholder="Atau paste URL media langsung…"
+              className="h-8 flex-1 rounded-md border border-input bg-transparent px-3 text-xs text-muted-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
+            />
+            {displayValue && (
+              <button
+                type="button"
+                onClick={() => handleChange("")}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-input text-muted-foreground transition-colors hover:bg-destructive hover:text-white"
+                title="Hapus media"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="ai" className="mt-0">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (aiPrompt.trim()) {
+                    setIsGenerating(true);
+                    handleChange(`https://image.pollinations.ai/prompt/${encodeURIComponent(aiPrompt.trim())}?nologo=true&seed=${Math.floor(Math.random() * 100000)}&width=1080&height=720`);
+                    setTimeout(() => setIsGenerating(false), 500); // Simulate brief loading
+                  }
+                }
+              }}
+              placeholder="Ketik prompt gambar (Bhs Inggris disarankan)..."
+              className="h-8 flex-1 rounded-md border border-input bg-transparent px-3 text-[11px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-ring"
+            />
+            <Button
+              type="button"
+              size="sm"
+              disabled={!aiPrompt.trim() || isGenerating}
+              onClick={() => {
+                setIsGenerating(true);
+                handleChange(`https://image.pollinations.ai/prompt/${encodeURIComponent(aiPrompt.trim())}?nologo=true&seed=${Math.floor(Math.random() * 100000)}&width=1080&height=720`);
+                setTimeout(() => setIsGenerating(false), 500); // Pollinations handles rendering synchronously via URL
+              }}
+              className="h-8 shrink-0 px-3 bg-indigo-600 text-white hover:bg-indigo-700"
+            >
+              {isGenerating ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : "Generate"}
+            </Button>
+          </div>
+          <p className="text-[9px] text-muted-foreground mt-1.5 leading-tight">
+            *Ditenagai oleh Pollinations AI. Gambar akan langsung dirender saat Anda menekan Generate.
+          </p>
+        </TabsContent>
+      </Tabs>
 
       <input
         ref={inputRef}
