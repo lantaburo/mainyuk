@@ -4,7 +4,11 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireStoreOwner } from "@/lib/session";
 import { callAiProvider, extractJson, AiClientError } from "@/lib/ai-client";
-import { buildBriefPrompt, buildHtmlFromBriefPrompt } from "@/lib/ai-html-prompt-generator";
+import {
+  buildBriefPrompt,
+  buildHtmlFromBriefPrompt,
+  buildElementEditPrompt,
+} from "@/lib/ai-html-prompt-generator";
 import { designBriefSchema, type DesignBrief } from "@/lib/ai-html-schema";
 import { sanitizeStoreHtml } from "@/lib/html-sanitize";
 import { isIndustry, DEFAULT_INDUSTRY } from "@/lib/industry-content";
@@ -142,6 +146,64 @@ export async function applyGeneratedHtmlAction(
   revalidatePath("/[store]", "layout");
 
   return { ok: true };
+}
+
+/** Editor: save whatever's currently in the live-edited page (text/style/AI/code-tab edits). */
+export async function saveEditedHtmlAction(
+  pageId: string,
+  html: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const session = await requireStoreOwner();
+
+  const page = await prisma.storePage.findFirst({
+    where: { id: pageId, storeId: session.user.storeId },
+  });
+  if (!page) return { ok: false, error: "Halaman tidak ditemukan." };
+
+  await prisma.storePage.update({
+    where: { id: pageId },
+    data: { html: sanitizeStoreHtml(html) },
+  });
+
+  revalidatePath("/dashboard/editor");
+  revalidatePath("/[store]", "layout");
+
+  return { ok: true };
+}
+
+/** Editor "AI" tab: rewrite one selected element per a free-text instruction. */
+export async function generateElementEditAction(
+  storeId: string,
+  currentOuterHtml: string,
+  instruction: string
+): Promise<HtmlResult> {
+  const session = await requireStoreOwner();
+  if (session.user.storeId !== storeId) return { ok: false, error: "Akses ditolak" };
+
+  const store = await prisma.store.findUniqueOrThrow({ where: { id: storeId } });
+  const config = await getAiConfig();
+  if (!config) {
+    return { ok: false, error: "Konfigurasi AI belum diatur." };
+  }
+  if (!instruction.trim()) {
+    return { ok: false, error: "Isi instruksi perubahan dulu." };
+  }
+
+  const prompt = buildElementEditPrompt(currentOuterHtml, instruction, { storeName: store.name });
+
+  let rawText: string;
+  try {
+    rawText = await callAiProvider(config, prompt);
+  } catch (err) {
+    return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
+  }
+
+  const html = sanitizeStoreHtml(stripCodeFence(rawText));
+  if (!html.trim()) {
+    return { ok: false, error: "AI tidak menghasilkan elemen yang valid." };
+  }
+
+  return { ok: true, html };
 }
 
 function stripCodeFence(text: string): string {

@@ -2,6 +2,7 @@
 
 import { useState, useTransition, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -110,7 +111,7 @@ export function AiWebsiteGeneratorWizard({
         return;
       }
       toast.success("Website berhasil diterapkan!");
-      router.refresh();
+      router.push("/editor");
     });
   }
 
@@ -124,6 +125,27 @@ export function AiWebsiteGeneratorWizard({
 
   return (
     <div className="space-y-6">
+      {hasExistingHtml && (
+        <div className="flex items-center justify-between rounded-xl border border-indigo-200 bg-indigo-50 px-5 py-4 dark:border-indigo-800 dark:bg-indigo-950/30">
+          <div>
+            <p className="text-sm font-semibold text-indigo-900 dark:text-indigo-200">
+              Halaman Beranda sudah punya konten
+            </p>
+            <p className="text-xs text-indigo-600 dark:text-indigo-400">
+              Buka editor untuk edit teks/gaya per elemen, atau lanjutkan di bawah untuk generate ulang dari awal.
+            </p>
+          </div>
+          <Button
+            size="sm"
+            nativeButton={false}
+            render={<Link href="/editor" />}
+            className="bg-indigo-600 text-white hover:bg-indigo-700"
+          >
+            Buka Editor
+          </Button>
+        </div>
+      )}
+
       <ol className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
         {(Object.keys(STEP_LABELS) as Step[]).map((s, i) => (
           <li key={s} className="flex items-center gap-1.5">

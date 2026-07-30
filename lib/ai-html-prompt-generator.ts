@@ -95,3 +95,31 @@ ATURAN WAJIB (pelanggaran akan ditolak sistem):
 
 Mulai output HTML sekarang:`;
 }
+
+/**
+ * Editor "AI" tab: rewrite a single selected element per a free-text
+ * instruction, without touching anything else on the page.
+ */
+export function buildElementEditPrompt(
+  currentOuterHtml: string,
+  instruction: string,
+  opts: { storeName: string }
+): string {
+  return `Kamu adalah Senior UI/UX Designer. Tugasmu: ubah SATU elemen HTML berikut sesuai instruksi, untuk halaman milik "${opts.storeName}".
+
+ELEMEN SAAT INI:
+${currentOuterHtml}
+
+INSTRUKSI PERUBAHAN:
+${instruction.trim()}
+
+ATURAN WAJIB:
+1. Output HANYA HTML mentah untuk elemen pengganti, TANPA markdown fence, TANPA teks penjelasan.
+2. Balikin TEPAT SATU elemen root dengan tag yang SAMA seperti elemen semula (jangan ganti mis. <h2> jadi <div>), kecuali instruksi eksplisit minta ganti tag.
+3. DILARANG KERAS <script>, <iframe>, <form>, atau atribut "on*" (onclick dkk).
+4. Boleh ubah Tailwind class, inline style (termasuk var(--store-primary) dkk untuk warna brand), dan teks di dalamnya sesuai instruksi.
+5. Jangan hapus atribut "data-klikweb-widget" kalau ada di elemen semula.
+6. Kalau instruksi tidak jelas/tidak mungkin dilakukan pada elemen ini, kembalikan elemen semula apa adanya.
+
+Mulai output HTML sekarang:`;
+}
