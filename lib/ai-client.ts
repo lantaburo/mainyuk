@@ -17,6 +17,12 @@ export interface AiCallResult {
 
 export class AiClientError extends Error {}
 
+// Hard cap per provider attempt so a hanging/unresponsive provider can't
+// block the whole request indefinitely — a fetch() with no signal will wait
+// forever, which is what surfaced as the generic "Server Timeout" toast
+// (the real cause was never a timeout, it was an unbounded hang).
+const AI_REQUEST_TIMEOUT_MS = 30_000;
+
 export async function callAiProvider(configs: AiProviderConfig | AiProviderConfig[], prompt: string): Promise<AiCallResult> {
   const configArray = Array.isArray(configs) ? configs : [configs];
   let lastError: Error | unknown;
@@ -24,6 +30,8 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
   for (const config of configArray) {
     const url = `${config.baseUrl.replace(/\/+$/, "")}/chat/completions`;
     let res: Response;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), AI_REQUEST_TIMEOUT_MS);
     try {
       res = await fetch(url, {
         method: "POST",
@@ -36,6 +44,7 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
           messages: [{ role: "user", content: prompt }],
           temperature: 0.7,
         }),
+        signal: controller.signal,
       });
 
       if (!res.ok) {
@@ -62,9 +71,14 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
 
       return { content, usage };
     } catch (e) {
-      lastError = e;
-      console.warn(`[AI] Provider ${config.baseUrl} failed, falling back...`, (e as Error).message || e);
+      const isTimeout = e instanceof Error && e.name === "AbortError";
+      lastError = isTimeout
+        ? new AiClientError(`Provider tidak merespon dalam ${AI_REQUEST_TIMEOUT_MS / 1000}s (timeout).`)
+        : e;
+      console.warn(`[AI] Provider ${config.baseUrl} failed, falling back...`, (lastError as Error).message || lastError);
       continue;
+    } finally {
+      clearTimeout(timer);
     }
   }
 
@@ -91,6 +105,8 @@ export async function* streamAiProvider(
   for (const config of configArray) {
     const url = `${config.baseUrl.replace(/\/+$/, "")}/chat/completions`;
     let res: Response;
+    const controller = new AbortController();
+    const connectTimer = setTimeout(() => controller.abort(), AI_REQUEST_TIMEOUT_MS);
     try {
       res = await fetch(url, {
         method: "POST",
@@ -104,6 +120,7 @@ export async function* streamAiProvider(
           temperature: 0.7,
           stream: true,
         }),
+        signal: controller.signal,
       });
 
       if (!res.ok || !res.body) {
@@ -113,19 +130,30 @@ export async function* streamAiProvider(
         );
       }
     } catch (e) {
-      lastError = e;
-      console.warn(`[AI] Provider ${config.baseUrl} stream failed, falling back...`, (e as Error).message || e);
+      const isTimeout = e instanceof Error && e.name === "AbortError";
+      lastError = isTimeout
+        ? new AiClientError(`Provider tidak merespon dalam ${AI_REQUEST_TIMEOUT_MS / 1000}s (timeout).`)
+        : e;
+      console.warn(`[AI] Provider ${config.baseUrl} stream failed, falling back...`, (lastError as Error).message || lastError);
       continue;
+    } finally {
+      clearTimeout(connectTimer);
     }
 
     // If we reach here, we are successfully connected to the stream.
+    // Guard each individual chunk read too — a provider that opens the
+    // stream then goes silent mid-response would otherwise hang forever
+    // here as well, past the point where a plain connect timeout helps.
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let buffer = "";
 
     try {
       while (true) {
-        const { done, value } = await reader.read();
+        const readTimeout = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new AiClientError(`Provider berhenti merespon (stall > ${AI_REQUEST_TIMEOUT_MS / 1000}s).`)), AI_REQUEST_TIMEOUT_MS)
+        );
+        const { done, value } = await Promise.race([reader.read(), readTimeout]);
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
 
