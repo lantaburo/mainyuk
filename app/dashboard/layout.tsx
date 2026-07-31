@@ -10,7 +10,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!store) redirect("/login");
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50/50">
+    <div className="flex flex-col h-screen bg-slate-50/50">
       {session.user.originalRole && (
         <div className="bg-red-600 text-white p-2 px-6 flex justify-between items-center text-sm font-medium z-50 shadow-md">
           <div className="flex items-center gap-2">

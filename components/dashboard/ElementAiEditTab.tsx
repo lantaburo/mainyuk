@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +22,31 @@ export function ElementAiEditTab({
   const [instruction, setInstruction] = useState("");
   const [lastUsage, setLastUsage] = useState<AiUsage | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  const [progress, setProgress] = useState(0);
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (isPending) {
+      setProgress(0);
+      let startTime = Date.now();
+      const duration = 4000;
+      progressIntervalRef.current = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const ratio = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - ratio, 3); // ease-out
+        setProgress(Math.round(eased * 95));
+      }, 50);
+    } else {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      setProgress(100);
+      const t = setTimeout(() => setProgress(0), 500);
+      return () => clearTimeout(t);
+    }
+    return () => {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  }, [isPending]);
 
   function handleGenerate() {
     if (!instruction.trim()) return;
@@ -53,9 +78,9 @@ export function ElementAiEditTab({
         className="resize-none text-sm"
       />
       <Button onClick={handleGenerate} disabled={isPending || !instruction.trim()} size="sm" className="w-full">
-        {isPending ? "Sedang mengubah…" : "Terapkan"}
+        {isPending ? `Sedang mengubah... ${progress}%` : "Terapkan"}
       </Button>
-      {isPending && <Progress value={null} />}
+      {isPending && <Progress value={progress} />}
       {lastUsage && !isPending && (
         <p className="text-center text-[11px] text-zinc-500">
           {lastUsage.totalTokens.toLocaleString("id-ID")} token terpakai
