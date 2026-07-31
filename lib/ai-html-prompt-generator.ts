@@ -34,10 +34,10 @@ Susun blueprint yang mempertimbangkan segmen pasar di atas: kelas ekonomi, usia 
 PANDUAN KUALITAS DESAIN (WAJIB DIPIKIRKAN, BUKAN SEKADAR DIISI):
 1. Hindari 3 pola desain generik yang paling sering muncul kalau asal comot: (a) krem + font serif tebal + aksen terracotta/oranye-bata, (b) hitam pekat + 1 warna neon, (c) gaya koran dengan garis tipis & kotak semua sudut. Kalau deskripsi bisnis tidak menentukan arah warna tertentu, JANGAN jatuh ke salah satu pola itu — cari warna yang lahir dari nama bisnis, produk, atau lokasinya sendiri.
 2. Warna harus berjumlah 4-6, bukan 3, dan punya alasan yang bisa dijelaskan (bukan sekadar "warna yang enak dilihat").
-3. Tentukan satu "signatureElement": satu hal spesifik yang akan jadi ciri khas halaman ini dan langsung terasa berbeda dari landing page bisnis sejenis lainnya (bisa berupa gaya layout, cara section disusun, atau elemen visual berulang).
-4. Tone harus tercermin di gaya penulisan section, bukan cuma dilabeli — kalau tone "santai & akrab", contentOutline juga harus ditulis dengan gaya itu, dari sudut pandang yang dikenali pelanggan (bukan istilah teknis/internal bisnis).
+3. Tentukan satu "signatureElement": satu elemen UI/layout yang sangat berani dan modern (misal: "Hero section asimetris dengan overlapping abstract geometry", "Bento-grid kompleks dengan garis tipis untuk fitur utama", atau "Dark mode elegan dengan background grid teknikal dan font super besar"). Ini harus setara dengan website pemenang penghargaan (Awwwards).
+4. Tone harus tercermin di gaya penulisan section, bukan cuma dilabeli — kalau tone "santai & akrab", contentOutline juga harus ditulis dengan gaya itu. Gunakan copywriting yang "punchy" dan tegas, jangan bertele-tele.
 5. JANGAN rancang section berbentuk formulir input (kontak/newsletter/survey) — sistem tidak mendukung form interaktif. Ganti kebutuhan itu dengan CTA tombol (WhatsApp/telepon/email).
-6. contentOutline maksimal 2-3 kalimat per section — cukup untuk jadi panduan penulisan, jangan berlebihan.
+6. contentOutline maksimal 2-3 kalimat per section — cukup untuk jadi panduan penulisan, jangan berlebihan. Fokus pada value proposition yang kuat.
 
 ATURAN FORMAT WAJIB:
 1. Output HANYA satu object JSON, TANPA teks lain di luar JSON, TANPA markdown fence (jangan bungkus dengan \`\`\`json atau \`\`\` apapun), TANPA komentar.
@@ -87,13 +87,14 @@ export function buildHtmlFromBriefPrompt(
 ${JSON.stringify(brief, null, 2)}
 --- SELESAI BLUEPRINT DESAIN ---
 
-PANDUAN KUALITAS DESAIN (WAJIB DITERAPKAN, INI YANG MEMBEDAKAN HASIL PROFESIONAL VS TEMPLATE):
-1. BERPIKIR SEPERTI SENIOR UI/UX DESIGNER: Jangan pakai pola hero paling default (judul center + subjudul + 1 tombol rounded di tengah) kecuali blueprint.signatureElement mengarah ke situ. Wujudkan signatureElement secara nyata di layout (misal bento-grid, asimetris, split-screen, dll).
-2. EKSPLORASI BACKGROUND FLEKSIBEL & KREATIF: Kamu memiliki kebebasan penuh merancang background tiap section. Gunakan CSS gradients (linear, radial), warna solid yang kaya, atau background gelap/terang yang kontras. Kamu juga bebas merancang pola/pattern abstrak menggunakan CSS atau inline SVG sebagai background (seperti mesh gradient atau ombak halus). Manfaatkan warna toko (var(--store-primary)) secara fleksibel, baik sebagai warna dominan, campuran gradien, atau aksen. Jangan ragu berkreasi tanpa batasan kaku, selama hierarki visual tetap terbaca jelas.
-3. ELEMEN MODERN & PREMIUM: Wajib gunakan Tailwind utility classes untuk border radius modern (contoh: \`rounded-2xl\`, \`rounded-3xl\`, \`rounded-full\`), bayangan lembut (contoh: \`shadow-lg\`, \`shadow-xl\`, \`shadow-black/5\`), dan card-based design dengan border halus (contoh: border dengan style="border-color: #e2e8f0").
-4. HIERARKI TIPOGRAFI ESTETIS: Judul utama harus tebal dan elegan (gunakan \`tracking-tight\`, ukuran besar). Deskripsi dan paragraf gunakan \`leading-relaxed\` dengan warna teks abu-abu elegan (style="color: #475569" atau #64748b untuk tema terang, #94a3b8 untuk tema gelap) agar tidak terlalu kontras dan tampak mahal.
-5. RUANG NEGATIF (WHITE SPACE): Beri padding yang sangat lega (contoh: \`py-20\`, \`py-24\`, atau \`py-32\`) antar section dan antar elemen. Desain yang sumpek/rapat terkesan murah. Gunakan gap (contoh: \`gap-8\`, \`gap-12\`) yang proporsional.
-6. RESPONSIVITAS SEMPURNA: Pastikan tampilan sangat rapi di layar HP menggunakan Tailwind breakpoint (\`sm:\`, \`md:\`, \`lg:\`). Gunakan \`flex-col lg:flex-row\` atau grid responsif dengan cerdas.
+PANDUAN KUALITAS DESAIN "AWARD-WINNING" (WAJIB DITERAPKAN, INI STANDAR UI TINGGI SETARA AGENCY / TAPSITE):
+1. BERPIKIR SEPERTI DESAINER KELAS DUNIA: DILARANG KERAS menggunakan layout generik membosankan (judul tengah + tombol biasa). Gunakan layout asimetris, bento-grid kompleks, overlap antar elemen (absolute positioning), atau split-screen. Wujudkan \`signatureElement\` secara ekstrem.
+2. GRID MODERN & TEKSTUR: Sangat disarankan menambahkan aksen background geometris seperti pola grid atau dot-matrix (misal: \`bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem]\`) di section tertentu (khususnya Hero) untuk memberikan kesan teknis, presisi, dan premium.
+3. ELEMEN KONTEMPORER & BORDER HALUS: Gunakan gaya border hairline tipis (\`border border-slate-200/60\`), kartu tanpa bayangan (atau shadow sangat tipis), dan radius yang konsisten (antara super melengkung \`rounded-3xl\` atau kotak tajam \`rounded-none\` ala brutalism halus). 
+4. HIERARKI TIPOGRAFI EKSTREM: Buat kontras font yang drastis. Judul utama harus SANGAT BESAR (\`text-5xl lg:text-7xl font-semibold tracking-tighter\`). Gunakan label kecil (\`text-xs font-bold uppercase tracking-widest\`) di atas judul.
+5. DEKORASI GEOMETRIS & ORNAMEN: Tambahkan ornamen abstrak murni HTML/Tailwind. Misalnya: lingkaran bergaris tipis, crosshair (+), atau elemen blok warna solid yang mengambang/overlapping di sudut elemen lain menggunakan \`absolute\` untuk memberikan kesan estetik tingkat tinggi.
+6. RUANG NEGATIF (WHITE SPACE) BRUTAL: Beri ruang kosong yang sangat dramatis. Gunakan padding masif (\`py-24\` hingga \`py-32\`) untuk tiap section. Desain yang padat merayap akan langsung dinilai jelek.
+7. RESPONSIVITAS SEMPURNA: Pastikan tampilan tetap mewah di layar HP (\`flex-col\`) dan mekar indah di \`lg:\` dengan grid cerdas.
 
 ATURAN TEKNIS WAJIB (pelanggaran akan ditolak sistem):
 1. Output HANYA HTML mentah, TANPA markdown fence, TANPA komentar, TANPA teks penjelasan di luar HTML.
