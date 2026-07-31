@@ -89,7 +89,7 @@ export function AiBlockGeneratorButton({
               "Generate"
             )}
           </Button>
-          {isPending && <Progress value={null} />}
+          {isPending && <Progress value={undefined} />}
         </form>
       </PopoverContent>
     </Popover>

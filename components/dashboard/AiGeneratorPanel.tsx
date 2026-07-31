@@ -208,7 +208,7 @@ export function AiGeneratorPanel({
             )}
           </Button>
 
-          {isPending && <Progress value={null} />}
+          {isPending && <Progress value={undefined} />}
 
           <div className="flex items-center gap-3 text-sm text-muted-foreground pt-2">
             <div className="h-px flex-1 bg-border" />

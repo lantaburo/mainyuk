@@ -193,7 +193,7 @@ export function VisualBuilder({
             disabled={isGeneratingPage}
             className="resize-none"
           />
-          {isGeneratingPage && <Progress value={null} />}
+          {isGeneratingPage && <Progress value={undefined} />}
           <DialogFooter>
             <Button
               onClick={handleGenerateFullPage}
@@ -638,7 +638,7 @@ function AiPromptTab({ block, storeId, onApply }: { block: Block; storeId: strin
       </div>
       {isPending && (
         <Progress
-          value={null}
+          value={undefined}
           className="[&_[data-slot=progress-track]]:bg-zinc-800"
         />
       )}
