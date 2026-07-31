@@ -55,6 +55,7 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
       }
 
       const json = await res.json().catch(() => null);
+      console.error("[DEBUG AI JSON RESPONSE]:", JSON.stringify(json, null, 2));
       const content = json?.choices?.[0]?.message?.content;
       if (typeof content !== "string" || !content.trim()) {
         throw new AiClientError("Respons AI kosong atau formatnya tidak dikenali.");
