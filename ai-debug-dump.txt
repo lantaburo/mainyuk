@@ -1,55 +1,55 @@
 {
-  "goal": "Mendorong tukang dan ibu rumah tangga untuk menelusuri katalog cat dan melakukan pembelian dengan percaya diri melalui pengalaman toko online yang jernih dan modern.",
-  "targetAudience": "Dua segmen utama di Indonesia: tukang/aplikator profesional (pria 25-50, kelas menengah-bawah, butuh info teknis cepat seperti daya sebar & waktu kering) dan ibu rumah tangga (30-55, kelas menengah, berorientasi estetika & inspirasi warna untuk rumah).",
+  "goal": "Menjadikan gaz sebagai toko cat online tepercaya yang memudahkan tukang dan ibu rumah tangga memilih warna serta memesan cat berkualitas dalam hitungan menit.",
+  "targetAudience": "Tukang bangunan/kontraktor kecil (25-50 th, kelas menengah-bawah, butuh info teknis cepat) dan ibu rumah tangga (28-45 th, kelas menengah, mencari inspirasi warna & kemudahan belanja) di kota-kota Indonesia.",
   "colorPalette": {
-    "primary": "#1F3A5F",
-    "secondary": "#F5F7FB",
-    "accent": "#FF6A3D",
-    "neutral": "#2B2D33",
-    "extra1": "#7BC4B4",
-    "extra2": "#F2C94C"
+    "primary": "#1B4D8C",
+    "secondary": "#E8F1FA",
+    "accent": "#FF6B35",
+    "neutral": "#0F1A2E",
+    "extra1": "#C9E4F5",
+    "extra2": "#F7D046"
   },
   "typography": {
-    "heading": "Sans-serif geometris modern seperti 'Sora' atau 'Space Grotesk' dengan weight 600-700, letter-spacing rapat untuk kesan premium",
-    "body": "Sans-serif humanis netral seperti 'Inter' atau 'DM Sans' weight 400-500, tinggi baris nyaman untuk spesifikasi teknis maupun deskripsi inspiratif"
+    "heading": "sans-serif geometris modern & tebal, mis. 'Space Grotesk' atau 'Sora' untuk kesan premium sekaligus mudah dibaca layar HP tukang",
+    "body": "sans-serif humanis yang lapang, mis. 'Inter' atau 'DM Sans' — netral, tinggi keterbacaan pada label produk & spesifikasi teknis"
   },
-  "tone": "Percaya diri, praktis, dan sedikit inspiratif — bicara langsung ke poin (galon, meter persegi, hasil akhir) tapi tetap membuka ruang imajinasi warna untuk rumah impian. Menghindari jargon berlebihan.",
-  "signatureElement": "Grid katalog cat dengan 'chip warna' berbentuk kartu kaca (frosted glass card) yang melayang di atas latar gradien lembut — setiap kartu menampilkan cipratan warna asli produk sebagai identitas utama, dengan panel spesifikasi yang muncul saat hover.",
+  "tone": "Ramah-praktis dengan sentuhan percaya diri: bicara seperti tukang cat berpengalaman yang menjelaskan ke tetangganya — lugas, sedikit hangat, tanpa jargon berlebihan. Contoh: 'Warnanya tahan 5 tahun, tinggal pilih, kami antar.'",
+  "signatureElement": "Grid katalog dengan 'Color Chip Card' — kartu produk berlatar frosted-glass tipis yang bagian atasnya adalah swatch warna cat sebenarnya (bukan foto kaleng), dengan hover reveal informasi coverage m²/liter dan tombol 'Beli' oranye kontras.",
   "sections": [
     {
       "name": "Hero",
-      "purpose": "Menetapkan positioning gaz sebagai toko cat modern yang melayani baik tukang maupun pemilik rumah.",
-      "contentOutline": "Headline besar: 'Warna yang siap kerja, warna yang siap dipajang.' Sub-copy singkat menegaskan katalog lengkap + pengiriman cepat. Dua CTA berdampingan: 'Jelajah Katalog' (primer oranye) dan 'Panduan Pilih Cat' (sekunder outline)."
+      "purpose": "Menyampaikan proposisi utama toko dan mengarahkan pengunjung ke katalog atau kategori populer.",
+      "contentOutline": "Headline besar: 'Cat Berkualitas, Warna Tepat, Sampai di Depan Rumah.' Sub-copy singkat menegaskan pengiriman cepat & konsultasi warna gratis. Dua tombol: 'Jelajahi Katalog' (primer) dan 'Lihat Kategori Populer' (sekunder)."
     },
     {
-      "name": "Kategori Utama",
-      "purpose": "Membantu dua segmen langsung menemukan jalurnya masing-masing.",
-      "contentOutline": "Empat kartu kaca kategori: Cat Interior, Cat Eksterior, Cat Kayu & Besi, Cat Dasar/Primer. Setiap kartu menampilkan ikon minimal, jumlah produk, dan rentang harga per galon."
+      "name": "Kategori Cat",
+      "purpose": "Membantu tukang dan ibu rumah tangga menemukan jenis cat sesuai kebutuhan tanpa harus scroll seluruh katalog.",
+      "contentOutline": "Tampilkan 6 kartu kategori berbentuk kaca buram dengan ikon minimalis: Cat Interior, Cat Eksterior, Cat Kayu & Besi, Cat Waterproof, Cat Dekoratif, Alat & Kuas. Setiap kartu punya 1 baris deskripsi fungsi."
     },
     {
-      "name": "Produk Unggulan",
-      "purpose": "Menampilkan grid produk premium sebagai etalase utama toko online.",
-      "contentOutline": "Grid 3-4 kolom berisi cat terlaris dengan swatch warna asli, nama produk, ukuran kemasan, harga, dan badge (Best Seller / Anti Jamur / Low Odor). Tombol 'Tambah ke Keranjang' kontras tinggi di setiap kartu."
+      "name": "Katalog Produk Unggulan",
+      "purpose": "Menampilkan produk paling dicari sebagai etalase utama dengan grid produk premium.",
+      "contentOutline": "Grid 3-4 kolom Color Chip Card menampilkan 8-12 produk unggulan lengkap dengan nama warna, merek, harga per liter, dan tombol 'Beli' kontras oranye. Filter cepat di atas: berdasarkan ruangan, hasil akhir (matte/glossy), dan rentang harga."
     },
     {
-      "name": "Palet Inspirasi Ruangan",
-      "purpose": "Menjawab kebutuhan ibu rumah tangga yang mencari kombinasi warna, bukan sekadar produk.",
-      "contentOutline": "Tiga hingga lima moodboard tematik (Ruang Tamu Hangat, Kamar Anak Ceria, Fasad Minimalis) menampilkan kombinasi 3 kode warna gaz + tombol 'Lihat Produk di Palet Ini'."
+      "name": "Panduan Pilih Warna",
+      "purpose": "Membangun kepercayaan sekaligus memberi nilai edukatif khas ibu rumah tangga yang bingung memilih warna.",
+      "contentOutline": "Tiga kartu inspirasi: 'Warna Netral untuk Ruang Tamu Modern', 'Palet Ceria untuk Kamar Anak', 'Warna Tahan Cuaca untuk Fasad'. Setiap kartu punya preview palet 4 warna dan tombol 'Belanja Palet Ini'."
     },
     {
-      "name": "Panduan Teknis untuk Tukang",
-      "purpose": "Membangun kredibilitas di mata aplikator profesional.",
-      "contentOutline": "Ringkasan data teknis: kalkulator estimasi kebutuhan cat (m² → jumlah galon), tabel daya sebar & waktu kering per lini produk, serta CTA 'Buka Katalog Profesional' menuju filter khusus."
+      "name": "Keunggulan Belanja di gaz",
+      "purpose": "Menegaskan alasan memilih gaz dibanding toko cat konvensional atau marketplace umum.",
+      "contentOutline": "Empat poin ringkas dengan ikon: Stok Lengkap Semua Merek, Harga Grosir untuk Tukang, Konsultasi Warna via WhatsApp, Pengiriman Aman Kaleng Utuh. Bahasa singkat, langsung ke manfaat."
     },
     {
-      "name": "Alasan Belanja di gaz",
-      "purpose": "Menegaskan keunggulan operasional toko online.",
-      "contentOutline": "Empat poin ringkas berikon: Stok asli & tersegel, Pengiriman same-day area kota, Konsultasi warna gratis via chat, Retur mudah kemasan belum dibuka."
+      "name": "Testimoni Nyata",
+      "purpose": "Sosial proof dari dua segmen utama agar keduanya merasa terwakili.",
+      "contentOutline": "Dua kartu testimoni berdampingan: satu dari tukang/kontraktor yang memuji harga & kecepatan kirim, satu dari ibu rumah tangga yang puas dengan hasil warna sesuai bayangan. Sertakan nama, kota, dan foto proyek kecil."
     },
     {
-      "name": "Footer",
-      "purpose": "Navigasi menyeluruh dan informasi toko.",
-      "contentOutline": "Kolom navigasi (Kategori, Layanan, Tentang gaz), info kontak toko fisik & jam operasional, tautan sosial media, serta CTA 'Chat via WhatsApp' sebagai pengganti form kontak."
+      "name": "Footer CTA & Info Toko",
+      "purpose": "Menutup halaman dengan dorongan aksi terakhir dan menyediakan jalur kontak non-form.",
+      "contentOutline": "Banner ajakan besar: 'Bingung pilih warna? Chat langsung tim gaz.' dengan tombol 'Chat WhatsApp' dan 'Mulai Belanja'. Di bawahnya info alamat toko fisik, jam operasional, tautan kategori, dan media sosial."
     }
   ]
 }

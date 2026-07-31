@@ -48,6 +48,7 @@ function readStyleValues(el: HTMLElement): ElementStyleValues {
     paddingLeft: Math.round(parseFloat(cs.paddingLeft) || 0),
     paddingRight: Math.round(parseFloat(cs.paddingRight) || 0),
     borderRadius: Math.round(parseFloat(cs.borderRadius) || 0),
+    backgroundImage: cs.backgroundImage !== "none" ? cs.backgroundImage.replace(/^url\(["']?/, "").replace(/["']?\)$/, "") : "",
   };
 }
 
@@ -62,6 +63,17 @@ function applyStylePatch(el: HTMLElement, patch: Partial<ElementStyleValues>) {
   if (patch.paddingLeft !== undefined) el.style.setProperty("padding-left", `${patch.paddingLeft}px`);
   if (patch.paddingRight !== undefined) el.style.setProperty("padding-right", `${patch.paddingRight}px`);
   if (patch.borderRadius !== undefined) el.style.setProperty("border-radius", `${patch.borderRadius}px`);
+  if (patch.backgroundImage !== undefined) {
+    if (patch.backgroundImage) {
+      el.style.setProperty("background-image", `url('${patch.backgroundImage}')`);
+      el.style.setProperty("background-size", "cover");
+      el.style.setProperty("background-position", "center");
+    } else {
+      el.style.removeProperty("background-image");
+      el.style.removeProperty("background-size");
+      el.style.removeProperty("background-position");
+    }
+  }
 }
 
 const DEFAULT_PANEL_POS = { x: -1, y: -1 }; // -1 = use CSS default position (right-6 top-[88px])

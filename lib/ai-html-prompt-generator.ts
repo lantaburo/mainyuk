@@ -142,6 +142,7 @@ ATURAN TEKNIS WAJIB (pelanggaran akan ditolak sistem):
       : ""
   }
 11. Gambar: sistem akan OTOMATIS menyuntikkan foto nyata dari Pexels ke section yang butuh gambar (hero, about, banner dll) — kamu TIDAK perlu memasukkan <img> atau background-image sama sekali. Fokus ke tipografi, warna, dan layout; sistem yang akan tambahkan foto di belakang layar.
+12. EFISIENSI TOKEN (SANGAT PENTING): JANGAN gunakan tag <svg> yang panjang. Gunakan emoji atau placeholder teks sederhana untuk ikon. JANGAN mengulang class Tailwind yang tidak perlu. Kode HTML harus kaya namun efisien agar tidak terpotong di tengah jalan!
 
 Mulai output HTML sekarang:`;
 }

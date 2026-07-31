@@ -23,6 +23,7 @@ export interface ElementStyleValues {
   paddingLeft: number;
   paddingRight: number;
   borderRadius: number;
+  backgroundImage?: string;
 }
 
 const TEXT_ALIGN_OPTIONS = ["left", "center", "right"] as const;
@@ -75,6 +76,16 @@ export function ElementStylePanel({
             />
           </div>
         </div>
+      </div>
+
+      <div className="space-y-1.5">
+        <Label className="text-xs">Background Image (URL)</Label>
+        <Input
+          placeholder="https://..."
+          value={values.backgroundImage || ""}
+          onChange={(e) => onChange({ backgroundImage: e.target.value })}
+          className="h-8 text-xs"
+        />
       </div>
 
       <div className="space-y-1.5">
