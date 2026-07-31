@@ -63,26 +63,52 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
         sanitizedText = sanitizedText.replace(/data:\s*\[DONE\]$/, "").trim();
       }
 
-      let json = null;
-      try {
-        if (sanitizedText) json = JSON.parse(sanitizedText);
-      } catch (e) {
-        console.error("[DEBUG AI PARSE ERROR] Raw text:", sanitizedText);
-      }
+      let content = "";
+      let usage: AiUsage | null = null;
 
-      const content = json?.choices?.[0]?.message?.content;
-      if (typeof content !== "string" || !content.trim()) {
-        throw new AiClientError("Respons AI kosong atau formatnya tidak dikenali.");
-      }
-
-      const rawUsage = json?.usage;
-      const usage: AiUsage | null = rawUsage
-        ? {
+      // Handle rogue SSE stream: if the provider ignored stream: false and returned SSE anyway
+      if (sanitizedText.startsWith("data: ")) {
+        const lines = sanitizedText.split("\n");
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith("data:")) continue;
+          const payload = trimmed.slice(5).trim();
+          if (payload === "[DONE]") continue;
+          try {
+            const chunk = JSON.parse(payload);
+            const delta = chunk.choices?.[0]?.delta?.content || chunk.choices?.[0]?.message?.content;
+            if (delta) content += delta;
+            if (chunk.usage) {
+              usage = {
+                promptTokens: chunk.usage.prompt_tokens ?? 0,
+                completionTokens: chunk.usage.completion_tokens ?? 0,
+                totalTokens: chunk.usage.total_tokens ?? (chunk.usage.prompt_tokens ?? 0) + (chunk.usage.completion_tokens ?? 0),
+              };
+            }
+          } catch (e) {}
+        }
+      } else {
+        // Normal JSON response
+        let json = null;
+        try {
+          if (sanitizedText) json = JSON.parse(sanitizedText);
+        } catch (e) {
+          console.error("[DEBUG AI PARSE ERROR] Raw text:", sanitizedText);
+        }
+        content = json?.choices?.[0]?.message?.content || "";
+        const rawUsage = json?.usage;
+        if (rawUsage) {
+          usage = {
             promptTokens: rawUsage.prompt_tokens ?? 0,
             completionTokens: rawUsage.completion_tokens ?? 0,
             totalTokens: rawUsage.total_tokens ?? (rawUsage.prompt_tokens ?? 0) + (rawUsage.completion_tokens ?? 0),
-          }
-        : null;
+          };
+        }
+      }
+
+      if (typeof content !== "string" || !content.trim()) {
+        throw new AiClientError("Respons AI kosong atau formatnya tidak dikenali.");
+      }
 
       return { content, usage };
     } catch (e) {
