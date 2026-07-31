@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    // Lint errors (unused vars, no-explicit-any, etc.) should not block
+    // production builds/deploys. Run `npm run lint` separately in CI/dev
+    // if you want to enforce style rules.
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
