@@ -89,9 +89,8 @@ export async function generateBriefAction(
 
   const validated = designBriefSchema.safeParse(parsed);
   if (!validated.success) {
-    console.error("[DEBUG ZOD FAILED] Parsed JSON dari AI:\n", JSON.stringify(parsed, null, 2));
-    console.error("[DEBUG ZOD ERRORS]:", validated.error.issues);
-    return { ok: false, error: "Blueprint yang di-generate tidak valid: " + validated.error.issues[0]?.message + ". Cek terminal." };
+    const errorDetails = JSON.stringify(validated.error.issues);
+    return { ok: false, error: "Zod Error: " + errorDetails };
   }
 
   // Remember the target audience for next time, even before the site itself is generated.
