@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Monitor, Search, Smartphone, Gauge, Globe, Store, Megaphone, Layout, Building2, Quote } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Monitor, Search, Smartphone, Gauge, Globe, Store, Megaphone, Layout, Building2, Quote, ArrowRight } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -112,14 +113,12 @@ export default function Home() {
               <Link href="/login" className="text-sm font-medium text-[#0B2B26] hover:text-[#F0640A]">
                 Masuk
               </Link>
-              <Button
-                size="sm"
-                nativeButton={false}
-                render={<Link href="/register" />}
-                className="bg-[#0B3B35] text-white hover:bg-[#0F4A42]"
+              <Link
+                href="/register"
+                className={cn(buttonVariants({ size: "sm" }), "bg-[#0B3B35] text-white hover:bg-[#0F4A42]")}
               >
                 Buat Toko
-              </Button>
+              </Link>
             </nav>
             </div>
           </header>
@@ -136,14 +135,12 @@ export default function Home() {
                 Dari yang sepi, jadi <span className="font-semibold text-[#0B2B26]">ramai pelanggan</span>.
               </p>
               <div className="mt-8 flex justify-center gap-3">
-                <Button
-                  size="lg"
-                  nativeButton={false}
-                  render={<Link href="/register" />}
-                  className="bg-[#0B3B35] text-white hover:bg-[#0F4A42]"
+                <Link
+                  href="/register"
+                  className={cn(buttonVariants({ size: "lg" }), "bg-[#0B3B35] text-white hover:bg-[#0F4A42]")}
                 >
                   Mulai Gratis
-                </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -239,14 +236,12 @@ export default function Home() {
             <p className="mt-3 text-white/70">
               Buat toko online profesional hari ini — mulai gratis, tanpa perlu keahlian teknis.
             </p>
-            <Button
-              size="lg"
-              nativeButton={false}
-              render={<Link href="/register" />}
-              className="mt-6 bg-[#F0640A] text-white hover:bg-[#F0640A]/90"
+            <Link
+              href="/register"
+              className={cn(buttonVariants({ size: "lg" }), "mt-6 bg-[#F0640A] text-white hover:bg-[#F0640A]/90")}
             >
               Mulai Gratis Sekarang
-            </Button>
+            </Link>
           </div>
         </section>
       </main>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireStoreOwner } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -24,7 +24,7 @@ export default async function ArtikelListPage() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Artikel / Blog</h1>
-        <Button nativeButton={false} render={<Link href="/dashboard/artikel/baru" />}>Tambah Artikel</Button>
+        <Link href="/dashboard/artikel/baru" className={buttonVariants()}>Tambah Artikel</Link>
       </div>
       <p className="mt-1 text-sm text-muted-foreground">
         Kelola artikel atau blog untuk meningkatkan SEO dan mendatangkan traffic organik ke toko Anda.

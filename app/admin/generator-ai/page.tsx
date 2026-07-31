@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Wand2 } from "lucide-react";
 
@@ -66,16 +66,13 @@ export default async function AdminGeneratorAiIndexPage() {
                     <div className="text-xs text-gray-500">{store.owner.email}</div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      nativeButton={false}
-                      className="border-indigo-200 text-indigo-700 hover:bg-indigo-50"
-                      render={<Link href={`/admin/generator-ai/${store.id}`} />}
+                    <Link
+                      href={`/admin/generator-ai/${store.id}`}
+                      className={buttonVariants({ variant: "outline", size: "sm" })}
                     >
                       <Wand2 className="mr-2 h-4 w-4" />
                       Generate AI
-                    </Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               );

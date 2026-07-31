@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCart } from "@/components/storefront/CartProvider";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { formatRupiah } from "@/lib/format";
 
 export default function KeranjangPage() {
@@ -15,13 +15,12 @@ export default function KeranjangPage() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 text-center">
         <p className="text-muted-foreground">Keranjang belanja kosong.</p>
-        <Button
-          className="mt-4"
-          nativeButton={false}
-          render={<Link href={`/${store}/produk`} />}
+        <Link
+          href={`/${store}/produk`}
+          className={buttonVariants({ className: "mt-6 bg-[var(--store-primary)] text-white hover:opacity-90" })}
         >
-          Lihat Produk
-        </Button>
+          Mulai Belanja
+        </Link>
       </div>
     );
   }

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useTransition, type CSSProperties } from "
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -270,14 +270,12 @@ export function AiWebsiteGeneratorWizard({
               Buka editor untuk edit teks/gaya per elemen, atau lanjutkan di bawah untuk generate ulang dari awal.
             </p>
           </div>
-          <Button
-            size="sm"
-            nativeButton={false}
-            render={<Link href={afterApplyUrl} />}
-            className="bg-indigo-600 text-white hover:bg-indigo-700"
+          <Link
+            href={afterApplyUrl}
+            className={cn(buttonVariants({ size: "sm" }), "bg-indigo-600 text-white hover:bg-indigo-700")}
           >
             Buka Editor
-          </Button>
+          </Link>
         </div>
       )}
 

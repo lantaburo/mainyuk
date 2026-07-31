@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireStoreOwner } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -25,7 +25,7 @@ export default async function ProdukListPage() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Produk</h1>
-        <Button nativeButton={false} render={<Link href="/dashboard/produk/baru" />}>Tambah Produk</Button>
+        <Link href="/dashboard/produk/baru" className={buttonVariants()}>Tambah Produk</Link>
       </div>
 
       {products.length === 0 ? (
