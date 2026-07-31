@@ -146,26 +146,40 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger
-                          render={<Button variant="ghost" className="h-8 w-8 p-0 hover:bg-white shadow-sm border border-transparent hover:border-slate-200 transition-all" />}
-                        >
-                          <span className="sr-only">Buka menu</span>
-                          <MoreHorizontal className="h-4 w-4 text-slate-600" />
-                        </DropdownMenuTrigger>
+                          render={
+                            <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-white shadow-sm border border-transparent hover:border-slate-200 transition-all">
+                              <span className="sr-only">Buka menu</span>
+                              <MoreHorizontal className="h-4 w-4 text-slate-600" />
+                            </Button>
+                          }
+                        />
                         <DropdownMenuContent align="end" className="w-[160px] bg-white/90 backdrop-blur-xl border-white/50 shadow-xl">
                           <DropdownMenuLabel className="font-bold text-slate-700">Aksi Tenant</DropdownMenuLabel>
                           <DropdownMenuSeparator className="bg-slate-100" />
-                          <DropdownMenuItem className="cursor-pointer font-medium w-full" onSelect={() => startImpersonation(store.id)}>
-                            <UserCircle className="mr-2 h-4 w-4 text-emerald-600" />
-                            <span className="text-emerald-700">Impersonate</span>
+                          <DropdownMenuItem className="p-0">
+                            <form action={startImpersonation.bind(null, store.id)} className="w-full">
+                              <button type="submit" className="flex w-full items-center px-1.5 py-1 cursor-pointer font-medium text-left">
+                                <UserCircle className="mr-2 h-4 w-4 text-emerald-600" />
+                                <span className="text-emerald-700">Impersonate</span>
+                              </button>
+                            </form>
                           </DropdownMenuItem>
-                          <DropdownMenuItem render={<Link href={`/admin/generator-ai/${store.id}`} className="cursor-pointer font-medium w-full" />}>
-                            <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
-                            <span className="text-indigo-900">AI Generator</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem render={<Link href={`/admin-editor/${store.id}`} className="cursor-pointer font-medium w-full" />}>
-                            <PenSquare className="mr-2 h-4 w-4 text-slate-500" />
-                            <span className="text-slate-700">Edit Halaman</span>
-                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            render={
+                              <Link href={`/admin/generator-ai/${store.id}`} className="cursor-pointer font-medium w-full flex items-center px-1.5 py-1">
+                                <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
+                                <span className="text-indigo-900">AI Generator</span>
+                              </Link>
+                            } 
+                          />
+                          <DropdownMenuItem 
+                            render={
+                              <Link href={`/admin-editor/${store.id}`} className="cursor-pointer font-medium w-full flex items-center px-1.5 py-1">
+                                <PenSquare className="mr-2 h-4 w-4 text-slate-500" />
+                                <span className="text-slate-700">Edit Halaman</span>
+                              </Link>
+                            } 
+                          />
                           <DropdownMenuSeparator className="bg-slate-100" />
                           <DropdownMenuItem className="p-0" onSelect={(e) => e.preventDefault()}>
                             <ConfirmDeleteButton
