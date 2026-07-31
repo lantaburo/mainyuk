@@ -28,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={cn("font-sans", geistSans.variable)}>
+      <head>
+        <script src="https://unpkg.com/@phosphor-icons/web" async></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

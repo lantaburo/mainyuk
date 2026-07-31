@@ -107,8 +107,8 @@ export function buildHtmlFromBriefPrompt(
 5. RUANG NEGATIF EKSENTRIK: Beri padding yang lega namun dinamis, biarkan beberapa elemen menembus batas grid untuk kesan out-of-the-box.`;
   } else {
     uiGuidelines = `1. BERPIKIR SEPERTI DESAINER KELAS DUNIA (AWWWARDS): Bebaskan kreativitasmu! Gunakan layout asimetris, bento-grid kompleks, overlap antar elemen (absolute positioning), atau split-screen.
-2. ESTETIKA PREMIUM & LENTUR: Tambahkan aksen background geometris, efek glow (blur), dan glassmorphism secara ekstensif untuk kesan mahal dan futuristik/organik.
-3. MIKRO-ANIMASI BEBAS: Setiap elemen harus merespons kursor (hover scale, warna transisi, shadow glow). Buat desainnya terasa sangat hidup dan tidak kaku.
+2. ESTETIKA PREMIUM & LENTUR: Wajib tambahkan aksen background geometris, efek glow (blur), gradient meshes halus, dan glassmorphism secara ekstensif untuk kesan mahal, futuristik, atau organik.
+3. MIKRO-ANIMASI BEBAS & WAJIB: Setiap elemen (kartu, tombol, gambar) HARUS merespons kursor (hover:scale-105 hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 ease-out). Buat desainnya terasa sangat HIDUP dan berkelas seperti Lovable/v0.
 4. HIERARKI TIPOGRAFI EKSTREM: Judul utama SANGAT BESAR (\`text-5xl lg:text-8xl font-black tracking-tighter\`). Bereksperimenlah dengan perataan teks dan tipografi vertikal atau tumpang tindih.
 5. DEKORASI ALL-OUT: Tambahkan ornamen abstrak murni HTML/Tailwind (lingkaran bergaris tipis, crosshair, blob organik, atau blok warna \`absolute\`).
 6. RUANG NEGATIF BRUTAL: Gunakan padding masif dan susunan elemen yang melanggar batas (overlap) secara elegan.`;
@@ -142,7 +142,8 @@ ATURAN TEKNIS WAJIB (pelanggaran akan ditolak sistem):
       : ""
   }
 11. Gambar: sistem akan OTOMATIS menyuntikkan foto nyata dari Pexels ke section yang butuh gambar (hero, about, banner dll) — kamu TIDAK perlu memasukkan <img> atau background-image sama sekali. Fokus ke tipografi, warna, dan layout; sistem yang akan tambahkan foto di belakang layar.
-12. EFISIENSI TOKEN (SANGAT PENTING): JANGAN gunakan tag <svg> yang panjang. Gunakan emoji atau placeholder teks sederhana untuk ikon. JANGAN mengulang class Tailwind yang tidak perlu. Kode HTML harus kaya namun efisien agar tidak terpotong di tengah jalan!
+12. IKON PREMIUM: DILARANG menggunakan tag <svg>. Sistem ini telah dilengkapi Phosphor Icons secara global. JIKA BUTUH IKON, cukup tuliskan tag <i> seperti ini: <i class="ph ph-rocket text-4xl"></i>, atau <i class="ph-duotone ph-heart"></i>. 
+13. EFEK "HIDUP" (CRITICAL): Seluruh elemen tombol, link, dan card WAJIB diberi class Tailwind \`transition-all duration-300\` dan efek hover seperti \`hover:scale-105\`, \`hover:-translate-y-2\`, \`hover:shadow-2xl\` dll agar desain terasa SANGAT HIDUP!
 
 Mulai output HTML sekarang:`;
 }
