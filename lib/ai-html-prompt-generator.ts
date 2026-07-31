@@ -94,24 +94,24 @@ export function buildHtmlFromBriefPrompt(
 
   let uiGuidelines = "";
   if (opts.siteType === "storefront") {
-    uiGuidelines = `1. BERPIKIR SEPERTI DESAINER E-COMMERCE: Gunakan layout minimalis dan bersih. Fokus pada produk dan keterbacaan. Tidak perlu terlalu asimetris, gunakan grid proporsional yang rapi.
-2. BACKGROUND & TEKSTUR: Gunakan warna solid (putih atau off-white) untuk mayoritas background agar produk menonjol. Gunakan aksen warna brand HANYA untuk tombol CTA atau header/footer.
-3. ELEMEN & BORDER: Gunakan kartu dengan border sangat tipis (\`border-slate-200\`) atau bayangan sangat lembut (\`shadow-sm\`). Radius moderat (\`rounded-xl\`).
-4. HIERARKI TIPOGRAFI: Judul jelas dan elegan, deskripsi mudah dibaca. Tidak perlu font super raksasa, cukup \`text-4xl lg:text-5xl\` untuk hero.
-5. RUANG NEGATIF: Padding yang lega tapi tetap efisien untuk menampilkan banyak konten. Gunakan \`py-16\` atau \`py-24\` antar section.`;
+    uiGuidelines = `1. BERPIKIR SEPERTI DESAINER E-COMMERCE PREMIUM & AWWWARDS: Jangan gunakan layout kaku/templated! Terapkan bento-grid dinamis, asimetris cerdas, dan elemen mengambang (overlap) yang memukau.
+2. ESTETIKA "ALL-OUT": Gunakan efek kekinian seperti glassmorphism (backdrop-blur), gradient mesh halus, pola geometris atau tekstur grid di latar belakang.
+3. MIKRO-ANIMASI & INTERAKSI: Semua tombol dan kartu WAJIB punya efek hover yang mulus (scale, translateY, shadow-lg, opacity berubah). Buat elemen terasa hidup dan responsif terhadap interaksi pengguna.
+4. BORDER & KEDALAMAN: Mainkan bayangan berlapis (layered shadows) atau border tipis dengan pendaran cahaya lembut. Jangan takut memakai desain yang berani.
+5. TIPOGRAFI EKSTREM & MEWAH: Gunakan ukuran font yang sangat bervariasi. Judul raksasa (text-6xl atau text-7xl) yang tumpang tindih dengan elemen lain, dipadu dengan font sans-serif berkelas.`;
   } else if (opts.siteType === "sales_page") {
-    uiGuidelines = `1. BERPIKIR SEPERTI COPYWRITER & DESAINER KONVERSI: Layout satu kolom yang terpusat sangat disarankan. Setiap elemen harus menggiring mata ke tombol CTA (misal tombol beli atau WhatsApp).
-2. BACKGROUND & TEKSTUR: Gunakan kontras warna yang drastis antar section (misal section putih, lalu section hitam/warna gelap) untuk mempertahankan atensi.
-3. ELEMEN KONTEMPORER: Gunakan "Trust Badges" (garansi, kepuasan, dll) dengan desain kotak tebal atau ikon. Tombol CTA harus sangat besar, warna terang (misal oranye/kuning), dan membulat penuh (\`rounded-full\`).
-4. HIERARKI TIPOGRAFI EKSTREM: Judul harus SANGAT BESAR (\`text-5xl lg:text-7xl font-black\`) dan memprovokasi. Teks menggunakan \`text-center\` di banyak tempat.
-5. RUANG NEGATIF: Beri padding \`py-20\` antar section, tapi jaga agar paragraf teks tidak terlalu lebar (gunakan \`max-w-2xl mx-auto\` untuk keterbacaan).`;
+    uiGuidelines = `1. BERPIKIR SEPERTI DESAINER KONVERSI KELAS DUNIA: Desain harus memukau, luwes, dan menghipnotis mata! Gunakan layout dinamis, split-screen, atau bagian yang overlap.
+2. BACKGROUND & TEKSTUR: Jangan biarkan latar belakang kosong/polos! Selalu tambahkan aksen warna, blur orbs, efek glow (radial-gradient), atau glassmorphism yang kaya.
+3. ELEMEN KONTEMPORER & ALL-OUT: Tombol CTA harus sangat menggoda dengan efek hover animasi (bounce/scale), warna menyala, dan desain 3D atau neon tipis.
+4. HIERARKI TIPOGRAFI EKSTREM: Judul provokatif harus SANGAT BESAR (\`text-6xl lg:text-8xl font-black\`). Gunakan tata letak teks asimetris yang tidak membosankan.
+5. RUANG NEGATIF EKSENTRIK: Beri padding yang lega namun dinamis, biarkan beberapa elemen menembus batas grid untuk kesan out-of-the-box.`;
   } else {
-    uiGuidelines = `1. BERPIKIR SEPERTI DESAINER KELAS DUNIA (AWWWARDS): Gunakan layout asimetris, bento-grid kompleks, overlap antar elemen (absolute positioning), atau split-screen.
-2. GRID MODERN & TEKSTUR: Tambahkan aksen background geometris (misal pola grid: \`bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem]\`) untuk kesan teknikal/premium.
-3. ELEMEN & BORDER HALUS: Gunakan gaya border hairline (\`border border-slate-200/60\`), tanpa bayangan, dan radius konsisten (antara \`rounded-3xl\` atau \`rounded-none\` ala brutalism).
-4. HIERARKI TIPOGRAFI EKSTREM: Judul utama SANGAT BESAR (\`text-5xl lg:text-7xl font-semibold tracking-tighter\`). Label kecil uppercase (\`tracking-widest\`) di atas judul.
-5. DEKORASI GEOMETRIS: Tambahkan ornamen abstrak murni HTML/Tailwind (lingkaran bergaris tipis, crosshair, atau blok warna \`absolute\`).
-6. RUANG NEGATIF BRUTAL: Padding masif (\`py-24\` hingga \`py-32\`) untuk tiap section.`;
+    uiGuidelines = `1. BERPIKIR SEPERTI DESAINER KELAS DUNIA (AWWWARDS): Bebaskan kreativitasmu! Gunakan layout asimetris, bento-grid kompleks, overlap antar elemen (absolute positioning), atau split-screen.
+2. ESTETIKA PREMIUM & LENTUR: Tambahkan aksen background geometris, efek glow (blur), dan glassmorphism secara ekstensif untuk kesan mahal dan futuristik/organik.
+3. MIKRO-ANIMASI BEBAS: Setiap elemen harus merespons kursor (hover scale, warna transisi, shadow glow). Buat desainnya terasa sangat hidup dan tidak kaku.
+4. HIERARKI TIPOGRAFI EKSTREM: Judul utama SANGAT BESAR (\`text-5xl lg:text-8xl font-black tracking-tighter\`). Bereksperimenlah dengan perataan teks dan tipografi vertikal atau tumpang tindih.
+5. DEKORASI ALL-OUT: Tambahkan ornamen abstrak murni HTML/Tailwind (lingkaran bergaris tipis, crosshair, blob organik, atau blok warna \`absolute\`).
+6. RUANG NEGATIF BRUTAL: Gunakan padding masif dan susunan elemen yang melanggar batas (overlap) secara elegan.`;
   }
 
   return `Kamu adalah Senior UI/UX Designer & front-end developer di studio yang dikenal karena desainnya tidak pernah terasa templated. Tugasmu: tulis SATU fragment HTML (bukan dokumen HTML lengkap) yang mengimplementasikan blueprint desain berikut untuk halaman "${opts.storeName}" (${config.label}).
