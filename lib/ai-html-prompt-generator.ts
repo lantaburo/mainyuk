@@ -51,9 +51,10 @@ PANDUAN KUALITAS DESAIN (WAJIB DIPIKIRKAN, BUKAN SEKADAR DIISI):
 
 ATURAN FORMAT WAJIB:
 1. Output HANYA satu object JSON, TANPA teks lain di luar JSON, TANPA markdown fence (jangan bungkus dengan \`\`\`json atau \`\`\` apapun), TANPA komentar.
-2. Bahasa Indonesia untuk semua isi teks.
-3. Warna di "colorPalette" harus kode hex valid (mis. "#0f766e").
-4. "sections" minimal 3, maksimal 7 — urutkan sesuai alur.
+2. JANGAN menggunakan tag <think> atau menuliskan proses berpikir Anda. Langsung berikan hasil JSON murni!
+3. Bahasa Indonesia untuk semua isi teks.
+4. Warna di "colorPalette" harus kode hex valid (mis. "#0f766e").
+5. "sections" minimal 3, maksimal 7 — urutkan sesuai alur.
 
 FORMAT OUTPUT (ikuti struktur ini persis):
 {

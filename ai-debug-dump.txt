@@ -1,0 +1,46 @@
+```json
+{
+  "goal": "Membangun toko online yang menonjolkan koleksi cart dinding urban series dengan pengalaman belanja yang mudah dipahami tukang dan ibu rumah tangga, sekaligus terasa premium lewat glassmorphism modern.",
+  "targetAudience": "Tang dan ibu rumah tangga kelas menengah yang mencari solusi penyimpanan dinding praktis dengan estetika urban kontemporer, mengutamakan ketahanan produk dan kemudahan pemasangan.",
+  "colorPalette": {
+    "primary": "#1a1a1a",
+    "secondary": "#f5f5f5",
+    "accent": "#00b4d8",
+    "neutral": "#6b7280",
+    "extra1": "#caf0f8",
+    "extra2": "#023e8a"
+  },
+  "typography": {
+    "heading": "Sans-serif tebal geometris dengan sedikit rounded edge untuk kesan approachable namun industrial",
+    "body": "Sans-serif medium-weight dengan lineheight longgar agar mudah dibaca segmen pasar yang tidak terbiasa belanja online"
+  },
+  "tone": "Praktis dan jelas dengan sentuhan hangat—seperti sales toko material yang paham kebutuhan pelanggan, bukan copywriting hipster yang bikin bingung",
+  "signatureElement": "Card produk dengan efek glassmorphism blur putih transparan yang muncul saat hover, memperlihatkan spesifikasi teknis (uran, beban maksimal, bahan) dalam layout grid angka mudah dipindai mata",
+  "sections": [
+    {
+      "name": "Hero
+      "purpose": "Perkenalan langsung produk unggulan dengan value proposition yang jelas untuk segmen pasar yang butuh solusi cepat",
+      "contentOutline": "Tagline fungsional: 'Cart Dinding yang Tahan Lama untuk Rumah & Workshop Anda' dengan visual hero menampilkan 23 varian carterpasang di setting urban realistis (garasi, dapur industrial). Tombol CTA 'Lihat Koleksi' mengarah ke katalog."
+    },
+    {
+      "name": "Kategori Produk",
+      "purpose": "Navigasi katalog berdasarkan kebutuhan praktis pengguna,ukan label marketing yang ambigu",
+      "contentOutline": "Grid3-4 kategori denganikon sederhana: Sudut', 'Cart Modular', 'Cart Heavy Duty', 'Aksesori Tambahan'. Setiap card punya thumbnail produk nyata dan jumlah item, bukan ilustrasi dekoratif.""name": "Produk Unggulan",
+      "purpose": "Showcase best-seller dengan informasi teknis yang dibutuhkan pembeli praktis",
+      "contentOutline": "Carousel horizontal6 produk dengan card glassmorphism. Tiap card tampilkan foto produk, nama model (misal 'Urban Series G-07'), harga jelas, dan spek utama (kapasitas beban & dimensi).bol 'Detail' di ti.""name": "Kenapa Pilih gaz",
+      "purpose": "Membangun trustat value proposition konkret yang relevan untuk segmen tukang dan ibu RT",
+      "contentOutline": "Layout3 kolom dengan ikon minimal: 'Bahan Baja Anti Karat', 'Instalasi Mudah Tanpa Bor Khusus', 'Garansi  Tahun'. Copy singkat peroin, hindari jargon marketing. Background transparan glassmorphism agar konsisten."
+    },
+    {
+      "name": "Galeri Aplikasi",
+      "purpose": "Inspirasi pemasangan konteks nyata untuk meyakinkan pembeli produk cocok di ruang mereka",
+      "contentOutline": "Grid foto 2x3ampilkan carterpasang di berbagai ruang: workshop, dapur, garasi, balkon. Tiap foto ada label lokasi singkat. Hindari foto studioerlalu bersih—tampkan setting urban realistis."
+    },
+    {
+      "name": "CTA Beli Sekarang",
+      "purpose": "Dorong konversi dengan ajakan jelas danopsional info pengiriman",
+      "contentOutline": "Centered section dengan background glassmorphism accent blue Headline: 'Siap Upgrade Ruang Anda?' dengan tombol besar 'Belanja Sekarang'. Tambahkan satu baris info pengiriman: 'Gratis ongkir Jabodetabek untuk pembelian  unit atau lebih.'"
+    }
+  ]
+}
+```
