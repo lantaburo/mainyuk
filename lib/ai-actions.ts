@@ -79,6 +79,11 @@ export async function generateBriefAction(
     return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
   }
 
+  const fs = require("fs");
+  try {
+    fs.writeFileSync("ai-debug-dump.txt", result.content);
+  } catch (e) {}
+
   let parsed: unknown;
   try {
     parsed = extractJson(result.content);
