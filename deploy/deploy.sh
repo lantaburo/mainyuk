@@ -35,6 +35,16 @@ log "=== Deploy started (branch: $BRANCH) ==="
 # 1. Pull latest code
 log "Pulling latest code from origin/$BRANCH..."
 
+# Auto-stash any local edits so deploys never fail with "would be overwritten
+# by merge" — usually these are hot-fixes made directly on the server that
+# never got committed, and the last remote push already carries the fix.
+# Anything genuinely needed can be recovered via `git stash list`.
+if [ -n "$(git status --porcelain)" ]; then
+  STASH_MSG="deploy-autostash-$(date +%s)"
+  log "Local changes detected, auto-stashing as '$STASH_MSG'"
+  git stash push -u -m "$STASH_MSG" >>"$LOG_FILE" 2>&1 || true
+fi
+
 if ! git pull origin "$BRANCH" >>"$LOG_FILE" 2>&1; then
   log "ERROR: git pull failed"
   notify_slack "danger" "❌ *klikweb.id* deploy FAILED at \`$COMMIT\`\ngit pull error. Check deploy.log"
