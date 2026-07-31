@@ -1,5 +1,4 @@
-import { PrismaClient } from "./lib/generated/prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "./lib/prisma";
 
 async function main() {
   await prisma.aiProvider.updateMany({
