@@ -251,10 +251,11 @@ export function extractJson(text: string): unknown {
     try { return JSON.parse(fenced[1].trim()); } catch {}
   }
 
-  // 3. balanced-brace scan — walk the string once, tracking whether we're
-  // inside a JSON string literal, and emit the substring between the first
-  // outer `{`/`[` and its matching close.
+  // 3. balanced-brace scan — find ALL valid JSON objects/arrays and pick the largest one.
   const openers: Record<string, string> = { "{": "}", "[": "]" };
+  let largestJsonStr = "";
+  let largestJsonObj: unknown = null;
+
   for (let i = 0; i < raw.length; i++) {
     const opener = raw[i];
     if (!(opener in openers)) continue;
@@ -272,11 +273,22 @@ export function extractJson(text: string): unknown {
       else if (c === closer) {
         depth--;
         if (depth === 0) {
-          try { return JSON.parse(raw.slice(i, j + 1)); } catch {}
+          const candidateStr = raw.slice(i, j + 1);
+          if (candidateStr.length > largestJsonStr.length) {
+            try {
+              const parsed = JSON.parse(candidateStr);
+              largestJsonStr = candidateStr;
+              largestJsonObj = parsed;
+            } catch {}
+          }
           break;
         }
       }
     }
+  }
+
+  if (largestJsonObj !== null) {
+    return largestJsonObj;
   }
 
   throw new AiClientError("Balasan AI bukan JSON yang valid.");
