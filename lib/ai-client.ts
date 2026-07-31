@@ -21,7 +21,7 @@ export class AiClientError extends Error {}
 // block the whole request indefinitely — a fetch() with no signal will wait
 // forever, which is what surfaced as the generic "Server Timeout" toast
 // (the real cause was never a timeout, it was an unbounded hang).
-const AI_REQUEST_TIMEOUT_MS = 30_000;
+const AI_REQUEST_TIMEOUT_MS = 120_000;
 
 export async function callAiProvider(configs: AiProviderConfig | AiProviderConfig[], prompt: string): Promise<AiCallResult> {
   const configArray = Array.isArray(configs) ? configs : [configs];
