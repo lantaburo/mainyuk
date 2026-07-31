@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SITE_TYPE_CONFIG } from "@/lib/site-types";
 import { updateStoreStatus, deleteStore } from "@/app/admin/actions";
+import { startImpersonation } from "@/app/actions/impersonate-actions";
 import {
   Table,
   TableBody,
@@ -16,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StoreStatusSelect } from "@/components/admin/StoreStatusSelect";
 import { ConfirmDeleteButton } from "@/components/admin/ConfirmDeleteButton";
-import { ShoppingBag, ExternalLink, PenSquare, Sparkles, Search, MoreHorizontal, LayoutTemplate } from "lucide-react";
+import { ShoppingBag, ExternalLink, PenSquare, Sparkles, Search, MoreHorizontal, LayoutTemplate, UserCircle } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -153,6 +154,10 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                         <DropdownMenuContent align="end" className="w-[160px] bg-white/90 backdrop-blur-xl border-white/50 shadow-xl">
                           <DropdownMenuLabel className="font-bold text-slate-700">Aksi Tenant</DropdownMenuLabel>
                           <DropdownMenuSeparator className="bg-slate-100" />
+                          <DropdownMenuItem className="cursor-pointer font-medium w-full" onSelect={() => startImpersonation(store.id)}>
+                            <UserCircle className="mr-2 h-4 w-4 text-emerald-600" />
+                            <span className="text-emerald-700">Impersonate</span>
+                          </DropdownMenuItem>
                           <DropdownMenuItem render={<Link href={`/admin/generator-ai/${store.id}`} className="cursor-pointer font-medium w-full" />}>
                             <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
                             <span className="text-indigo-900">AI Generator</span>

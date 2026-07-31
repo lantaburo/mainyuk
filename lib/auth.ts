@@ -2,6 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { cookies } from "next/headers";
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
@@ -48,6 +49,18 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub as string;
         session.user.role = token.role;
         session.user.storeId = token.storeId;
+
+        // Impersonation logic
+        if (token.role === "super_admin" || token.role === "operator") {
+          const cookieStore = cookies();
+          const impersonateStoreId = cookieStore.get("impersonate_store_id")?.value;
+          
+          if (impersonateStoreId) {
+            session.user.originalRole = token.role;
+            session.user.role = "store_owner";
+            session.user.storeId = impersonateStoreId;
+          }
+        }
       }
       return session;
     },
