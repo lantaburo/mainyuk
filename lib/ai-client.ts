@@ -230,12 +230,54 @@ export function stripCodeFence(text: string): string {
   return (fenced ? fenced[1] : withoutThinking).trim();
 }
 
+/**
+ * Best-effort JSON extraction from an AI response. The model often wraps the
+ * JSON in prose ("Berikut hasilnya:\n[...]\nSemoga membantu!") or a code fence
+ * — a plain JSON.parse over the whole string dies on either. We try, in order:
+ *   1. Parse the whole thing as-is (fast path when the model behaves).
+ *   2. Unwrap a ```json ... ``` fence (the common well-behaved wrapping).
+ *   3. Locate the outermost balanced [] or {} in the raw text and parse that.
+ *      String-aware brace scan, so braces inside quoted values don't confuse us.
+ */
 export function extractJson(text: string): unknown {
-  const raw = stripCodeFence(text);
+  const raw = stripThinking(text).trim();
 
-  try {
-    return JSON.parse(raw.trim());
-  } catch {
-    throw new AiClientError("Balasan AI bukan JSON yang valid.");
+  // 1. straight parse
+  try { return JSON.parse(raw); } catch {}
+
+  // 2. fenced block
+  const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fenced) {
+    try { return JSON.parse(fenced[1].trim()); } catch {}
   }
+
+  // 3. balanced-brace scan — walk the string once, tracking whether we're
+  // inside a JSON string literal, and emit the substring between the first
+  // outer `{`/`[` and its matching close.
+  const openers: Record<string, string> = { "{": "}", "[": "]" };
+  for (let i = 0; i < raw.length; i++) {
+    const opener = raw[i];
+    if (!(opener in openers)) continue;
+    const closer = openers[opener];
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+    for (let j = i; j < raw.length; j++) {
+      const c = raw[j];
+      if (escaped) { escaped = false; continue; }
+      if (c === "\\") { escaped = true; continue; }
+      if (c === '"') { inString = !inString; continue; }
+      if (inString) continue;
+      if (c === opener) depth++;
+      else if (c === closer) {
+        depth--;
+        if (depth === 0) {
+          try { return JSON.parse(raw.slice(i, j + 1)); } catch {}
+          break;
+        }
+      }
+    }
+  }
+
+  throw new AiClientError("Balasan AI bukan JSON yang valid.");
 }
