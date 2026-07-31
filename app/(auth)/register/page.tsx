@@ -123,7 +123,7 @@ export default function RegisterPage() {
 
     setLoading(false);
 
-    if (signInRes?.error) {
+    if (!signInRes || !signInRes.ok || signInRes.error) {
       router.push("/login");
       return;
     }

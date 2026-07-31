@@ -25,8 +25,8 @@ export default function LoginPage() {
 
     setLoading(false);
 
-    if (res?.error) {
-      setError("Email atau password salah");
+    if (!res || !res.ok || res.error) {
+      setError("Email atau password salah, atau server sedang sibuk.");
       return;
     }
 
