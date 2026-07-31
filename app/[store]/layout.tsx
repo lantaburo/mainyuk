@@ -39,7 +39,11 @@ export async function generateMetadata({
     },
     verification: {
       google: store.googleSiteVerification,
-    }
+    },
+    icons: store.settings?.useFavicon && store.faviconUrl ? {
+      icon: store.faviconUrl,
+      apple: store.faviconUrl,
+    } : undefined
   };
 }
 
@@ -78,7 +82,9 @@ export default async function StoreLayout({
   const body = (
     <div style={themeStyle} className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <StorefrontHeader store={store} config={config} />
+      {store.settings?.useGlobalHeader !== false && (
+        <StorefrontHeader store={store} config={config} />
+      )}
       <main>{children}</main>
       <StorefrontFooter store={store} />
     </div>

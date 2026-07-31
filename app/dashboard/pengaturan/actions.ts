@@ -206,3 +206,74 @@ export async function updateStoreSEO(formData: FormData) {
   revalidatePath("/dashboard/pengaturan");
   revalidatePath("/dashboard", "layout");
 }
+
+export async function updateBrandingSettings(formData: FormData) {
+  const session = await requireStoreOwner();
+  const useGlobalHeader = formData.get("useGlobalHeader") === "on";
+  const useLogo = formData.get("useLogo") === "on";
+  const useFavicon = formData.get("useFavicon") === "on";
+  const faviconUrl = formData.get("faviconUrl")?.toString() || null;
+
+  await prisma.store.update({
+    where: { id: session.user.storeId },
+    data: { faviconUrl },
+  });
+
+  await prisma.storeSettings.update({
+    where: { storeId: session.user.storeId },
+    data: { useGlobalHeader, useLogo, useFavicon },
+  });
+
+  revalidatePath("/dashboard/pengaturan");
+  revalidatePath("/[store]", "layout");
+}
+
+export const menuSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.enum(["page", "url"]),
+  target: z.string().optional(),
+  isVisible: z.boolean(),
+});
+
+export async function updateMenusAction(menus: z.infer<typeof menuSchema>[]) {
+  const session = await requireStoreOwner();
+  await prisma.storeSettings.update({
+    where: { storeId: session.user.storeId },
+    data: { headerMenus: JSON.parse(JSON.stringify(menus)) },
+  });
+  revalidatePath("/dashboard/pengaturan");
+  revalidatePath("/[store]", "layout");
+}
+
+export async function createCustomPageAction(title: string) {
+  const session = await requireStoreOwner();
+  let slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  if (!slug) slug = "halaman-baru";
+
+  // check if slug exists
+  const existing = await prisma.storePage.findFirst({
+    where: { storeId: session.user.storeId, slug }
+  });
+  if (existing) slug = `${slug}-${Math.random().toString(36).substring(2, 6)}`;
+
+  const page = await prisma.storePage.create({
+    data: {
+      storeId: session.user.storeId,
+      pageType: "custom",
+      title,
+      slug,
+      html: `<div class="min-h-[50vh] flex flex-col items-center justify-center p-8 text-center" data-klikweb-id="blank-hero"><h1 class="text-4xl font-bold" data-klikweb-id="blank-h1">${title}</h1><p class="mt-4 text-gray-500" data-klikweb-id="blank-p">Halaman ini belum memiliki konten. Gunakan tab AI di Editor untuk mengisinya.</p></div>`
+    }
+  });
+
+  return { ok: true, pageId: page.id, slug: page.slug };
+}
+
+export async function deleteCustomPageAction(pageId: string) {
+  const session = await requireStoreOwner();
+  await prisma.storePage.deleteMany({
+    where: { id: pageId, storeId: session.user.storeId, pageType: "custom" }
+  });
+  // We do not automatically remove it from settings here, MenuManager will save updated menus
+}

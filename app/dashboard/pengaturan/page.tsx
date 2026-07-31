@@ -17,6 +17,8 @@ import { ImageUploadField } from "@/components/dashboard/ImageUploadField";
 import { SITE_TYPE_CONFIG, SITE_TYPES } from "@/lib/site-types";
 import { TEMPLATE_PRESETS, TEMPLATE_STYLE, DEFAULT_TEMPLATE } from "@/lib/templates";
 import { BankAccountsEditor } from "@/components/dashboard/BankAccountsEditor";
+import { MenuManager, type MenuItemType } from "@/components/dashboard/MenuManager";
+import { updateBrandingSettings } from "@/app/dashboard/pengaturan/actions";
 
 export default async function PengaturanPage() {
   const session = await requireStoreOwner();
@@ -98,6 +100,66 @@ export default async function PengaturanPage() {
         </div>
         <Button type="submit">Simpan Profil</Button>
       </form>
+
+      <Separator />
+
+      <form action={updateBrandingSettings} className="space-y-4">
+        <h2 className="text-lg font-medium">Navigasi & Branding (Header)</h2>
+        <p className="text-sm text-muted-foreground">
+          Atur apakah ingin menampilkan menu atas (header), logo, dan favicon pada situs.
+        </p>
+
+        <div className="space-y-4 rounded-lg border p-4 bg-white shadow-sm">
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input
+              type="checkbox"
+              name="useGlobalHeader"
+              defaultChecked={store.settings?.useGlobalHeader ?? true}
+            />
+            Tampilkan Header Menu (Navigasi Atas)
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input
+              type="checkbox"
+              name="useLogo"
+              defaultChecked={store.settings?.useLogo ?? true}
+            />
+            Tampilkan Logo di Header
+          </label>
+          
+          <Separator className="my-2" />
+
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <Label>Favicon (Ikon Tab Browser)</Label>
+              <label className="flex items-center gap-2 text-xs">
+                <input
+                  type="checkbox"
+                  name="useFavicon"
+                  defaultChecked={store.settings?.useFavicon ?? true}
+                />
+                Aktifkan
+              </label>
+            </div>
+            <ImageUploadField name="faviconUrl" defaultValue={store.faviconUrl ?? ""} label="Favicon" />
+          </div>
+        </div>
+        
+        <Button type="submit">Simpan Branding Header</Button>
+      </form>
+
+      <Separator />
+
+      <div>
+        <h2 className="text-lg font-medium">Manajemen Menu Halaman</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Buat halaman baru atau tautan khusus dan urutkan sesuai keinginan.
+        </p>
+        <MenuManager 
+          storeId={store.id} 
+          initialMenus={(store.settings?.headerMenus as MenuItemType[]) || []} 
+        />
+      </div>
 
       <Separator />
 
