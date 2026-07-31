@@ -29,7 +29,7 @@ export default async function AdminAiGeneratorPage({
     <div className="max-w-3xl">
       <div className="flex items-center gap-4 mb-6">
         <Link
-          href="/admin/stores"
+          href="/admin"
           className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted text-muted-foreground transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />

@@ -32,11 +32,11 @@ export async function startImpersonation(storeId: string) {
 export async function stopImpersonation() {
   const session = await getSession();
   if (!session || !session.user.originalRole) {
-    redirect("/admin/stores");
+    redirect("/admin");
   }
 
   // Hapus cookie
   cookies().delete("impersonate_store_id");
 
-  redirect("/admin/stores");
+  redirect("/admin");
 }
