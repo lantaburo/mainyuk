@@ -184,7 +184,7 @@ export function MenuManager({ initialMenus, storeId }: { initialMenus: MenuItemT
             </div>
             <div className="space-y-1.5">
               <Label>Tipe</Label>
-              <Select value={newType} onValueChange={(val: "page"|"url") => setNewType(val)}>
+              <Select value={newType} onValueChange={(val: any) => setNewType(val || "page")}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
