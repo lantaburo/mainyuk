@@ -24,7 +24,7 @@ const PRIMARY_AI_CONFIG = {
 };
 
 export async function getAiConfigs() {
-  const configs = [PRIMARY_AI_CONFIG];
+  const configs = [];
   
   const aiSettings = await prisma.aiSettings.findFirst();
   if (aiSettings?.apiKey && aiSettings?.baseUrl && aiSettings?.model) {
@@ -34,6 +34,8 @@ export async function getAiConfigs() {
       model: aiSettings.model 
     });
   }
+  
+  configs.push(PRIMARY_AI_CONFIG);
   
   return configs;
 }
