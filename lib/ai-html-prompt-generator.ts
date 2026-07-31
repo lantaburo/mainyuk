@@ -54,7 +54,7 @@ ATURAN FORMAT WAJIB:
 2. JANGAN menggunakan tag <think> atau menuliskan proses berpikir Anda. Langsung berikan hasil JSON murni!
 3. Bahasa Indonesia untuk semua isi teks.
 4. Warna di "colorPalette" harus kode hex valid (mis. "#0f766e").
-5. "sections" minimal 3, maksimal 7 — urutkan sesuai alur.
+5. "sections" minimal 3, maksimal 4 — urutkan sesuai alur. JANGAN lebih dari 4 section untuk menjaga token!
 
 FORMAT OUTPUT (ikuti struktur ini persis):
 {

@@ -14,7 +14,7 @@ import { annotateSelectableElements, getCleanHtml, findById, EDITOR_ID_ATTR } fr
 import { EditorLayersPanel } from "@/components/dashboard/EditorLayersPanel";
 import { ElementStylePanel, type ElementStyleValues } from "@/components/dashboard/ElementStylePanel";
 import { ElementAiEditTab } from "@/components/dashboard/ElementAiEditTab";
-import { saveEditedHtmlAction } from "@/lib/ai-actions";
+import { saveEditedHtmlAction, generateSectionAction } from "@/lib/ai-actions";
 
 type Tab = "preview" | "design" | "code";
 type Device = "desktop" | "tablet" | "mobile";
@@ -114,6 +114,9 @@ export function PageEditor({
   const panelDragRef = useRef<{ startX: number; startY: number; startPanelX: number; startPanelY: number } | null>(null);
   const panelRef = useRef<HTMLElement>(null);
   const [textValue, setTextValue] = useState("");
+  const [hrefValue, setHrefValue] = useState("");
+  const [srcValue, setSrcValue] = useState("");
+  const [altValue, setAltValue] = useState("");
   const [codeText, setCodeText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [html, setHtml] = useState(initialHtml);
@@ -136,6 +139,10 @@ export function PageEditor({
     historyRef.current = [...historyRef.current.slice(0, idx + 1), html];
     historyIndexRef.current += 1;
     setHtml(html);
+  }
+
+  function saveState() {
+    pushHistory();
   }
 
   function restoreFromHistory(idx: number) {
@@ -173,6 +180,9 @@ export function PageEditor({
     setSelectedId(id);
     setStyleValues(readStyleValues(el));
     setTextValue(el.tagName === "IMG" ? "" : (el.textContent ?? ""));
+    setHrefValue(el.getAttribute("href") ?? "");
+    setSrcValue(el.getAttribute("src") ?? "");
+    setAltValue(el.getAttribute("alt") ?? "");
     setRightTab("teks");
     setPanelPos(DEFAULT_PANEL_POS); // reset to default position on new selection
   }
@@ -189,7 +199,28 @@ export function PageEditor({
   }
 
   function handleTextCommit() {
-    pushHistory();
+    if (selectedElement && selectedElement.tagName !== "IMG") {
+      selectedElement.textContent = textValue;
+      saveState();
+    }
+  }
+
+  function handleHrefCommit() {
+    if (selectedElement && selectedElement.tagName === "A") {
+      if (hrefValue) selectedElement.setAttribute("href", hrefValue);
+      else selectedElement.removeAttribute("href");
+      saveState();
+    }
+  }
+
+  function handleImgCommit() {
+    if (selectedElement && selectedElement.tagName === "IMG") {
+      if (srcValue) selectedElement.setAttribute("src", srcValue);
+      else selectedElement.removeAttribute("src");
+      if (altValue) selectedElement.setAttribute("alt", altValue);
+      else selectedElement.removeAttribute("alt");
+      saveState();
+    }
   }
 
   function handleStylePatch(patch: Partial<ElementStyleValues>) {
@@ -281,19 +312,47 @@ export function PageEditor({
     return () => clearTimeout(timer);
   }, [html, initialHtml, storeId, pageId]);
 
-  function handleSave() {
-    if (!canvasRef.current) return;
-    const liveHtml = getCleanHtml(canvasRef.current);
+  async function handleSave() {
     setIsSaving(true);
-    saveEditedHtmlAction(storeId, pageId, liveHtml)
-      .then((res) => {
-        if (!res || !res.ok) {
-          toast.error(res?.error || "Gagal menyimpan");
-          return;
-        }
-        toast.success("Halaman berhasil disimpan!");
-      })
-      .finally(() => setIsSaving(false));
+    const clean = getCleanHtml(canvasRef.current!);
+    const res = await saveEditedHtmlAction(pageId, storeId, clean);
+    setIsSaving(false);
+    if (res.ok) {
+      toast.success("Halaman berhasil disimpan!");
+    } else {
+      toast.error(res.error || "Gagal menyimpan halaman");
+    }
+  }
+
+  async function handleAddSection() {
+    const instruction = window.prompt("Section apa yang ingin ditambahkan?\nContoh: 'Buatkan Footer warna gelap dengan 3 kolom info'");
+    if (!instruction) return;
+    
+    setIsSaving(true);
+    try {
+      const res = await generateSectionAction(storeId, instruction);
+      if (!res.ok) {
+        toast.error(res.error);
+        return;
+      }
+      
+      if (canvasRef.current) {
+        const tpl = document.createElement("template");
+        tpl.innerHTML = res.html;
+        const newEls = Array.from(tpl.content.children);
+        
+        newEls.forEach((el) => canvasRef.current!.appendChild(el));
+        annotateSelectableElements(canvasRef.current);
+        
+        setHtml(canvasRef.current.innerHTML);
+        pushHistory();
+        toast.success("Section berhasil ditambahkan!");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Gagal menambahkan section");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   const templateStyle =
@@ -397,10 +456,14 @@ export function PageEditor({
                 if (el) {
                   setStyleValues(readStyleValues(el));
                   setTextValue(el.tagName === "IMG" ? "" : (el.textContent ?? ""));
+                  setHrefValue(el.getAttribute("href") || "");
+                  setSrcValue(el.getAttribute("src") || "");
+                  setAltValue(el.getAttribute("alt") || "");
                   el.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
                 setRightTab("teks");
               }}
+              onAddSection={handleAddSection}
             />
           </aside>
         )}
@@ -499,24 +562,64 @@ export function PageEditor({
                       : "bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
                   )}
                 >
-                  {tab === "ai" ? "AI" : tab}
+                  {tab === "teks" ? "Konten" : tab === "ai" ? "AI" : tab}
                 </button>
               ))}
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
               {rightTab === "teks" && (
-                selectedTag === "img" ? (
-                  <p className="text-xs text-zinc-500">Elemen gambar — gunakan tab Gaya untuk mengatur ukuran, atau tab AI untuk mengubahnya.</p>
-                ) : (
-                  <Textarea
-                    rows={5}
-                    value={textValue}
-                    onChange={(e) => handleTextChange(e.target.value)}
-                    onBlur={handleTextCommit}
-                    className="resize-none bg-white text-zinc-900 text-sm"
-                  />
-                )
+                <div className="space-y-4">
+                  {selectedTag === "img" ? (
+                    <>
+                      <div className="space-y-1.5">
+                        <label className="text-xs text-zinc-400">URL Gambar (src)</label>
+                        <Input
+                          placeholder="https://..."
+                          value={srcValue}
+                          onChange={(e) => setSrcValue(e.target.value)}
+                          onBlur={handleImgCommit}
+                          className="h-8 text-xs bg-white text-zinc-900"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-xs text-zinc-400">Teks Alternatif (alt)</label>
+                        <Input
+                          placeholder="Deskripsi gambar..."
+                          value={altValue}
+                          onChange={(e) => setAltValue(e.target.value)}
+                          onBlur={handleImgCommit}
+                          className="h-8 text-xs bg-white text-zinc-900"
+                        />
+                      </div>
+                      <p className="text-xs text-zinc-500 mt-2">Gunakan tab Gaya untuk mengatur ukuran gambar.</p>
+                    </>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <label className="text-xs text-zinc-400">Isi Teks</label>
+                      <Textarea
+                        rows={5}
+                        value={textValue}
+                        onChange={(e) => setTextValue(e.target.value)}
+                        onBlur={handleTextCommit}
+                        className="resize-none bg-white text-zinc-900 text-sm"
+                      />
+                    </div>
+                  )}
+
+                  {selectedTag === "a" && (
+                    <div className="space-y-1.5">
+                      <label className="text-xs text-zinc-400">Tujuan Tautan (href)</label>
+                      <Input
+                        placeholder="https://..."
+                        value={hrefValue}
+                        onChange={(e) => setHrefValue(e.target.value)}
+                        onBlur={handleHrefCommit}
+                        className="h-8 text-xs bg-white text-zinc-900"
+                      />
+                    </div>
+                  )}
+                </div>
               )}
               {rightTab === "gaya" && styleValues && (
                 <div className="rounded-lg bg-white p-4 text-zinc-900 shadow-inner">

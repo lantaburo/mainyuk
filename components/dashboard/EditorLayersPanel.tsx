@@ -50,6 +50,7 @@ export function EditorLayersPanel({
   version: number;
   selectedId: string | null;
   onSelect: (id: string) => void;
+  onAddSection?: () => void;
 }) {
   const tree = useMemo(() => {
     if (!container) return [];
@@ -66,6 +67,14 @@ export function EditorLayersPanel({
       {tree.map((node) => (
         <LayerRow key={node.id} node={node} depth={0} selectedId={selectedId} onSelect={onSelect} />
       ))}
+      {onAddSection && (
+        <button
+          onClick={onAddSection}
+          className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-zinc-700 p-2 text-xs text-zinc-400 hover:border-indigo-500 hover:text-indigo-400"
+        >
+          <span>+ Tambah Section Baru (AI)</span>
+        </button>
+      )}
     </div>
   );
 }

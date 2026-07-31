@@ -188,3 +188,38 @@ export async function generateElementEditAction(
 
   return { ok: true, html, usage: result.usage };
 }
+
+/**
+ * Generate a single HTML section based on user instruction.
+ */
+export async function generateSectionAction(
+  storeId: string,
+  instruction: string
+): Promise<HtmlResult> {
+  const store = await prisma.store.findUniqueOrThrow({
+    where: { id: storeId },
+  });
+  await requireAdminOrOwner(store.ownerId);
+
+  const configs = await getAiConfigs();
+  const prompt = `Kamu adalah Senior UI/UX Designer.
+Tugas: Buat SATU buah <section> HTML menggunakan Tailwind CSS berdasarkan instruksi berikut:
+"${instruction}"
+
+ATURAN:
+1. Gunakan desain modern, glassmorphism, atau bento-grid jika cocok.
+2. JANGAN gunakan tag <svg> (gunakan emoji/teks untuk ikon).
+3. HANYA keluarkan HTML mentah tanpa markdown, tanpa penjelasan.
+4. Gunakan class Tailwind untuk styling, dan gunakan style="background-color: ..." untuk warna.
+`;
+
+  let result;
+  try {
+    result = await callAiProvider(configs, prompt);
+  } catch (err) {
+    return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
+  }
+
+  const clean = sanitizeStoreHtml(stripCodeFence(result.content));
+  return { ok: true, html: clean, usage: result.usage };
+}
