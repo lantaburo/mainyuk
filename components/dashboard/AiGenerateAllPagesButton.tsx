@@ -51,12 +51,12 @@ export function AiGenerateAllPagesButton({
       const collected: PageResult[] = [];
       for (const p of pages) {
         const result = await generatePageBlocksAction(p.pageId, prompt);
-        collected.push({ pageId: p.pageId, pageLabel: p.label, result });
+        collected.push({ pageId: p.pageId, pageLabel: p.label, result: result || { ok: false, error: "Gagal memproses (undefined)" } });
         setProgress({ done: collected.length, total: pages.length });
         setResults([...collected]);
       }
 
-      const okCount = collected.filter((p) => p.result.ok).length;
+      const okCount = collected.filter((p) => p.result?.ok).length;
       if (okCount === 0) {
         toast.error("AI gagal generate semua halaman.");
       } else {
@@ -67,14 +67,14 @@ export function AiGenerateAllPagesButton({
 
   function handleApplyAll() {
     if (!results) return;
-    const succeeded = results.filter((p) => p.result.ok);
+    const succeeded = results.filter((p) => p.result?.ok);
     if (succeeded.length === 0) return;
 
     startApplying(async () => {
       try {
         await Promise.all(
-          succeeded.map((p) =>
-            p.result.ok ? updatePageBlocks(p.pageId, p.result.blocks) : Promise.resolve()
+          results.map((p) =>
+            p.result?.ok ? updatePageBlocks(p.pageId, p.result.blocks) : Promise.resolve()
           )
         );
         toast.success(`${succeeded.length} halaman berhasil diterapkan!`);

@@ -82,11 +82,12 @@ export function CheckoutForm({
 
     setLoading(false);
 
-    if (!result.ok) {
-      setError(result.error);
+    if (!result || !result.ok) {
+      setError(result?.error || "Gagal membuat pesanan (Server Timeout).");
+      setLoading(false);
       return;
     }
-
+    
     clear();
 
     if (result.redirectUrl) {

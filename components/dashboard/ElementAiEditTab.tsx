@@ -52,8 +52,8 @@ export function ElementAiEditTab({
     if (!instruction.trim()) return;
     startTransition(async () => {
       const res = await generateElementEditAction(storeId, currentOuterHtml, instruction);
-      if (!res.ok) {
-        toast.error(res.error);
+      if (!res || !res.ok) {
+        toast.error(res?.error || "Gagal menghubungi AI.");
         return;
       }
       onApply(res.html);

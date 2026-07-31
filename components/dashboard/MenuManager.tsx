@@ -51,7 +51,7 @@ export function MenuManager({ initialMenus, storeId }: { initialMenus: MenuItemT
       
       if (newType === "page") {
         const res = await createCustomPageAction(newLabel);
-        if (!res.ok) throw new Error("Gagal membuat halaman");
+        if (!res || !res.ok) throw new Error("Gagal membuat halaman");
         finalTarget = res.pageId;
         newId = res.pageId;
       }

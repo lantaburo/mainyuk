@@ -262,24 +262,21 @@ export function PageEditor({
       isFirstRender.current = false;
       return;
     }
-    const timer = setTimeout(() => {
-      saveEditedHtmlAction(storeId, pageId, html)
-        .then((res) => {
-          if (!res.ok) toast.error(res.error);
-        })
-        .catch(() => toast.error("Gagal auto-save"));
+    const timer = setTimeout(async () => {
+      const res = await saveEditedHtmlAction(storeId, pageId, html);
+      if (!res || !res.ok) toast.error(res?.error || "Gagal auto-save");
     }, 1500);
     return () => clearTimeout(timer);
   }, [html, initialHtml, storeId, pageId]);
 
   function handleSave() {
     if (!canvasRef.current) return;
-    const html = getCleanHtml(canvasRef.current);
+    const liveHtml = getCleanHtml(canvasRef.current);
     setIsSaving(true);
-    saveEditedHtmlAction(storeId, pageId, html)
+    saveEditedHtmlAction(storeId, pageId, liveHtml)
       .then((res) => {
-        if (!res.ok) {
-          toast.error(res.error);
+        if (!res || !res.ok) {
+          toast.error(res?.error || "Gagal menyimpan");
           return;
         }
         toast.success("Halaman berhasil disimpan!");

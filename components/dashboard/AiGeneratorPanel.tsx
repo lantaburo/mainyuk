@@ -78,8 +78,8 @@ export function AiGeneratorPanel({
       setGeneratedBlocks(null);
       setShowPreview(false);
       const result = await generatePageBlocksAction(pageId, prompt);
-      if (!result.ok) {
-        toast.error(result.error);
+      if (!result || !result.ok) {
+        toast.error(result?.error || "Gagal menghubungi AI.");
         return;
       }
       setGeneratedBlocks(result.blocks);
