@@ -43,6 +43,7 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
           model: config.model,
           messages: [{ role: "user", content: prompt }],
           temperature: 0.7,
+          max_tokens: 8192,
         }),
         signal: controller.signal,
       });
@@ -130,8 +131,9 @@ export async function* streamAiProvider(
         },
         body: JSON.stringify({
           model: config.model,
-          messages: [{ role: "user", content: prompt }],
+          messages,
           temperature: 0.7,
+          max_tokens: 8192,
           stream: true,
         }),
         signal: controller.signal,
