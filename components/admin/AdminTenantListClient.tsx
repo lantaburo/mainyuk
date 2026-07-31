@@ -146,13 +146,11 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger
-                          render={
-                            <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-white shadow-sm border border-transparent hover:border-slate-200 transition-all">
-                              <span className="sr-only">Buka menu</span>
-                              <MoreHorizontal className="h-4 w-4 text-slate-600" />
-                            </Button>
-                          }
-                        />
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-md p-0 hover:bg-white shadow-sm border border-transparent hover:border-slate-200 transition-all focus:outline-none"
+                        >
+                          <span className="sr-only">Buka menu</span>
+                          <MoreHorizontal className="h-4 w-4 text-slate-600" />
+                        </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-[160px] bg-white/90 backdrop-blur-xl border-white/50 shadow-xl">
                           <DropdownMenuLabel className="font-bold text-slate-700">Aksi Tenant</DropdownMenuLabel>
                           <DropdownMenuSeparator className="bg-slate-100" />
@@ -164,22 +162,18 @@ export function AdminTenantListClient({ initialStores }: { initialStores: StoreD
                               </button>
                             </form>
                           </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            render={
-                              <Link href={`/admin/generator-ai/${store.id}`} className="cursor-pointer font-medium w-full flex items-center px-1.5 py-1">
-                                <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
-                                <span className="text-indigo-900">AI Generator</span>
-                              </Link>
-                            } 
-                          />
-                          <DropdownMenuItem 
-                            render={
-                              <Link href={`/admin-editor/${store.id}`} className="cursor-pointer font-medium w-full flex items-center px-1.5 py-1">
-                                <PenSquare className="mr-2 h-4 w-4 text-slate-500" />
-                                <span className="text-slate-700">Edit Halaman</span>
-                              </Link>
-                            } 
-                          />
+                          <DropdownMenuItem className="p-0">
+                            <Link href={`/admin/generator-ai/${store.id}`} className="flex w-full cursor-pointer items-center px-1.5 py-1 font-medium text-left">
+                              <Sparkles className="mr-2 h-4 w-4 text-indigo-600" />
+                              <span className="text-indigo-900">AI Generator</span>
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="p-0">
+                            <Link href={`/admin-editor/${store.id}`} className="flex w-full cursor-pointer items-center px-1.5 py-1 font-medium text-left">
+                              <PenSquare className="mr-2 h-4 w-4 text-slate-500" />
+                              <span className="text-slate-700">Edit Halaman</span>
+                            </Link>
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator className="bg-slate-100" />
                           <DropdownMenuItem className="p-0" onSelect={(e) => e.preventDefault()}>
                             <ConfirmDeleteButton
