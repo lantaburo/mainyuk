@@ -228,7 +228,7 @@ export async function updateBrandingSettings(formData: FormData) {
   revalidatePath("/[store]", "layout");
 }
 
-export const menuSchema = z.object({
+const menuSchema = z.object({
   id: z.string(),
   label: z.string(),
   type: z.enum(["page", "url"]),
