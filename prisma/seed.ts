@@ -1,5 +1,5 @@
 import "dotenv/config";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import { prisma } from "../lib/prisma";
 import { blocksToJson, type Block } from "../lib/blocks-types";
 import type { SiteType } from "../lib/site-types";
