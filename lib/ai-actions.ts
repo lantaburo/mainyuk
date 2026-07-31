@@ -90,7 +90,7 @@ export async function generateBriefAction(
   const validated = designBriefSchema.safeParse(parsed);
   if (!validated.success) {
     const errorDetails = JSON.stringify(validated.error.issues);
-    return { ok: false, error: "Zod Error: " + errorDetails };
+    return { ok: false, error: "Parsed JSON: " + JSON.stringify(parsed) + " | Zod Error: " + errorDetails };
   }
 
   // Remember the target audience for next time, even before the site itself is generated.
