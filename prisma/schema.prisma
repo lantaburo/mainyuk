@@ -296,15 +296,18 @@ model Payment {
   @@map("payments")
 }
 
-model AiSettings {
+model AiProvider {
   id        String   @id @default(cuid())
-  provider  String?
+  provider  String   @map("provider") // e.g., OpenAgentic, Ollama, OpenAI
   baseUrl   String   @map("base_url")
   apiKey    String   @map("api_key")
   model     String
+  isActive  Boolean  @default(true) @map("is_active")
+  priority  Int      @default(0) // Lower number = higher priority
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("ai_settings")
+  @@map("ai_providers")
 }
 
 model Article {

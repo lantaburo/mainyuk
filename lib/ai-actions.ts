@@ -26,13 +26,19 @@ const PRIMARY_AI_CONFIG = {
 export async function getAiConfigs() {
   const configs = [];
   
-  const aiSettings = await prisma.aiSettings.findFirst();
-  if (aiSettings?.apiKey && aiSettings?.baseUrl && aiSettings?.model) {
-    configs.push({ 
-      baseUrl: aiSettings.baseUrl, 
-      apiKey: aiSettings.apiKey, 
-      model: aiSettings.model 
-    });
+  const activeProviders = await prisma.aiProvider.findMany({
+    where: { isActive: true },
+    orderBy: { priority: "asc" }
+  });
+  
+  for (const provider of activeProviders) {
+    if (provider.apiKey && provider.baseUrl && provider.model) {
+      configs.push({ 
+        baseUrl: provider.baseUrl, 
+        apiKey: provider.apiKey, 
+        model: provider.model 
+      });
+    }
   }
   
   configs.push(PRIMARY_AI_CONFIG);

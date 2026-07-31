@@ -40,13 +40,13 @@ export async function generatePageBlocksAction(
     include: { settings: true },
   });
 
-  // Get AI settings (global)
-  const aiSettings = await prisma.aiSettings.findFirst();
-  if (!aiSettings?.apiKey || !aiSettings?.baseUrl || !aiSettings?.model) {
+  const { getAiConfigs } = await import("@/lib/ai-actions");
+  const configs = await getAiConfigs();
+  if (configs.length === 0) {
     return {
       ok: false,
       error:
-        "Konfigurasi AI belum diatur. Hubungi admin untuk mengisi API Key, Base URL, dan Model AI.",
+        "Konfigurasi AI belum diatur. Hubungi admin untuk mengisi konfigurasi AI.",
     };
   }
 
@@ -68,10 +68,7 @@ export async function generatePageBlocksAction(
   let rawText: string;
   try {
     rawText = (
-      await callAiProvider(
-        { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model },
-        prompt
-      )
+      await callAiProvider(configs, prompt)
     ).content;
   } catch (err) {
     const msg = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
@@ -128,8 +125,9 @@ export async function generateSingleBlockAction(
   });
   if (!store) return { ok: false, error: "Toko tidak ditemukan." };
 
-  const aiSettings = await prisma.aiSettings.findFirst();
-  if (!aiSettings?.apiKey || !aiSettings?.baseUrl || !aiSettings?.model) {
+  const { getAiConfigs } = await import("@/lib/ai-actions");
+  const configs = await getAiConfigs();
+  if (configs.length === 0) {
     return { ok: false, error: "Konfigurasi AI belum diatur." };
   }
 
@@ -146,10 +144,7 @@ export async function generateSingleBlockAction(
   let rawText: string;
   try {
     rawText = (
-      await callAiProvider(
-        { baseUrl: aiSettings.baseUrl, apiKey: aiSettings.apiKey, model: aiSettings.model },
-        prompt
-      )
+      await callAiProvider(configs, prompt)
     ).content;
   } catch (err) {
     const msg = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
