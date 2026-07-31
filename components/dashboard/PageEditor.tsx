@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { TEMPLATE_STYLE, DEFAULT_TEMPLATE, isTemplatePreset } from "@/lib/templates";
 import { annotateSelectableElements, getCleanHtml, findById, EDITOR_ID_ATTR } from "@/lib/dom-annotate";
@@ -577,7 +578,7 @@ export function PageEditor({
                         <Input
                           placeholder="https://..."
                           value={srcValue}
-                          onChange={(e) => setSrcValue(e.target.value)}
+                          onChange={(e: any) => setSrcValue(e.target.value)}
                           onBlur={handleImgCommit}
                           className="h-8 text-xs bg-white text-zinc-900"
                         />
@@ -587,7 +588,7 @@ export function PageEditor({
                         <Input
                           placeholder="Deskripsi gambar..."
                           value={altValue}
-                          onChange={(e) => setAltValue(e.target.value)}
+                          onChange={(e: any) => setAltValue(e.target.value)}
                           onBlur={handleImgCommit}
                           className="h-8 text-xs bg-white text-zinc-900"
                         />
@@ -613,7 +614,7 @@ export function PageEditor({
                       <Input
                         placeholder="https://..."
                         value={hrefValue}
-                        onChange={(e) => setHrefValue(e.target.value)}
+                        onChange={(e: any) => setHrefValue(e.target.value)}
                         onBlur={handleHrefCommit}
                         className="h-8 text-xs bg-white text-zinc-900"
                       />

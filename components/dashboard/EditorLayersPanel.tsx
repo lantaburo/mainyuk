@@ -45,6 +45,7 @@ export function EditorLayersPanel({
   version,
   selectedId,
   onSelect,
+  onAddSection,
 }: {
   container: HTMLElement | null;
   version: number;
