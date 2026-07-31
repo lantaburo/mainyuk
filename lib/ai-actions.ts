@@ -82,8 +82,9 @@ export async function generateBriefAction(
   let parsed: unknown;
   try {
     parsed = extractJson(result.content);
-  } catch {
-    return { ok: false, error: "Respons AI tidak bisa dibaca sebagai JSON." };
+  } catch (err) {
+    console.error("[DEBUG EXTRACT JSON FAILED] Raw Text dari AI:\n", result.content);
+    return { ok: false, error: "Respons AI tidak bisa dibaca sebagai JSON. Cek log terminal." };
   }
 
   const validated = designBriefSchema.safeParse(parsed);
