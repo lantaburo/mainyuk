@@ -78,8 +78,9 @@ export async function generatePageBlocksAction(
   let parsed: unknown;
   try {
     parsed = extractJson(rawText);
-  } catch {
-    return { ok: false, error: "Respons AI tidak bisa dibaca sebagai JSON." };
+  } catch (err) {
+    console.error("[DEBUG EXTRACT JSON FAILED] Raw Text dari AI:\n", rawText);
+    return { ok: false, error: "Respons AI tidak bisa dibaca sebagai JSON. Cek log terminal." };
   }
 
   const validated = blockArraySchema.safeParse(parsed);
@@ -154,8 +155,9 @@ export async function generateSingleBlockAction(
   let parsed: unknown;
   try {
     parsed = extractJson(rawText);
-  } catch {
-    return { ok: false, error: "Respons AI tidak valid JSON." };
+  } catch (err) {
+    console.error("[DEBUG EXTRACT JSON FAILED] Raw Text dari AI:\n", rawText);
+    return { ok: false, error: "Respons AI tidak valid JSON. Cek log terminal." };
   }
 
   return { ok: true, data: parsed };
