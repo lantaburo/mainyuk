@@ -133,8 +133,8 @@ export function AiWebsiteGeneratorWizard({
     }
     startBrief(async () => {
       const res = await generateBriefAction(storeId, description, audience);
-      if (!res.ok) {
-        toast.error(res.error);
+      if (!res || !res.ok) {
+        toast.error(res?.error || "Gagal menghubungi AI (Server Timeout).");
         return;
       }
       setBrief(res.brief);
@@ -241,8 +241,8 @@ export function AiWebsiteGeneratorWizard({
     if (!html || !brief) return;
     startApplying(async () => {
       const res = await applyGeneratedHtmlAction(storeId, pageId, html, brief);
-      if (!res.ok) {
-        toast.error(res.error);
+      if (!res || !res.ok) {
+        toast.error(res?.error || "Gagal menerapkan website (Server Timeout).");
         return;
       }
       toast.success("Website berhasil diterapkan!");

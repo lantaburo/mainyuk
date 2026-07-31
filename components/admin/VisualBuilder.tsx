@@ -72,8 +72,8 @@ export function VisualBuilder({
     }
     startGeneratingPage(async () => {
       const result = await generatePageBlocksAction(pageId, genPrompt);
-      if (!result.ok) {
-        toast.error(result.error);
+      if (!result || !result.ok) {
+        toast.error(result?.error || "Gagal menghubungi AI (Server Timeout).");
         return;
       }
       setBlocks(result.blocks);
@@ -193,7 +193,7 @@ export function VisualBuilder({
             disabled={isGeneratingPage}
             className="resize-none"
           />
-          {isGeneratingPage && <Progress />}
+          {isGeneratingPage && <Progress value={null} />}
           <DialogFooter>
             <Button
               onClick={handleGenerateFullPage}
@@ -592,6 +592,10 @@ function AiPromptTab({ block, storeId, onApply }: { block: Block; storeId: strin
     startTransition(async () => {
       const fullPrompt = `Konteks saat ini: ${JSON.stringify(block.data)}.\nInstruksi Perubahan: ${prompt}`;
       const result = await generateSingleBlockAction(storeId, block.type, fullPrompt);
+      if (!result) {
+        toast.error("Gagal menghubungi AI (Server Timeout).");
+        return;
+      }
       if (result.ok) {
         onApply(result.data);
         setPrompt("");
@@ -638,6 +642,7 @@ function AiPromptTab({ block, storeId, onApply }: { block: Block; storeId: strin
       </div>
       {isPending && (
         <Progress
+          value={null}
           className="[&_[data-slot=progress-track]]:bg-zinc-800"
         />
       )}

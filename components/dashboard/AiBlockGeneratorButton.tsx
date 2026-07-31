@@ -35,6 +35,10 @@ export function AiBlockGeneratorButton({
     startTransition(async () => {
       try {
         const res = await generateSingleBlockAction(storeId, blockType, prompt);
+        if (!res) {
+          toast.error("Gagal menghubungi AI (Server Timeout).");
+          return;
+        }
         if (res.ok) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onApply(res.data as any);
@@ -89,7 +93,7 @@ export function AiBlockGeneratorButton({
               "Generate"
             )}
           </Button>
-          {isPending && <Progress />}
+          {isPending && <Progress value={null} />}
         </form>
       </PopoverContent>
     </Popover>
