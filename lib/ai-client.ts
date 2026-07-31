@@ -54,8 +54,21 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
         );
       }
 
-      const json = await res.json().catch(() => null);
-      console.error("[DEBUG AI JSON RESPONSE]:", JSON.stringify(json, null, 2));
+      const rawText = await res.text().catch(() => "");
+      let sanitizedText = rawText.trim();
+      
+      // Handle OpenAgentic bug where it appends data: [DONE] to non-streaming responses
+      if (sanitizedText.endsWith("data: [DONE]")) {
+        sanitizedText = sanitizedText.replace(/data:\s*\[DONE\]$/, "").trim();
+      }
+
+      let json = null;
+      try {
+        if (sanitizedText) json = JSON.parse(sanitizedText);
+      } catch (e) {
+        console.error("[DEBUG AI PARSE ERROR] Raw text:", sanitizedText);
+      }
+
       const content = json?.choices?.[0]?.message?.content;
       if (typeof content !== "string" || !content.trim()) {
         throw new AiClientError("Respons AI kosong atau formatnya tidak dikenali.");
