@@ -3,6 +3,60 @@ import { INDUSTRY_CONTENT, type Industry } from "@/lib/industry-content";
 import type { DesignBrief } from "@/lib/ai-html-schema";
 
 /**
+ * Left to itself, the model's "creative" choice converges on the same few
+ * safe defaults per industry regardless of temperature — negative rules
+ * ("hindari pola X") just push it onto whatever the next-safest pattern is.
+ * Picking one of these at random and forcing the brief to commit to it
+ * moves variety control out of the model's hands and into ours.
+ */
+const CREATIVE_DIRECTIONS: { name: string; guidance: string }[] = [
+  {
+    name: "Editorial Majalah",
+    guidance: "Warna & mood diambil dari palet fotografi editorial (netral hangat + satu aksen tajam, bukan pastel). Nada tulisan seperti caption majalah desain: observasional, percaya diri, sedikit jaim.",
+  },
+  {
+    name: "Artisanal & Bahan Mentah",
+    guidance: "Warna HARUS diturunkan dari tekstur/bahan/proses nyata di deskripsi bisnis (mis. warna kayu, benang, rempah, tanah liat) — bukan warna abstrak yang 'terlihat bagus'. Nada tulisan seperti pengrajin menjelaskan prosesnya sendiri.",
+  },
+  {
+    name: "Tech-Forward / Swiss Grid",
+    guidance: "Palet nyaris monokrom (1-2 netral) + satu warna sinyal tajam (mis. hijau terminal, biru elektrik, kuning peringatan). Nada tulisan presisi, ringkas, seperti dokumentasi produk — bukan copywriting jualan.",
+  },
+  {
+    name: "Maximalist Pop",
+    guidance: "Warna berani & saturasi tinggi, kombinasi yang jarang dipasangkan (bukan skema warna 'aman' dari color wheel standar). Nada tulisan energik, sedikit jenaka, berani buat pernyataan.",
+  },
+  {
+    name: "Kontemplatif Minimal",
+    guidance: "Palet nyaris satu warna dengan satu aksen sangat halus, banyak ruang negatif tersirat lewat pilihan warna netral yang tidak generik (hindari putih/abu polos). Nada tulisan tenang, singkat, tidak berusaha keras meyakinkan.",
+  },
+  {
+    name: "Retro Lokal",
+    guidance: "Warna terinspirasi era atau tempat spesifik Indonesia (mis. warna signage toko lawas, kain daerah, iklan cetak 90an) — sebutkan sumber inspirasinya secara implisit lewat pilihan warna. Nada tulisan hangat dan personal, seperti cerita dari pemilik toko.",
+  },
+  {
+    name: "Klinis & Terpercaya",
+    guidance: "Palet dingin-terkontrol (biru/abu/putih) diseimbangkan SATU warna hangat sebagai penanda kepercayaan/manusiawi. Nada tulisan faktual, spesifik ke angka/proses/data — hindari klaim emosional berlebihan.",
+  },
+  {
+    name: "Nocturnal / After-Dark",
+    guidance: "Dasar gelap dominan dengan SATU aksen neon-lembut (bukan neon terang generik). Nada tulisan percaya diri dan eksklusif, seperti mengundang ke sesuatu yang tidak untuk semua orang.",
+  },
+  {
+    name: "Organik & Earthy",
+    guidance: "Warna diambil dari elemen alam yang SPESIFIK ke lokasi/produk bisnis ini (bukan hijau-krem generik 'alami') — sebut alasan konkretnya. Nada tulisan bersahaja, tidak terburu-buru.",
+  },
+  {
+    name: "Geometris Berani",
+    guidance: "Blok warna solid non-gradient, palet reinterpretasi modern dari elemen budaya/lokal yang relevan ke bisnis ini. Nada tulisan tegas dan lugas, kalimat pendek-pendek.",
+  },
+];
+
+function pickCreativeDirection(): { name: string; guidance: string } {
+  return CREATIVE_DIRECTIONS[Math.floor(Math.random() * CREATIVE_DIRECTIONS.length)];
+}
+
+/**
  * Tahap 2: turn a short free-text business description into a structured
  * design brief (goal, audience, palette, typography, signature element,
  * section-by-section outline) — the "perbaiki prompt" step, so HTML
@@ -17,6 +71,8 @@ export function buildBriefPrompt(opts: {
 }): string {
   const config = SITE_TYPE_CONFIG[opts.siteType];
   const industryInfo = INDUSTRY_CONTENT[opts.industry];
+
+  const direction = pickCreativeDirection();
 
   let styleGuidance = "";
   if (opts.siteType === "storefront") {
@@ -42,15 +98,16 @@ Susun blueprint yang mempertimbangkan segmen pasar di atas: kelas ekonomi, usia 
 
 PANDUAN KUALITAS DESAIN (WAJIB DIPIKIRKAN, BUKAN SEKADAR DIISI):
 1. Hindari 3 pola desain generik yang paling sering muncul kalau asal comot: (a) krem + font serif tebal + aksen terracotta/oranye-bata, (b) hitam pekat + 1 warna neon, (c) gaya koran dengan garis tipis & kotak semua sudut. Cari warna yang lahir dari nama bisnis, produk, atau lokasinya sendiri.
-2. Warna harus berjumlah 4-6, bukan 3, dan punya alasan yang bisa dijelaskan (bukan sekadar "warna yang enak dilihat").
-3. ARAHAN STYLE SPESIFIK UNTUK JENIS SITUS INI: ${styleGuidance}
-4. Tentukan satu "signatureElement": satu elemen UI/layout yang menonjol sesuai arahan style di atas. (Misal untuk storefront: 'Card produk dengan hover effect unik', untuk landing page: 'Hero asimetris').
-5. Tone harus tercermin di gaya penulisan section, bukan cuma dilabeli.
-6. JANGAN rancang section berbentuk formulir input (kontak/newsletter/survey) — sistem tidak mendukung form interaktif. Ganti kebutuhan itu dengan CTA tombol.
-7. contentOutline maksimal 2-3 kalimat per section — fokus pada value proposition yang kuat.
-8. COPYWRITING WAJIB TERASA DITULIS MANUSIA BERPENGALAMAN, BUKAN AI YANG MENGISI TEMPLATE: dilarang keras pakai klise pemasaran seperti "solusi terbaik untuk kebutuhan Anda", "kualitas terjamin", "harga terjangkau", "pelayanan memuaskan", "produk berkualitas tinggi", "terpercaya sejak lama", atau kalimat generik sejenis yang bisa dipakai bisnis apapun tanpa diubah. Setiap klaim harus SPESIFIK ke bisnis ini — pakai detail konkret dari deskripsi bisnis (angka, proses, bahan, lokasi, cara kerja) bukan sifat abstrak ("berkualitas", "profesional", "terbaik").
-9. HINDARI NADA NAIF/KEKANAKAN: jangan berargumen dengan logika yang terlalu sederhana ("karena kami peduli, maka kami terbaik") atau metafora klise ("bagai keluarga sendiri"). Tulis seperti copywriter senior yang berani punya sudut pandang/opini, bukan seperti mengisi formulir marketing.
-10. "goal" dan "signatureElement" harus punya sudut pandang yang tajam dan bisa dibedakan dari kompetitor sejenis — kalau kedengarannya bisa jadi tagline bisnis manapun di kategori yang sama, tulis ulang sampai spesifik.
+2. ARAH KREATIF WAJIB UNTUK GENERASI INI — "${direction.name}": ${direction.guidance} Seluruh palet warna, typography, dan tone HARUS terasa sebagai hasil dari arah ini secara spesifik untuk bisnis ini, bukan interpretasi netral/aman darinya.
+3. Warna harus berjumlah 4-6, bukan 3, dan punya alasan yang bisa dijelaskan (bukan sekadar "warna yang enak dilihat").
+4. ARAHAN STYLE SPESIFIK UNTUK JENIS SITUS INI: ${styleGuidance}
+5. Tentukan satu "signatureElement": satu elemen UI/layout yang menonjol sesuai arahan style di atas. (Misal untuk storefront: 'Card produk dengan hover effect unik', untuk landing page: 'Hero asimetris').
+6. Tone harus tercermin di gaya penulisan section, bukan cuma dilabeli.
+7. JANGAN rancang section berbentuk formulir input (kontak/newsletter/survey) — sistem tidak mendukung form interaktif. Ganti kebutuhan itu dengan CTA tombol.
+8. contentOutline maksimal 2-3 kalimat per section — fokus pada value proposition yang kuat.
+9. COPYWRITING WAJIB TERASA DITULIS MANUSIA BERPENGALAMAN, BUKAN AI YANG MENGISI TEMPLATE: dilarang keras pakai klise pemasaran seperti "solusi terbaik untuk kebutuhan Anda", "kualitas terjamin", "harga terjangkau", "pelayanan memuaskan", "produk berkualitas tinggi", "terpercaya sejak lama", atau kalimat generik sejenis yang bisa dipakai bisnis apapun tanpa diubah. Setiap klaim harus SPESIFIK ke bisnis ini — pakai detail konkret dari deskripsi bisnis (angka, proses, bahan, lokasi, cara kerja) bukan sifat abstrak ("berkualitas", "profesional", "terbaik").
+10. HINDARI NADA NAIF/KEKANAKAN: jangan berargumen dengan logika yang terlalu sederhana ("karena kami peduli, maka kami terbaik") atau metafora klise ("bagai keluarga sendiri"). Tulis seperti copywriter senior yang berani punya sudut pandang/opini, bukan seperti mengisi formulir marketing.
+11. "goal" dan "signatureElement" harus punya sudut pandang yang tajam dan bisa dibedakan dari kompetitor sejenis — kalau kedengarannya bisa jadi tagline bisnis manapun di kategori yang sama, tulis ulang sampai spesifik.
 
 ATURAN FORMAT WAJIB:
 1. Output HANYA satu object JSON, TANPA teks lain di luar JSON, TANPA markdown fence (jangan bungkus dengan \`\`\`json atau \`\`\` apapun), TANPA komentar.

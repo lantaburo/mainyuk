@@ -28,8 +28,17 @@ export function sleep(ms: number): Promise<void> {
 // (the real cause was never a timeout, it was an unbounded hang).
 const AI_REQUEST_TIMEOUT_MS = 120_000;
 
-export async function callAiProvider(configs: AiProviderConfig | AiProviderConfig[], prompt: string): Promise<AiCallResult> {
+export async function callAiProvider(
+  configs: AiProviderConfig | AiProviderConfig[],
+  prompt: string,
+  options?: { temperature?: number }
+): Promise<AiCallResult> {
   const configArray = Array.isArray(configs) ? configs : [configs];
+  // Default stays low (deterministic/schema-safe) for structured-output calls;
+  // callers doing creative-direction work (e.g. the design brief) should pass
+  // a higher value explicitly — low temperature is what was collapsing every
+  // generation toward the same "safest" palette/tone regardless of business.
+  const temperature = options?.temperature ?? 0.2;
   let lastError: Error | unknown;
 
   for (const config of configArray) {
@@ -47,7 +56,7 @@ export async function callAiProvider(configs: AiProviderConfig | AiProviderConfi
         body: JSON.stringify({
           model: config.model,
           messages: [{ role: "user", content: prompt }],
-          temperature: 0.2,
+          temperature,
           max_tokens: 8192,
         }),
         signal: controller.signal,

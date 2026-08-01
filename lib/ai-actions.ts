@@ -82,7 +82,11 @@ export async function generateBriefAction(
 
     let result: Awaited<ReturnType<typeof callAiProvider>>;
     try {
-      result = await callAiProvider(configs, prompt);
+      // Creative-direction step (palette/tone/signature element) — needs
+      // variety across generations, not the low-temp determinism used for
+      // schema-bound steps. Retries below already tolerate occasional
+      // malformed JSON at this temperature.
+      result = await callAiProvider(configs, prompt, { temperature: 0.9 });
     } catch (err) {
       lastAttemptError = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
       continue;
