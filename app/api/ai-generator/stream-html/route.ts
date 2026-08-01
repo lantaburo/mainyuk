@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { streamAiProvider, stripCodeFence, AiClientError, type AiUsage } from "@/lib/ai-client";
+import { streamAiProvider, stripCodeFence, AiClientError, sleep, type AiUsage } from "@/lib/ai-client";
 import { getAiConfigs } from "@/lib/ai-actions";
 import { buildHtmlFromBriefPrompt } from "@/lib/ai-html-prompt-generator";
 import { designBriefSchema } from "@/lib/ai-html-schema";
@@ -72,6 +72,10 @@ export async function POST(req: NextRequest) {
 
       for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         if (attempt > 1) {
+          // Provider hanya izinkan 1 request bersamaan (concurrent_limit) —
+          // beri jeda dulu supaya request sebelumnya sempat selesai di sisi
+          // provider sebelum kita kirim yang baru.
+          await sleep(Math.min(1000 * attempt, 4000) + Math.random() * 500);
           controller.enqueue(encoder.encode(STREAM_RESET_MARKER));
         }
 

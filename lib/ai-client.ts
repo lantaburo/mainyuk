@@ -17,6 +17,11 @@ export interface AiCallResult {
 
 export class AiClientError extends Error {}
 
+/** Used by retry loops to back off between attempts (e.g. after a concurrent_limit 429). */
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 // Hard cap per provider attempt so a hanging/unresponsive provider can't
 // block the whole request indefinitely — a fetch() with no signal will wait
 // forever, which is what surfaced as the generic "Server Timeout" toast

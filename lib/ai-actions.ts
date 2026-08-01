@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminOrOwner } from "@/lib/session";
-import { callAiProvider, extractJson, stripCodeFence, AiClientError, type AiUsage } from "@/lib/ai-client";
+import { callAiProvider, extractJson, stripCodeFence, AiClientError, sleep, type AiUsage } from "@/lib/ai-client";
 import { buildBriefPrompt, buildElementEditPrompt } from "@/lib/ai-html-prompt-generator";
 import { designBriefSchema, type DesignBrief } from "@/lib/ai-html-schema";
 import { sanitizeStoreHtml } from "@/lib/html-sanitize";
@@ -73,6 +73,13 @@ export async function generateBriefAction(
   let usage: AiUsage | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    // Provider hanya izinkan 1 request bersamaan (concurrent_limit) — retry
+    // instan akan langsung kena limit yang sama lagi selama request
+    // sebelumnya belum benar-benar selesai di sisi provider. Beri jeda dulu.
+    if (attempt > 1) {
+      await sleep(Math.min(1000 * attempt, 4000) + Math.random() * 500);
+    }
+
     let result: Awaited<ReturnType<typeof callAiProvider>>;
     try {
       result = await callAiProvider(configs, prompt);
