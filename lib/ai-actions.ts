@@ -17,32 +17,24 @@ export type HtmlResult =
   | { ok: true; html: string; usage: AiUsage | null }
   | { ok: false; error: string };
 
-const PRIMARY_AI_CONFIG = {
-  baseUrl: "http://43.133.147.191:20128/v1",
-  apiKey: "sk-6b3ac6ef8e3b70c9-5jfhfg-55702d6c",
-  model: "claude",
-};
-
 export async function getAiConfigs() {
   const configs = [];
-  
+
   const activeProviders = await prisma.aiProvider.findMany({
     where: { isActive: true },
     orderBy: { priority: "asc" }
   });
-  
+
   for (const provider of activeProviders) {
     if (provider.apiKey && provider.baseUrl && provider.model) {
-      configs.push({ 
-        baseUrl: provider.baseUrl, 
-        apiKey: provider.apiKey, 
-        model: provider.model 
+      configs.push({
+        baseUrl: provider.baseUrl,
+        apiKey: provider.apiKey,
+        model: provider.model
       });
     }
   }
-  
-  configs.push(PRIMARY_AI_CONFIG);
-  
+
   return configs;
 }
 
@@ -72,30 +64,50 @@ export async function generateBriefAction(
     targetAudience,
   });
 
-  let result: Awaited<ReturnType<typeof callAiProvider>>;
-  try {
-    result = await callAiProvider(configs, prompt);
-  } catch (err) {
-    return { ok: false, error: err instanceof AiClientError ? err.message : "Gagal menghubungi AI." };
+  // Provider ini kadang mengembalikan konten yang korup di tengah jalan
+  // (kata terpotong, JSON putus di tanda kutip liar) — sifatnya acak per
+  // request, jadi percobaan ulang biasanya cukup untuk dapat respons bersih.
+  const MAX_ATTEMPTS = 5;
+  let validated: ReturnType<typeof designBriefSchema.safeParse> | null = null;
+  let lastAttemptError: string = "Gagal menghubungi AI.";
+  let usage: AiUsage | null = null;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    let result: Awaited<ReturnType<typeof callAiProvider>>;
+    try {
+      result = await callAiProvider(configs, prompt);
+    } catch (err) {
+      lastAttemptError = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
+      continue;
+    }
+
+    const fs = require("fs");
+    try {
+      fs.writeFileSync("ai-debug-dump.txt", result.content);
+    } catch (e) {}
+
+    let parsed: unknown;
+    try {
+      parsed = extractJson(result.content);
+    } catch (err) {
+      console.error(`[DEBUG EXTRACT JSON FAILED] percobaan ${attempt}/${MAX_ATTEMPTS} — Raw Text dari AI:\n`, result.content);
+      lastAttemptError = "Respons AI tidak bisa dibaca sebagai JSON. Cek log terminal.";
+      continue;
+    }
+
+    const attemptResult = designBriefSchema.safeParse(parsed);
+    if (!attemptResult.success) {
+      lastAttemptError = "Parsed JSON: " + JSON.stringify(parsed) + " | Zod Error: " + JSON.stringify(attemptResult.error.issues);
+      continue;
+    }
+
+    validated = attemptResult;
+    usage = result.usage;
+    break;
   }
 
-  const fs = require("fs");
-  try {
-    fs.writeFileSync("ai-debug-dump.txt", result.content);
-  } catch (e) {}
-
-  let parsed: unknown;
-  try {
-    parsed = extractJson(result.content);
-  } catch (err) {
-    console.error("[DEBUG EXTRACT JSON FAILED] Raw Text dari AI:\n", result.content);
-    return { ok: false, error: "Respons AI tidak bisa dibaca sebagai JSON. Cek log terminal." };
-  }
-
-  const validated = designBriefSchema.safeParse(parsed);
-  if (!validated.success) {
-    const errorDetails = JSON.stringify(validated.error.issues);
-    return { ok: false, error: "Parsed JSON: " + JSON.stringify(parsed) + " | Zod Error: " + errorDetails };
+  if (!validated || !validated.success) {
+    return { ok: false, error: lastAttemptError };
   }
 
   // Remember the target audience for next time, even before the site itself is generated.
@@ -103,7 +115,7 @@ export async function generateBriefAction(
     await prisma.store.update({ where: { id: storeId }, data: { targetAudience: targetAudience.trim() } });
   }
 
-  return { ok: true, brief: validated.data, usage: result.usage };
+  return { ok: true, brief: validated.data, usage };
 }
 
 /** Terapkan hasil generate ke halaman Beranda toko. */

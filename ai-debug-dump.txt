@@ -1,55 +1,61 @@
-{
-  "goal": "Menjadikan gaz sebagai toko cat online tepercaya yang memudahkan tukang dan ibu rumah tangga memilih warna serta memesan cat berkualitas dalam hitungan menit.",
-  "targetAudience": "Tukang bangunan/kontraktor kecil (25-50 th, kelas menengah-bawah, butuh info teknis cepat) dan ibu rumah tangga (28-45 th, kelas menengah, mencari inspirasi warna & kemudahan belanja) di kota-kota Indonesia.",
-  "colorPalette": {
-    "primary": "#1B4D8C",
-    "secondary": "#E8F1FA",
-    "accent": "#FF6B35",
-    "neutral": "#0F1A2E",
-    "extra1": "#C9E4F5",
-    "extra2": "#F7D046"
-  },
-  "typography": {
-    "heading": "sans-serif geometris modern & tebal, mis. 'Space Grotesk' atau 'Sora' untuk kesan premium sekaligus mudah dibaca layar HP tukang",
-    "body": "sans-serif humanis yang lapang, mis. 'Inter' atau 'DM Sans' — netral, tinggi keterbacaan pada label produk & spesifikasi teknis"
-  },
-  "tone": "Ramah-praktis dengan sentuhan percaya diri: bicara seperti tukang cat berpengalaman yang menjelaskan ke tetangganya — lugas, sedikit hangat, tanpa jargon berlebihan. Contoh: 'Warnanya tahan 5 tahun, tinggal pilih, kami antar.'",
-  "signatureElement": "Grid katalog dengan 'Color Chip Card' — kartu produk berlatar frosted-glass tipis yang bagian atasnya adalah swatch warna cat sebenarnya (bukan foto kaleng), dengan hover reveal informasi coverage m²/liter dan tombol 'Beli' oranye kontras.",
-  "sections": [
-    {
-      "name": "Hero",
-      "purpose": "Menyampaikan proposisi utama toko dan mengarahkan pengunjung ke katalog atau kategori populer.",
-      "contentOutline": "Headline besar: 'Cat Berkualitas, Warna Tepat, Sampai di Depan Rumah.' Sub-copy singkat menegaskan pengiriman cepat & konsultasi warna gratis. Dua tombol: 'Jelajahi Katalog' (primer) dan 'Lihat Kategori Populer' (sekunder)."
-    },
-    {
-      "name": "Kategori Cat",
-      "purpose": "Membantu tukang dan ibu rumah tangga menemukan jenis cat sesuai kebutuhan tanpa harus scroll seluruh katalog.",
-      "contentOutline": "Tampilkan 6 kartu kategori berbentuk kaca buram dengan ikon minimalis: Cat Interior, Cat Eksterior, Cat Kayu & Besi, Cat Waterproof, Cat Dekoratif, Alat & Kuas. Setiap kartu punya 1 baris deskripsi fungsi."
-    },
-    {
-      "name": "Katalog Produk Unggulan",
-      "purpose": "Menampilkan produk paling dicari sebagai etalase utama dengan grid produk premium.",
-      "contentOutline": "Grid 3-4 kolom Color Chip Card menampilkan 8-12 produk unggulan lengkap dengan nama warna, merek, harga per liter, dan tombol 'Beli' kontras oranye. Filter cepat di atas: berdasarkan ruangan, hasil akhir (matte/glossy), dan rentang harga."
-    },
-    {
-      "name": "Panduan Pilih Warna",
-      "purpose": "Membangun kepercayaan sekaligus memberi nilai edukatif khas ibu rumah tangga yang bingung memilih warna.",
-      "contentOutline": "Tiga kartu inspirasi: 'Warna Netral untuk Ruang Tamu Modern', 'Palet Ceria untuk Kamar Anak', 'Warna Tahan Cuaca untuk Fasad'. Setiap kartu punya preview palet 4 warna dan tombol 'Belanja Palet Ini'."
-    },
-    {
-      "name": "Keunggulan Belanja di gaz",
-      "purpose": "Menegaskan alasan memilih gaz dibanding toko cat konvensional atau marketplace umum.",
-      "contentOutline": "Empat poin ringkas dengan ikon: Stok Lengkap Semua Merek, Harga Grosir untuk Tukang, Konsultasi Warna via WhatsApp, Pengiriman Aman Kaleng Utuh. Bahasa singkat, langsung ke manfaat."
-    },
-    {
-      "name": "Testimoni Nyata",
-      "purpose": "Sosial proof dari dua segmen utama agar keduanya merasa terwakili.",
-      "contentOutline": "Dua kartu testimoni berdampingan: satu dari tukang/kontraktor yang memuji harga & kecepatan kirim, satu dari ibu rumah tangga yang puas dengan hasil warna sesuai bayangan. Sertakan nama, kota, dan foto proyek kecil."
-    },
-    {
-      "name": "Footer CTA & Info Toko",
-      "purpose": "Menutup halaman dengan dorongan aksi terakhir dan menyediakan jalur kontak non-form.",
-      "contentOutline": "Banner ajakan besar: 'Bingung pilih warna? Chat langsung tim gaz.' dengan tombol 'Chat WhatsApp' dan 'Mulai Belanja'. Di bawahnya info alamat toko fisik, jam operasional, tautan kategori, dan media sosial."
-    }
-  ]
-}
+Let me analyze this carefully:
+
+**Business Data:**
+- Name: Toko Demo Kaos
+- Type: Storefront - E-commerce with multi-product catalog, categories, and product detail pages
+- Category: Fashion & Accessories (Clothing, shoes, bags, accessories)
+- Description: Toko Busana Muslim
+- Market Segment: Modern Glassmorphism style, Playful & Vibrant style
+
+**Analysis Required:**
+1. Must avoid 3 generic patterns:
+   - (a) cream + thick serif font + terracotta/brick-orange accent
+   - (b) deep black + 1 neon color
+   - (c) newspaper style with thin lines & square corners
+
+2. Colors: 4-6 colors with explainable reasons (not just "looks good")
+
+3. Style: E-commerce Premium - clean product grid, minimalist (white/light), high contrast for Buy buttons, modern sans-serif typography, clear navigation
+
+4. Signature Element: One unique UI/layout element
+
+5. Tone must be reflected in writing style, not just labeled
+
+6. No forms - use CTA buttons instead
+
+7. Content outline max 2-3 sentences per section - focus on strong value proposition
+
+8. COPYWRITING must feel human, NOT AI template filler. No cliches like "solusi terbaik", "kualitas terjamin", "harga terjangkau", etc. Every claim must be SPECIFIC to this business - use concrete details
+
+9. Avoid naive/childish tone - write like senior copywriter with sharp opinion
+
+10. Goal and signature element must have sharp differentiation
+
+**Language: Indonesian**
+
+**Market Analysis:**
+- Fashion & Accessories
+- Muslim clothing business
+- Modern Glassmorphism + Playful & Vibrant
+- This suggests younger to middle-aged audience, modern, style-conscious
+- Local/national context (Indonesian Muslim fashion market)
+
+Let me think about colors:
+
+
+I'll explore a palette that breaks away from predictable choices, drawing inspiration from the business name and Muslim fashion context. The glassmorphism and vibrant styles demand a fresh approach that captures youthful energy while respecting cultural elegance. I'll craft a color strategy that moves beyond conventional design templates, focusing on unexpected yet meaningful color selections that reflect the brand's unique identity.
+
+The color palette will leverage soft peach as a foundational warm tone, complemented by deep burgundy to add sophistication. A muted sage introduces an organic, contemporary feel, while warm gold provides luxurious accents. These colors work together to create a modern, approachable aesthetic that stands apart from typical fashion retail designs.
+
+The typography prioritizes readability and contemporary style. 'Poppins' offers a clean, geometric approach for headings, while 'DM Sans' provides excellent legibility for body text. This combination ensures visual hierarchy and modern brand perception.
+
+The tone strikes a balance between trendy and grounded - using casual language that feels approachable yet informed. The signature element of floating product cards with glassmorphism creates a distinctive visual experience that differentiates the brand in a crowded marketplace.
+
+For the Hero section, the focus is on immediately communicating brand identity through visual storytelling that connects with the audience's lifestyle aspirations.
+
+The Product Grid section emphasizes curated collections and style guidance, moving beyond simple transactional presentations. It positions the brand as a trusted fashion partner.
+
+The Categories section reinforces the brand's specialization in Muslim fashion, highlighting expertise and thoughtful selection criteria.
+
+
+{"goal":"Membujuk pengunjung untuk segera mengeksplorasi dan membeli koleksi busana muslim modern dengan pengalaman visual yang mewah namun playful.","targetAudience":"Wanita muslimah berusia 20-35 tahun yang menginginkan busana muslim yang modis, berkualitas, dan sesuai untuk berbagai kesempatan — dari kasual hingga semi-formal.","colorPalette":{"primary":"#F5E6D3","secondary":"#8B2942","accent":"#D4A574","neutral":"#FAFAFA","extra1":"#1A1A1A","extra2":"#E8D5C4"},"typography":{"heading":"sans-serif tebal & geometris (contoh: Poppins Bold)","body":"sans-serif bersih dengan readability tinggi (contoh: DM Sans Regular)"},"tone":"akrab & percaya diri — seperti teman yang benar-benar mengerti fashion dan tidak takut memberi pendapat soal style","signatureElement":"Kartu produk melayang dengan efek glassmorphism halus yang menampilkan foto produk dengan background blur elegan saat hover","sections":[{"name":"Hero","purpose":"Menarik attention di 3 detik pertama dengan visual mencolok dan headline yang langsung communicate unique value proposition","contentOutline":"Tampilkan satu outfit andalan (misal: gamis terkini) dalam ukuran besar dengan headline yang punya sudut pandang — bukan sekadar 'belanja busana muslim di sini' tapi bisa seperti 'Hijab Friendly, Cashmere Feel, Tanpa Ribet.' Follow dengan satu CTA utama yang menonjol."},{"name":"Koleksi Pilihan","purpose":"Bukti sosial visual bahwa produknya benar-benar ada dan layak dibeli — bangun trust melalui showcase kualitas","contentOutline":"Tampilkan 4-6 produk andalan dalam grid premium. Setiap kartu produk wajib ada nama produk, harga yang jelas, dan status ketersediaan. Tambahkan satu baris copy yang menjelaskan mengapa produk ini masuk koleksi pilihan — misal tentang bahan, proses penjahitan, atau karena sudah terjual ratusan pcs."},{"name":"Kategori","purpose":"Membantu pengunjung menemukan apa yang mereka cari secepat mungkin tanpa perlu berpikir","contentOutline":"Bagi menjadi 3-4 kategori utama yang langsung terasa relevan untuk muslimah Indonesia: Gamis & Dress, Hijab & Pashmina, Atasan & Blazer, serta Aksesoris. Setiap kategori pakai icon atau ilustrasi kecil yang playful, bukan sekadar teks."}]}
