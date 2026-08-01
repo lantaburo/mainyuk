@@ -13,7 +13,7 @@ import { TEMPLATE_STYLE, DEFAULT_TEMPLATE, isTemplatePreset } from "@/lib/templa
 import { SITE_TYPE_CONFIG, type SiteType } from "@/lib/site-types";
 import type { DesignBrief } from "@/lib/ai-html-schema";
 import type { AiUsage } from "@/lib/ai-client";
-import { STREAM_DONE_MARKER } from "@/lib/streaming-protocol";
+import { STREAM_DONE_MARKER, STREAM_RESET_MARKER } from "@/lib/streaming-protocol";
 import { cn } from "@/lib/utils";
 import { generateBriefAction, applyGeneratedHtmlAction } from "@/lib/ai-actions";
 
@@ -184,6 +184,12 @@ export function AiWebsiteGeneratorWizard({
         const { done, value } = await reader.read();
         if (done) break;
         full += decoder.decode(value, { stream: true });
+
+        const resetIndex = full.lastIndexOf(STREAM_RESET_MARKER);
+        if (resetIndex !== -1) {
+          full = full.slice(resetIndex + STREAM_RESET_MARKER.length);
+        }
+
         const markerIndex = full.indexOf(STREAM_DONE_MARKER);
         setStreamingCode(markerIndex === -1 ? full : full.slice(0, markerIndex));
       }

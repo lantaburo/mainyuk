@@ -7,7 +7,7 @@ import { getAiConfigs } from "@/lib/ai-actions";
 import { buildHtmlFromBriefPrompt } from "@/lib/ai-html-prompt-generator";
 import { designBriefSchema } from "@/lib/ai-html-schema";
 import { sanitizeStoreHtml } from "@/lib/html-sanitize";
-import { STREAM_DONE_MARKER } from "@/lib/streaming-protocol";
+import { STREAM_DONE_MARKER, STREAM_RESET_MARKER } from "@/lib/streaming-protocol";
 
 /**
  * Streams the "blueprint -> HTML" generation live, so the wizard can show
@@ -61,31 +61,47 @@ export async function POST(req: NextRequest) {
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
-      let full = "";
+      // Sama seperti generateBriefAction: provider ini kadang mengembalikan
+      // HTML yang korup/kosong secara acak — retry biasanya cukup untuk
+      // dapat respons bersih. Setiap percobaan ulang mengirim STREAM_RESET_MARKER
+      // supaya client membuang tampilan kode dari percobaan gagal sebelumnya.
+      const MAX_ATTEMPTS = 3;
+      let html = "";
       let usage: AiUsage | null = null;
-      try {
-        for await (const event of streamAiProvider(configs, prompt)) {
-          if (event.type === "delta") {
-            full += event.text;
-            controller.enqueue(encoder.encode(event.text));
-          } else {
-            usage = event.usage;
-          }
+      let lastError = "AI tidak menghasilkan HTML yang valid.";
+
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        if (attempt > 1) {
+          controller.enqueue(encoder.encode(STREAM_RESET_MARKER));
         }
-      } catch (err) {
-        const message = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
-        controller.enqueue(encoder.encode(STREAM_DONE_MARKER + JSON.stringify({ error: message })));
-        controller.close();
-        return;
+
+        let full = "";
+        let attemptUsage: AiUsage | null = null;
+        try {
+          for await (const event of streamAiProvider(configs, prompt)) {
+            if (event.type === "delta") {
+              full += event.text;
+              controller.enqueue(encoder.encode(event.text));
+            } else {
+              attemptUsage = event.usage;
+            }
+          }
+        } catch (err) {
+          lastError = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
+          continue;
+        }
+
+        const candidate = sanitizeStoreHtml(stripCodeFence(full));
+        if (candidate.trim()) {
+          html = candidate;
+          usage = attemptUsage;
+          break;
+        }
+        lastError = "AI tidak menghasilkan HTML yang valid.";
       }
 
-      const html = sanitizeStoreHtml(stripCodeFence(full));
       if (!html.trim()) {
-        controller.enqueue(
-          encoder.encode(
-            STREAM_DONE_MARKER + JSON.stringify({ error: "AI tidak menghasilkan HTML yang valid." })
-          )
-        );
+        controller.enqueue(encoder.encode(STREAM_DONE_MARKER + JSON.stringify({ error: lastError })));
       } else {
         controller.enqueue(encoder.encode(STREAM_DONE_MARKER + JSON.stringify({ html, usage })));
       }
