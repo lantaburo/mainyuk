@@ -1,5 +1,6 @@
 import { SITE_TYPE_CONFIG, type SiteType, type BlockType } from "@/lib/site-types";
 import { INDUSTRY_CONTENT, type Industry } from "@/lib/industry-content";
+import { pickCreativeDirection } from "@/lib/ai-creative-directions";
 
 /**
  * Full schema docs — includes ALL design fields the AI must choose.
@@ -198,6 +199,7 @@ export function buildContentPrompt(opts: {
       : PAGE_TYPE_STRATEGY[pageType] ?? `Sesuaikan section dengan tujuan halaman ini: ${pageGuide}`;
 
   const descriptionFallback = PLACEHOLDER_EXAMPLES[opts.siteType];
+  const direction = pickCreativeDirection();
 
   return `Kamu adalah Senior UI/UX Designer fullstack untuk UMKM Indonesia — bukan sekadar penulis konten.
 Platform klikweb.id merender halaman dari JSON — TIDAK ada HTML/CSS bebas.
@@ -219,6 +221,8 @@ STRATEGI: ${strategyHint}
 
 BLOK YANG TERSEDIA (pilih sebagian sesuai kebutuhan, JANGAN wajib semua): ${allowedBlocks.join(", ")}
 ${DESIGN_PRINCIPLES}
+ARAH KREATIF WAJIB UNTUK GENERASI INI — "${direction.name}": ${direction.guidance} Field desain (align/style/layout/variant/bg) dan gaya penulisan copy HARUS terasa sebagai hasil dari arah ini secara spesifik untuk bisnis ini, bukan interpretasi netral/aman darinya.
+
 ═══════════════════════════════════════
 ATURAN WAJIB
 ═══════════════════════════════════════
@@ -229,7 +233,7 @@ ATURAN WAJIB
 5. Field "image_url" / "map_embed_url" selalu dikosongkan atau dihapus.
 6. Hanya gunakan tipe blok dari daftar BLOK YANG TERSEDIA di atas.
 7. Nama field HARUS persis sama — jangan terjemahkan.
-8. Untuk field desain (align/style/layout/variant/bg): WAJIB diisi berdasarkan pertimbanganmu sendiri sebagai senior UI/UX, ikuti PRINSIP DESAIN di atas — bukan asal pilih opsi pertama di skema.
+8. Untuk field desain (align/style/layout/variant/bg): WAJIB diisi berdasarkan pertimbanganmu sendiri sebagai senior UI/UX, ikuti PRINSIP DESAIN dan ARAH KREATIF di atas — bukan asal pilih opsi pertama di skema.
 9. "id" format "blk-[type]-[nomor]". "order" mulai 1 berurutan sesuai urutan yang kamu putuskan.
 
 ═══════════════════════════════════════

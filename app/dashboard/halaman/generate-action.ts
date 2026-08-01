@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { SITE_TYPE_CONFIG } from "@/lib/site-types";
-import { callAiProvider, extractJson, AiClientError } from "@/lib/ai-client";
+import { callAiProvider, extractJson, AiClientError, sleep } from "@/lib/ai-client";
 import { buildContentPrompt, buildSingleBlockPrompt } from "@/lib/ai-prompt-generator";
 import { blockArraySchema } from "@/lib/block-schema";
 import { isIndustry, DEFAULT_INDUSTRY } from "@/lib/industry-content";
@@ -65,30 +65,48 @@ export async function generatePageBlocksAction(
     pageType,
   });
 
-  let rawText: string;
-  try {
-    rawText = (
-      await callAiProvider(configs, prompt)
-    ).content;
-  } catch (err) {
-    const msg = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
-    return { ok: false, error: msg };
+  // Creative-direction step (block selection + design variants) — needs
+  // variety across generations, not the low-temp determinism used for
+  // purely schema-bound calls. Retry a few times since higher temperature
+  // means a higher chance of a malformed JSON attempt.
+  const MAX_ATTEMPTS = 3;
+  let validated: ReturnType<typeof blockArraySchema.safeParse> | null = null;
+  let lastError = "Gagal menghubungi AI.";
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    if (attempt > 1) {
+      await sleep(Math.min(1000 * attempt, 4000) + Math.random() * 500);
+    }
+
+    let rawText: string;
+    try {
+      rawText = (await callAiProvider(configs, prompt, { temperature: 0.85 })).content;
+    } catch (err) {
+      lastError = err instanceof AiClientError ? err.message : "Gagal menghubungi AI.";
+      continue;
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = extractJson(rawText);
+    } catch (err) {
+      console.error(`[DEBUG EXTRACT JSON FAILED] percobaan ${attempt}/${MAX_ATTEMPTS} — Raw Text dari AI:\n`, rawText);
+      lastError = "Respons AI tidak bisa dibaca sebagai JSON. Cek log terminal.";
+      continue;
+    }
+
+    const attemptResult = blockArraySchema.safeParse(parsed);
+    if (!attemptResult.success) {
+      lastError = "Blok yang di-generate tidak valid: " + attemptResult.error.issues[0]?.message;
+      continue;
+    }
+
+    validated = attemptResult;
+    break;
   }
 
-  let parsed: unknown;
-  try {
-    parsed = extractJson(rawText);
-  } catch (err) {
-    console.error("[DEBUG EXTRACT JSON FAILED] Raw Text dari AI:\n", rawText);
-    return { ok: false, error: "Respons AI tidak bisa dibaca sebagai JSON. Cek log terminal." };
-  }
-
-  const validated = blockArraySchema.safeParse(parsed);
-  if (!validated.success) {
-    return {
-      ok: false,
-      error: "Blok yang di-generate tidak valid: " + validated.error.issues[0]?.message,
-    };
+  if (!validated || !validated.success) {
+    return { ok: false, error: lastError };
   }
 
   // Filter to only allowed blocks for this site type
