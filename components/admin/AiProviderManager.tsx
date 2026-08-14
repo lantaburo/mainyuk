@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AiProvider } from "@/lib/generated/prisma/client";
+import { AiProvider } from "@/lib/generated/prisma2/client";
 import { 
   saveProviderAction, 
   deleteProviderAction, 
