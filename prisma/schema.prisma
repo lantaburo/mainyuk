@@ -406,3 +406,56 @@ model StudentProgress {
   @@index([moduleId])
   @@map("student_progress")
 }
+
+// ─── System & Payment Settings ───────────────────────────────────────────────
+
+model SystemSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
+
+// ─── Discount Codes ──────────────────────────────────────────────────────────
+
+model DiscountCode {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  description String?
+  type        DiscountType @default(percentage)
+  discountPct Decimal?  @map("discount_pct") @db.Decimal(5, 2)
+  discountAmt Decimal?  @map("discount_amt") @db.Decimal(12, 2)
+  minOrder    Decimal?  @map("min_order")    @db.Decimal(12, 2)
+  maxUses     Int?      @map("max_uses")
+  usedCount   Int       @default(0) @map("used_count")
+  expiresAt   DateTime? @map("expires_at")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("discount_codes")
+}
+
+// ─── Affiliate Codes ─────────────────────────────────────────────────────────
+
+model AffiliateCode {
+  id               String   @id @default(cuid())
+  code             String   @unique
+  ownerName        String   @map("owner_name")
+  ownerEmail       String?  @map("owner_email")
+  commissionPct    Decimal  @map("commission_pct") @db.Decimal(5, 2)
+  totalConversions Int      @default(0) @map("total_conversions")
+  totalEarnings    Decimal  @default(0) @map("total_earnings") @db.Decimal(14, 2)
+  isActive         Boolean  @default(true) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("affiliate_codes")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum DiscountType {
+  percentage
+  fixed
+}
+

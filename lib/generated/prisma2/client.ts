@@ -136,3 +136,18 @@ export type StudentProfile = Prisma.StudentProfileModel
  * 
  */
 export type StudentProgress = Prisma.StudentProgressModel
+/**
+ * Model SystemSetting
+ * 
+ */
+export type SystemSetting = Prisma.SystemSettingModel
+/**
+ * Model DiscountCode
+ * 
+ */
+export type DiscountCode = Prisma.DiscountCodeModel
+/**
+ * Model AffiliateCode
+ * 
+ */
+export type AffiliateCode = Prisma.AffiliateCodeModel

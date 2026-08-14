@@ -1,15 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
-import { AdminTenantListClient } from "@/components/admin/AdminTenantListClient";
-import { Store, TrendingUp, Users, ShoppingCart } from "lucide-react";
+import { AdminStudentListClient } from "@/components/admin/AdminStudentListClient";
+import { GraduationCap, BookOpen, Library, Users } from "lucide-react";
 
 export default async function AdminPage() {
   await requireAdmin();
 
-  const stores = await prisma.store.findMany({
+  // Fetch educational data
+  const students = await prisma.studentProfile.findMany({
     include: {
-      owner: { select: { name: true, email: true } },
-      _count: { select: { products: true, orders: true } },
+      parent: { select: { name: true, email: true } },
+      _count: { select: { progress: { where: { isCompleted: true } } } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -20,15 +21,14 @@ export default async function AdminPage() {
     }
   });
 
-  const totalProducts = stores.reduce((sum, store) => sum + store._count.products, 0);
-  const totalOrders = stores.reduce((sum, store) => sum + store._count.orders, 0);
-  const activeStores = stores.filter(s => s.status === 'active').length;
+  const totalSubjects = await prisma.subject.count();
+  const totalModules = await prisma.module.count();
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard Super Admin</h1>
-        <p className="mt-2 text-sm text-gray-500">Pantau pertumbuhan dan kelola semua tenant di platform mainyuk.my.id.</p>
+        <p className="mt-2 text-sm text-gray-500">Pantau pertumbuhan dan kelola semua data siswa di platform mainyuk.my.id.</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -37,16 +37,15 @@ export default async function AdminPage() {
           <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-indigo-500/10 blur-2xl group-hover:bg-indigo-500/20 transition-all"></div>
           <div className="flex justify-between items-start relative z-10">
             <div>
-              <p className="text-sm font-medium text-gray-500/80">Total Tenant</p>
-              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 drop-shadow-sm">{stores.length}</p>
+              <p className="text-sm font-medium text-gray-500/80">Total Siswa</p>
+              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 drop-shadow-sm">{students.length}</p>
             </div>
             <div className="p-3 bg-gradient-to-br from-indigo-100 to-indigo-50 text-indigo-600 rounded-xl shadow-sm border border-indigo-100/50">
-              <Store className="h-5 w-5" />
+              <GraduationCap className="h-5 w-5" />
             </div>
           </div>
-          <div className="mt-6 flex items-center gap-2 relative z-10">
-            <span className="flex h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)] animate-pulse"></span>
-            <p className="text-xs font-medium text-green-600">{activeStores} aktif</p>
+          <div className="mt-6 relative z-10">
+            <p className="text-xs font-medium text-gray-500">Total siswa terdaftar</p>
           </div>
         </div>
 
@@ -55,15 +54,15 @@ export default async function AdminPage() {
           <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-blue-500/10 blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
           <div className="flex justify-between items-start relative z-10">
             <div>
-              <p className="text-sm font-medium text-gray-500/80">Total Produk</p>
-              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 drop-shadow-sm">{totalProducts}</p>
+              <p className="text-sm font-medium text-gray-500/80">Total Pelajaran</p>
+              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 drop-shadow-sm">{totalSubjects}</p>
             </div>
             <div className="p-3 bg-gradient-to-br from-blue-100 to-blue-50 text-blue-600 rounded-xl shadow-sm border border-blue-100/50">
-              <TrendingUp className="h-5 w-5" />
+              <BookOpen className="h-5 w-5" />
             </div>
           </div>
           <div className="mt-6 relative z-10">
-            <p className="text-xs font-medium text-gray-500">Tersebar di seluruh platform</p>
+            <p className="text-xs font-medium text-gray-500">Mata pelajaran tersedia</p>
           </div>
         </div>
 
@@ -72,15 +71,15 @@ export default async function AdminPage() {
           <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-emerald-500/10 blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
           <div className="flex justify-between items-start relative z-10">
             <div>
-              <p className="text-sm font-medium text-gray-500/80">Total Pesanan</p>
-              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 drop-shadow-sm">{totalOrders}</p>
+              <p className="text-sm font-medium text-gray-500/80">Total Modul</p>
+              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 drop-shadow-sm">{totalModules}</p>
             </div>
             <div className="p-3 bg-gradient-to-br from-emerald-100 to-emerald-50 text-emerald-600 rounded-xl shadow-sm border border-emerald-100/50">
-              <ShoppingCart className="h-5 w-5" />
+              <Library className="h-5 w-5" />
             </div>
           </div>
           <div className="mt-6 relative z-10">
-            <p className="text-xs font-medium text-gray-500">Dari seluruh toko aktif</p>
+            <p className="text-xs font-medium text-gray-500">Total modul pembelajaran</p>
           </div>
         </div>
 
@@ -103,8 +102,8 @@ export default async function AdminPage() {
       </div>
 
       <div className="space-y-4">
-        <h2 className="text-xl font-bold tracking-tight text-gray-900">Daftar Tenant</h2>
-        <AdminTenantListClient initialStores={stores} />
+        <h2 className="text-xl font-bold tracking-tight text-gray-900">Daftar Siswa Terdaftar</h2>
+        <AdminStudentListClient initialStudents={students} />
       </div>
     </div>
   );

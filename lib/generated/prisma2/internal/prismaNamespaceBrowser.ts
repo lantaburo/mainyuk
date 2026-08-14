@@ -69,7 +69,10 @@ export const ModelName = {
   Module: 'Module',
   Question: 'Question',
   StudentProfile: 'StudentProfile',
-  StudentProgress: 'StudentProgress'
+  StudentProgress: 'StudentProgress',
+  SystemSetting: 'SystemSetting',
+  DiscountCode: 'DiscountCode',
+  AffiliateCode: 'AffiliateCode'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -389,6 +392,48 @@ export const StudentProgressScalarFieldEnum = {
 } as const
 
 export type StudentProgressScalarFieldEnum = (typeof StudentProgressScalarFieldEnum)[keyof typeof StudentProgressScalarFieldEnum]
+
+
+export const SystemSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
+
+
+export const DiscountCodeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  description: 'description',
+  type: 'type',
+  discountPct: 'discountPct',
+  discountAmt: 'discountAmt',
+  minOrder: 'minOrder',
+  maxUses: 'maxUses',
+  usedCount: 'usedCount',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+} as const
+
+export type DiscountCodeScalarFieldEnum = (typeof DiscountCodeScalarFieldEnum)[keyof typeof DiscountCodeScalarFieldEnum]
+
+
+export const AffiliateCodeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  ownerName: 'ownerName',
+  ownerEmail: 'ownerEmail',
+  commissionPct: 'commissionPct',
+  totalConversions: 'totalConversions',
+  totalEarnings: 'totalEarnings',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+} as const
+
+export type AffiliateCodeScalarFieldEnum = (typeof AffiliateCodeScalarFieldEnum)[keyof typeof AffiliateCodeScalarFieldEnum]
 
 
 export const SortOrder = {

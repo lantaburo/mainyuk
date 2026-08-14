@@ -84,3 +84,11 @@ export const EduRole = {
 } as const
 
 export type EduRole = (typeof EduRole)[keyof typeof EduRole]
+
+
+export const DiscountType = {
+  percentage: 'percentage',
+  fixed: 'fixed'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]

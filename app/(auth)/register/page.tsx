@@ -63,69 +63,89 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-lg flex-col justify-center bg-[#F6F3EE] px-4 py-12 text-[#0B2B26]">
-      <AuthHeader />
+    <div className="relative flex min-h-screen flex-col justify-center px-4 py-12 text-slate-800 bg-slate-50 overflow-hidden font-sans">
+      {/* Playful Background Elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob pointer-events-none"></div>
+      <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000 pointer-events-none"></div>
+      <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000 pointer-events-none"></div>
 
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Buat Akun Orang Tua</h1>
-        <p className="mt-1 text-sm text-[#0B2B26]/60">
-          Sudah punya akun?{" "}
-          <Link href="/login" className="font-medium text-[#F0640A] hover:underline">
-            Masuk di sini
-          </Link>
-        </p>
-      </div>
+      <div className="relative z-10 mx-auto w-full max-w-md">
+        <AuthHeader />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="rounded-2xl border border-[#0B2B26]/10 bg-white p-6 shadow-xl space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Nama Lengkap (Orang Tua)</Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="pr-12"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#0B2B26]/50 hover:text-[#0B2B26] transition-colors"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-            <p className="text-xs text-[#0B2B26]/50">Minimal 8 karakter.</p>
-          </div>
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-black tracking-tight text-slate-800">Buat Akun Orang Tua</h1>
+          <p className="mt-2 text-base text-slate-500 font-medium">
+            Sudah punya akun?{" "}
+            <Link href="/login" className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline transition-colors">
+              Masuk di sini
+            </Link>
+          </p>
         </div>
 
-        {error && <p className="text-sm text-destructive">{error}</p>}
+        <div className="rounded-3xl border border-white/50 bg-white/70 backdrop-blur-xl p-8 shadow-2xl shadow-indigo-500/10">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="font-bold text-slate-700">Nama Lengkap (Orang Tua)</Label>
+              <Input 
+                id="name" 
+                placeholder="Misal: Budi Santoso"
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+                required 
+                className="rounded-xl border-slate-200 focus-visible:ring-indigo-500 py-6"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="font-bold text-slate-700">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="nama@contoh.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="rounded-xl border-slate-200 focus-visible:ring-indigo-500 py-6"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="font-bold text-slate-700">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  minLength={8}
+                  placeholder="Minimal 8 karakter"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="rounded-xl border-slate-200 focus-visible:ring-indigo-500 py-6 pr-12"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
 
-        <Button
-          type="submit"
-          className="w-full bg-[#0B3B35] text-white hover:bg-[#0F4A42]"
-          disabled={!isValid || loading}
-        >
-          {loading ? "Mendaftar..." : "Buat Akun"}
-        </Button>
-      </form>
+            {error && (
+              <div className="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                <p className="text-sm font-semibold text-rose-600">{error}</p>
+              </div>
+            )}
+
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 font-bold py-6 rounded-xl shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all text-lg flex items-center justify-center gap-2"
+              disabled={!isValid || loading}
+            >
+              {loading ? "Mendaftar..." : "Buat Akun"}
+            </Button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
