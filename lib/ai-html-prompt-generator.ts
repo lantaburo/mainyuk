@@ -145,7 +145,7 @@ ATURAN TEKNIS WAJIB (pelanggaran akan ditolak sistem):
       : ""
   }${
     needsProductWidget
-      ? `\n10. Untuk section yang menampilkan produk (mis. "Produk Unggulan"/"Katalog"), JANGAN buat kartu produk sendiri — taruh tag ini SEBAGAI SECTION TERSENDIRI, sejajar dengan section lain (JANGAN ditaruh di dalam section lain): <div data-klikweb-widget="featured-products" class="px-6 py-16"></div> (boleh ubah class untuk spacing, tapi jangan taruh child/isi lain di dalamnya — sistem akan menggantinya dengan grid produk asli secara otomatis).`
+      ? `\n10. Untuk section yang menampilkan produk (mis. "Produk Unggulan"/"Katalog"), JANGAN buat kartu produk sendiri — taruh tag ini SEBAGAI SECTION TERSENDIRI, sejajar dengan section lain (JANGAN ditaruh di dalam section lain): <div data-mainyuk-widget="featured-products" class="px-6 py-16"></div> (boleh ubah class untuk spacing, tapi jangan taruh child/isi lain di dalamnya — sistem akan menggantinya dengan grid produk asli secara otomatis).`
       : ""
   }
 11. Gambar: sistem akan OTOMATIS menyuntikkan foto nyata dari Pexels ke section yang butuh gambar (hero, about, banner dll) — kamu TIDAK perlu memasukkan <img> atau background-image sama sekali. Fokus ke tipografi, warna, dan layout; sistem yang akan tambahkan foto di belakang layar.
@@ -179,7 +179,7 @@ ATURAN WAJIB:
 2. Balikin TEPAT SATU elemen root dengan tag yang SAMA seperti elemen semula (jangan ganti mis. <h2> jadi <div>), kecuali instruksi eksplisit minta ganti tag.
 3. DILARANG KERAS <script>, <iframe>, <form>, atribut "on*" (onclick dkk), atau href="javascript:...".
 4. Untuk WARNA: gunakan inline style (style="background: #hex" atau style="color: #hex" atau style="background: var(--store-primary)") — JANGAN gunakan Tailwind bg-*/text-*[warna] karena tidak dijamin tersedia. Untuk layout/spacing/tipografi, boleh gunakan Tailwind class (flex, px-6, text-sm, font-bold, dsb).
-5. Pertahankan semua atribut "id" dan "data-*" yang sudah ada di elemen semula (termasuk data-klikweb-widget kalau ada), kecuali instruksi eksplisit minta mengubahnya.
+5. Pertahankan semua atribut "id" dan "data-*" yang sudah ada di elemen semula (termasuk data-mainyuk-widget kalau ada), kecuali instruksi eksplisit minta mengubahnya.
 6. Kalau instruksi tidak jelas/tidak mungkin dilakukan pada elemen ini, kembalikan elemen semula apa adanya.
 
 Mulai output HTML sekarang:`;

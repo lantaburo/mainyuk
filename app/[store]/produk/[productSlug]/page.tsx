@@ -63,7 +63,7 @@ export default async function ProductDetailPage({
     sku: product.id,
     offers: {
       "@type": "Offer",
-      url: `https://${store.slug}.klikweb.id/produk/${product.slug}`,
+      url: `https://${store.slug}.mainyuk.my.id/produk/${product.slug}`,
       priceCurrency: "IDR",
       price: Number(product.price),
       itemCondition: "https://schema.org/NewCondition",

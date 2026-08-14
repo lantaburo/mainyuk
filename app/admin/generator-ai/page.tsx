@@ -53,7 +53,7 @@ export default async function AdminGeneratorAiIndexPage() {
                       <span className="font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">
                         {store.name}
                       </span>
-                      <div className="text-sm text-gray-500">{store.slug}.klikweb.id</div>
+                      <div className="text-sm text-gray-500">{store.slug}.mainyuk.my.id</div>
                     </div>
                   </TableCell>
                   <TableCell>

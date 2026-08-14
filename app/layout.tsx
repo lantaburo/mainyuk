@@ -17,7 +17,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "klikweb.id — Bikin Toko Online UMKM",
+  title: "mainyuk.my.id — Bikin Toko Online UMKM",
   description: "Platform SaaS untuk toko online, sales page, landing page, dan company profile UMKM.",
 };
 

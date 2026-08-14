@@ -75,7 +75,7 @@ export default async function StoreLayout({
     name: store.name,
     image: store.seoImage || store.logoUrl || "",
     description: store.seoDescription || `Selamat datang di ${store.name}`,
-    url: `https://${store.slug}.klikweb.id`,
+    url: `https://${store.slug}.mainyuk.my.id`,
     telephone: store.settings?.whatsappNumber || "",
   };
 

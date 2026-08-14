@@ -263,7 +263,7 @@ export async function createCustomPageAction(title: string) {
       pageType: "custom",
       title,
       slug,
-      html: `<div class="min-h-[50vh] flex flex-col items-center justify-center p-8 text-center" data-klikweb-id="blank-hero"><h1 class="text-4xl font-bold" data-klikweb-id="blank-h1">${title}</h1><p class="mt-4 text-gray-500" data-klikweb-id="blank-p">Halaman ini belum memiliki konten. Gunakan tab AI di Editor untuk mengisinya.</p></div>`
+      html: `<div class="min-h-[50vh] flex flex-col items-center justify-center p-8 text-center" data-mainyuk-id="blank-hero"><h1 class="text-4xl font-bold" data-mainyuk-id="blank-h1">${title}</h1><p class="mt-4 text-gray-500" data-mainyuk-id="blank-p">Halaman ini belum memiliki konten. Gunakan tab AI di Editor untuk mengisinya.</p></div>`
     }
   });
 

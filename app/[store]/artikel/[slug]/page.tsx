@@ -58,7 +58,7 @@ export default async function StoreArticleDetailPage({ params }: { params: { sto
     author: {
       "@type": "Organization",
       name: store.name,
-      url: `https://${store.slug}.klikweb.id`,
+      url: `https://${store.slug}.mainyuk.my.id`,
     },
   };
 

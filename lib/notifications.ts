@@ -39,7 +39,7 @@ export async function notifyNewOrder(opts: {
       sendWhatsAppMessage(
         waConfig,
         opts.ownerPhone,
-        `Pesanan baru masuk di ${opts.storeName}!\nNo. Order: ${opts.orderNumber}\nTotal: ${formatRupiah(opts.total)}\nCek detailnya di dashboard klikweb.id kamu.`
+        `Pesanan baru masuk di ${opts.storeName}!\nNo. Order: ${opts.orderNumber}\nTotal: ${formatRupiah(opts.total)}\nCek detailnya di dashboard mainyuk.my.id kamu.`
       )
     );
   }

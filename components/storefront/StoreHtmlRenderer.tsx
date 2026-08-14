@@ -3,13 +3,13 @@ import { sanitizeStoreHtml } from "@/lib/html-sanitize";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/storefront/ProductCard";
 
-const WIDGET_RE = /<div[^>]*data-klikweb-widget="featured-products"[^>]*>[\s\S]*?<\/div>/g;
+const WIDGET_RE = /<div[^>]*data-mainyuk-widget="featured-products"[^>]*>[\s\S]*?<\/div>/g;
 
 /**
  * Renders an AI-generated StorePage.html fragment for a public storefront
  * visitor. Sanitizes again (defense-in-depth on top of the sanitize already
  * done when the page was saved), then substitutes any
- * `data-klikweb-widget="featured-products"` marker with a live product grid
+ * `data-mainyuk-widget="featured-products"` marker with a live product grid
  * (real React children, not a string — Next.js's RSC bundler forbids
  * react-dom/server, so the marker's surrounding HTML is split into chunks
  * and the product grid is rendered as an actual sibling component instead

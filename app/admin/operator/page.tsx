@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { OperatorListClient } from "./OperatorListClient";
 
 export const metadata = {
-  title: "Manajemen Operator | klikweb.id",
+  title: "Manajemen Operator | mainyuk.my.id",
 };
 
 export default async function OperatorManagementPage() {

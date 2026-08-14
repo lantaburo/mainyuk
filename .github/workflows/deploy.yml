@@ -20,4 +20,4 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script_stop: true
           script: |
-            bash /var/www/klikweb.id/deploy/deploy.sh main
+            bash /var/www/mainyuk.my.id/deploy/deploy.sh main

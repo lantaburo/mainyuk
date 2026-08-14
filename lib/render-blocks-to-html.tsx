@@ -10,7 +10,7 @@ import { ContactBlock } from "@/components/storefront/blocks/ContactBlock";
 import { FaqBlock } from "@/components/storefront/blocks/FaqBlock";
 import { BlockWrapper } from "@/components/storefront/blocks/BlockWrapper";
 
-const PRODUCT_WIDGET = '<div data-klikweb-widget="featured-products"></div>';
+const PRODUCT_WIDGET = '<div data-mainyuk-widget="featured-products"></div>';
 
 /**
  * Statically renders fixed-block JSON into an HTML string for the new
@@ -18,7 +18,7 @@ const PRODUCT_WIDGET = '<div data-klikweb-widget="featured-products"></div>';
  * block-based pages and for seeding a reasonable default page at signup
  * (before the owner runs the AI generator). featured_products/product_highlight
  * can't be statically rendered (they query the DB live) — they become a
- * data-klikweb-widget marker, substituted at render time (see
+ * data-mainyuk-widget marker, substituted at render time (see
  * lib/render-dynamic-widgets.tsx).
  */
 export function renderBlocksToHtml(blocks: Block[], whatsappNumber?: string | null): string {

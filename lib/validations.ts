@@ -15,11 +15,6 @@ export const registerSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
   email: z.string().email("Email tidak valid"),
   password: z.string().min(8, "Password minimal 8 karakter"),
-  storeName: z.string().min(2, "Nama toko minimal 2 karakter"),
-  storeSlug: slugSchema,
-  siteType: z.enum(SITE_TYPES),
-  industry: z.enum(INDUSTRIES),
-  templateId: z.enum(TEMPLATE_PRESETS),
 });
 export type RegisterInput = z.infer<typeof registerSchema>;
 

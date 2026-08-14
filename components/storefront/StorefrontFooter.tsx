@@ -9,13 +9,13 @@ export function StorefrontFooter({ store }: { store: { name: string } }) {
         <p className="text-xs text-muted-foreground">
           © {new Date().getFullYear()} {store.name} &middot; Dibuat dengan{" "}
           <a
-            href="https://klikweb.id"
+            href="https://mainyuk.my.id"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium underline-offset-2 hover:underline"
             style={{ color: "var(--store-primary)" }}
           >
-            klikweb.id
+            mainyuk.my.id
           </a>
         </p>
       </div>

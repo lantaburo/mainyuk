@@ -495,7 +495,7 @@ export function PageEditor({
                   ref={canvasRef}
                   style={themeStyle}
                   onClick={handleCanvasClick}
-                  className={cn(activeTab === "design" && "[&_[data-klikweb-id]]:hover:outline [&_[data-klikweb-id]]:hover:outline-1 [&_[data-klikweb-id]]:hover:outline-indigo-300")}
+                  className={cn(activeTab === "design" && "[&_[data-mainyuk-id]]:hover:outline [&_[data-mainyuk-id]]:hover:outline-1 [&_[data-mainyuk-id]]:hover:outline-indigo-300")}
                 />
               </div>
             </div>

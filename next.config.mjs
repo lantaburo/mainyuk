@@ -14,9 +14,9 @@ const nextConfig = {
         hostname: "**.r2.dev",
       },
       {
-        // Custom domain jika ada (mis. cdn.klikweb.id)
+        // Custom domain jika ada (mis. cdn.mainyuk.my.id)
         protocol: "https",
-        hostname: "**.klikweb.id",
+        hostname: "**.mainyuk.my.id",
       },
     ],
   },

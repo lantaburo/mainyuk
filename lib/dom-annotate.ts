@@ -6,12 +6,12 @@
  * back out before the HTML is persisted.
  */
 
-export const EDITOR_ID_ATTR = "data-klikweb-id";
+export const EDITOR_ID_ATTR = "data-mainyuk-id";
 export const SELECTABLE_SELECTOR =
   "section, h1, h2, h3, h4, h5, h6, p, span, a, button, img, li";
 
 /**
- * (Re-)assigns a stable `data-klikweb-id` to every selectable element under
+ * (Re-)assigns a stable `data-mainyuk-id` to every selectable element under
  * `root`. Always strips first so re-annotating after an outerHTML swap (AI
  * edit, Code-tab apply) never produces duplicate/stale ids.
  */

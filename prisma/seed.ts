@@ -125,11 +125,11 @@ async function main() {
   // 0. Super admin (panel operator)
   const adminPasswordHash = await bcrypt.hash("password123", 10);
   await prisma.user.upsert({
-    where: { email: "admin@klikweb.id" },
+    where: { email: "admin@mainyuk.my.id" },
     update: {},
     create: {
-      name: "Operator klikweb.id",
-      email: "admin@klikweb.id",
+      name: "Operator mainyuk.my.id",
+      email: "admin@mainyuk.my.id",
       passwordHash: adminPasswordHash,
       role: "super_admin",
     },
@@ -137,7 +137,7 @@ async function main() {
 
   // 1. Storefront demo
   const { products: storefrontProducts } = await seedStore({
-    ownerEmail: "owner-storefront@klikweb.id",
+    ownerEmail: "owner-storefront@mainyuk.my.id",
     ownerName: "Budi (Storefront Demo)",
     storeSlug: "toko-demo",
     storeName: "Toko Demo Kaos",
@@ -216,7 +216,7 @@ async function main() {
 
   // 2. Sales page demo
   const { products: salesProducts } = await seedStore({
-    ownerEmail: "owner-sales@klikweb.id",
+    ownerEmail: "owner-sales@mainyuk.my.id",
     ownerName: "Sinta (Sales Page Demo)",
     storeSlug: "sales-demo",
     storeName: "Skincare Glow Serum",
@@ -286,7 +286,7 @@ async function main() {
 
   // 3. Landing page demo
   await seedStore({
-    ownerEmail: "owner-landing@klikweb.id",
+    ownerEmail: "owner-landing@mainyuk.my.id",
     ownerName: "Rudi (Landing Page Demo)",
     storeSlug: "landing-demo",
     storeName: "Kursus Digital Marketing",
@@ -351,7 +351,7 @@ async function main() {
 
   // 4. Company profile demo
   await seedStore({
-    ownerEmail: "owner-profile@klikweb.id",
+    ownerEmail: "owner-profile@mainyuk.my.id",
     ownerName: "Dewi (Company Profile Demo)",
     storeSlug: "profile-demo",
     storeName: "CV Maju Bersama",
@@ -422,12 +422,12 @@ async function main() {
   });
 
   console.log("Seed selesai:");
-  console.log("- klikweb.id/toko-demo (storefront)", storefrontProducts.length, "produk");
-  console.log("- klikweb.id/sales-demo (sales_page)");
-  console.log("- klikweb.id/landing-demo (landing_page)");
-  console.log("- klikweb.id/profile-demo (company_profile)");
+  console.log("- mainyuk.my.id/toko-demo (storefront)", storefrontProducts.length, "produk");
+  console.log("- mainyuk.my.id/sales-demo (sales_page)");
+  console.log("- mainyuk.my.id/landing-demo (landing_page)");
+  console.log("- mainyuk.my.id/profile-demo (company_profile)");
   console.log("Login owner: <email di atas> / password123");
-  console.log("Login operator (/admin): admin@klikweb.id / password123");
+  console.log("Login operator (/admin): admin@mainyuk.my.id / password123");
 }
 
 main()

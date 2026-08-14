@@ -6,6 +6,12 @@ export function getSession() {
   return getServerSession(authOptions);
 }
 
+export async function requireAuth() {
+  const session = await getSession();
+  if (!session) redirect("/login");
+  return session;
+}
+
 export async function requireStoreOwner() {
   const session = await getSession();
   if (!session || session.user.role !== "store_owner" || !session.user.storeId) {

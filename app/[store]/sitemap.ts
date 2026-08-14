@@ -13,7 +13,7 @@ export default async function sitemap({ params }: { params: { store: string } })
 
   if (!store) return [];
 
-  const baseUrl = `https://${store.slug}.klikweb.id`;
+  const baseUrl = `https://${store.slug}.mainyuk.my.id`;
 
   const sitemap: MetadataRoute.Sitemap = [
     {

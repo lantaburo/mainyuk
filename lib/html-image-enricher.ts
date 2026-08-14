@@ -96,7 +96,7 @@ export async function enrichHtmlWithImages(
 
     // Inject sebagai photo-overlay: div dengan position absolute, full cover, overlay gelap
     // Disisipkan sebagai child pertama dari <section...>
-    const photoOverlay = `<div data-klikweb-photo style="position:absolute;inset:0;background-image:url('${photo.url}');background-size:cover;background-position:center;z-index:0;pointer-events:none;" aria-hidden="true"></div>`;
+    const photoOverlay = `<div data-mainyuk-photo style="position:absolute;inset:0;background-image:url('${photo.url}');background-size:cover;background-position:center;z-index:0;pointer-events:none;" aria-hidden="true"></div>`;
 
     // Pastikan section punya position:relative agar overlay bisa absolute
     // Inject tepat setelah tag pembuka <section ...>

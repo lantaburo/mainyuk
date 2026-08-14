@@ -42,7 +42,7 @@ export default async function PengaturanPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Pengaturan Toko</h1>
         <p className="text-muted-foreground mt-2">
-          Kelola profil, tampilan, pengaturan pembayaran, dan integrasi untuk klikweb.id/{store.slug}
+          Kelola profil, tampilan, pengaturan pembayaran, dan integrasi untuk mainyuk.my.id/{store.slug}
         </p>
       </div>
 

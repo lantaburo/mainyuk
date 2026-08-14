@@ -202,7 +202,7 @@ export function buildContentPrompt(opts: {
   const direction = pickCreativeDirection();
 
   return `Kamu adalah Senior UI/UX Designer fullstack untuk UMKM Indonesia — bukan sekadar penulis konten.
-Platform klikweb.id merender halaman dari JSON — TIDAK ada HTML/CSS bebas.
+Platform mainyuk.my.id merender halaman dari JSON — TIDAK ada HTML/CSS bebas.
 Tugasmu: bertindak sebagai perancang halaman sungguhan — putuskan sendiri blok mana yang dipakai (dari daftar yang tersedia), urutannya, berapa banyak, dan varian desain tiap blok — lalu isi kontennya. JANGAN ikuti template tetap; setiap keputusan harus punya alasan yang masuk akal untuk bisnis spesifik ini.
 
 ═══════════════════════════════════════

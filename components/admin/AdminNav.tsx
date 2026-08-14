@@ -35,7 +35,7 @@ export function AdminNav({ user }: AdminNavProps) {
           <ShieldCheck className="h-6 w-6 text-white" />
         </div>
         <div>
-          <h1 className="font-bold text-gray-900 tracking-tight leading-none text-lg">klikweb.id</h1>
+          <h1 className="font-bold text-gray-900 tracking-tight leading-none text-lg">mainyuk.my.id</h1>
           <p className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mt-1">Super Admin</p>
         </div>
       </div>
