@@ -10,4 +10,4 @@ cmds = ["npm ci"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "npx prisma db push && npm run start"
+cmd = "npx prisma migrate deploy && npm run start -- -p $PORT"
