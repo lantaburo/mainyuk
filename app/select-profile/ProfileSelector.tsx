@@ -22,6 +22,7 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
   const [name, setName] = useState("");
   const [grade, setGrade] = useState("1");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleDelete = async (profileId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -48,6 +49,7 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
     e.preventDefault();
     if (!name) return;
     setLoading(true);
+    setErrorMsg("");
 
     const res = await fetch("/api/edu/add-child", {
       method: "POST",
@@ -60,6 +62,13 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
       setGrade("1");
       setIsAdding(false);
       router.refresh();
+    } else {
+      try {
+        const data = await res.json();
+        setErrorMsg(data.error || "Gagal menyimpan data.");
+      } catch {
+        setErrorMsg("Terjadi kesalahan sistem (Server Error).");
+      }
     }
     setLoading(false);
   };
@@ -68,6 +77,13 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
     return (
       <form onSubmit={handleAdd} className="bg-white p-6 rounded-2xl shadow-xl max-w-md mx-auto">
         <h2 className="text-xl font-bold mb-4 text-gray-900">Tambah Profil Anak</h2>
+        
+        {errorMsg && (
+          <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm font-medium border border-red-200">
+            {errorMsg}
+          </div>
+        )}
+
         <div className="space-y-4">
           <div className="space-y-1.5">
             <Label>Nama Panggilan</Label>
