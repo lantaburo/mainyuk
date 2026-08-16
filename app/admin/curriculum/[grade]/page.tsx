@@ -133,34 +133,38 @@ export default async function AdminCurriculumSubjectsPage({ params }: { params: 
         </div>
       )}
 
-      {/* Mapel tanpa modul di kelas ini (referensi) */}
+
+      {/* Mapel tanpa modul di kelas ini — tetap bisa diklik untuk tambah modul */}
       {subjectsWithoutModules.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <div className="h-px flex-1 bg-gray-200" />
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2">
-              Mapel belum punya modul di Kelas {gradeLevel}
+              Mapel belum punya modul di Kelas {gradeLevel} — klik untuk tambah
             </span>
             <div className="h-px flex-1 bg-gray-200" />
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {subjectsWithoutModules.map((subject) => (
-              <div
+              <Link
                 key={subject.id}
-                className="relative overflow-hidden rounded-2xl border border-dashed border-gray-200 bg-white/40 p-4 backdrop-blur-xl flex items-center gap-3 opacity-60"
+                href={`/admin/curriculum/${gradeLevel}/${subject.slug}`}
+                className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-gray-200 hover:border-emerald-300 bg-white/40 hover:bg-emerald-50/60 p-4 backdrop-blur-xl flex items-center gap-3 transition-all duration-200"
               >
-                <div className="p-2.5 rounded-xl bg-gray-100">
-                  <BookOpen className="h-5 w-5 text-gray-400" />
+                <div className="p-2.5 rounded-xl bg-gray-100 group-hover:bg-emerald-100 transition-colors">
+                  <BookOpen className="h-5 w-5 text-gray-400 group-hover:text-emerald-600 transition-colors" />
                 </div>
-                <div>
-                  <p className="font-semibold text-sm text-gray-600">{subject.name}</p>
-                  <p className="text-xs text-gray-400">Belum ada modul</p>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-sm text-gray-600 group-hover:text-emerald-700 transition-colors">{subject.name}</p>
+                  <p className="text-xs text-gray-400 group-hover:text-emerald-500 transition-colors">Belum ada modul · Klik untuk tambah</p>
                 </div>
-              </div>
+                <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all shrink-0" />
+              </Link>
             ))}
           </div>
         </div>
       )}
+
     </div>
   );
 }
