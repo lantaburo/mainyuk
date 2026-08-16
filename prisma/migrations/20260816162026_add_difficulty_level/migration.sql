@@ -14,24 +14,24 @@ EXCEPTION
 END $$;
 
 -- DropForeignKey
-ALTER TABLE "student_progress" DROP CONSTRAINT "student_progress_user_id_fkey";
+ALTER TABLE "student_progress" DROP CONSTRAINT IF EXISTS "student_progress_user_id_fkey";
 
 -- DropIndex
-DROP INDEX "student_progress_user_id_idx";
+DROP INDEX IF EXISTS "student_progress_user_id_idx";
 
 -- DropIndex
-DROP INDEX "student_progress_user_id_module_id_key";
+DROP INDEX IF EXISTS "student_progress_user_id_module_id_key";
 
 -- AlterTable
-ALTER TABLE "questions" ADD COLUMN     "difficulty_level" INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE "questions" ADD COLUMN IF NOT EXISTS "difficulty_level" INTEGER NOT NULL DEFAULT 1;
 
 -- Truncate student_progress because we are adding a NOT NULL column (student_id) without a default value
 TRUNCATE TABLE "student_progress" CASCADE;
 
 -- AlterTable
-ALTER TABLE "student_progress" DROP COLUMN "user_id",
-ADD COLUMN     "current_level" INTEGER NOT NULL DEFAULT 1,
-ADD COLUMN     "student_id" TEXT NOT NULL;
+ALTER TABLE "student_progress" DROP COLUMN IF EXISTS "user_id",
+ADD COLUMN IF NOT EXISTS "current_level" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN IF NOT EXISTS "student_id" TEXT NOT NULL;
 
 -- CreateTable
 CREATE TABLE "student_profiles" (
