@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, XCircle, ArrowRight, Trophy, RefreshCcw, Star, Volume2, VolumeX, Music } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowRight, Trophy, RefreshCcw, Star, Volume2, VolumeX, Music, Moon, Sun, BookOpen } from "lucide-react";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 import confetti from "canvas-confetti";
 
 export type QuizQuestion = {
@@ -25,6 +27,8 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [isReadingMode, setIsReadingMode] = useState(false);
   const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
   const [correctAudio, setCorrectAudio] = useState<HTMLAudioElement | null>(null);
   const [wrongAudio, setWrongAudio] = useState<HTMLAudioElement | null>(null);
@@ -227,6 +231,20 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
           <h1 className="text-2xl font-bold text-slate-800 drop-shadow-sm">{title}</h1>
           <div className="flex items-center gap-3">
             <button 
+              onClick={() => setIsReadingMode(!isReadingMode)}
+              className={cn("p-2 rounded-full transition-colors", isReadingMode ? "bg-amber-200 text-amber-800" : "bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700")}
+              title="Mode Baca"
+            >
+              <BookOpen className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 transition-colors"
+              title="Mode Gelap"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <button 
               onClick={() => {
                 setIsMuted(!isMuted);
                 if (isMuted && bgmAudio && !hasStartedBgm) {
@@ -234,7 +252,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
                   setHasStartedBgm(true);
                 }
               }}
-              className="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 transition-colors"
+              className="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-indigo-900 dark:hover:text-indigo-400 transition-colors"
               title={isMuted ? "Bunyikan Suara" : "Matikan Suara"}
             >
               {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
@@ -273,10 +291,22 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
             transition={{ duration: 0.3 }}
             className="flex-1 flex flex-col"
           >
-            <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-xl border border-white/50 mb-6 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-purple-600" />
+            <div className={cn(
+              "rounded-3xl p-6 md:p-8 shadow-xl mb-6 relative overflow-hidden transition-colors duration-300",
+              isReadingMode 
+                ? "bg-amber-50 border-amber-200 dark:bg-amber-950 dark:border-amber-900" 
+                : "bg-white/80 backdrop-blur-md border-white/50 dark:bg-slate-900/80 dark:border-slate-700"
+            )}>
+              {!isReadingMode && (
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-purple-600" />
+              )}
               
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-800 mb-8 leading-tight">
+              <h2 className={cn(
+                "font-extrabold mb-8 leading-tight transition-all duration-300",
+                isReadingMode 
+                  ? "text-3xl md:text-4xl text-amber-900 dark:text-amber-100" 
+                  : "text-2xl md:text-3xl text-slate-800 dark:text-slate-100"
+              )}>
                 {currentQuestion.question}
               </h2>
 
@@ -286,18 +316,18 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
                   const isCorrect = idx === currentQuestion.correctIndex;
                   const isWrong = isSelected && !isCorrect;
                   
-                  let stateClass = "bg-slate-50 border-slate-200 text-slate-700 hover:border-indigo-400 hover:bg-indigo-50";
+                  let stateClass = "bg-slate-50 border-slate-200 text-slate-700 hover:border-indigo-400 hover:bg-indigo-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300 dark:hover:border-indigo-500 dark:hover:bg-indigo-950";
                   
                   if (isAnswerChecked) {
                     if (isCorrect) {
-                      stateClass = "bg-emerald-50 border-emerald-500 text-emerald-800 shadow-emerald-500/20 shadow-lg scale-[1.02]";
+                      stateClass = "bg-emerald-50 border-emerald-500 text-emerald-800 shadow-emerald-500/20 shadow-lg scale-[1.02] dark:bg-emerald-950 dark:text-emerald-100";
                     } else if (isWrong) {
-                      stateClass = "bg-rose-50 border-rose-500 text-rose-800 opacity-50";
+                      stateClass = "bg-rose-50 border-rose-500 text-rose-800 opacity-50 dark:bg-rose-950 dark:text-rose-100";
                     } else {
-                      stateClass = "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
+                      stateClass = "bg-slate-50 border-slate-200 text-slate-400 opacity-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-500";
                     }
                   } else if (isSelected) {
-                    stateClass = "bg-indigo-50 border-indigo-500 text-indigo-800 shadow-md shadow-indigo-500/20 scale-[1.02]";
+                    stateClass = "bg-indigo-50 border-indigo-500 text-indigo-800 shadow-md shadow-indigo-500/20 scale-[1.02] dark:bg-indigo-950 dark:text-indigo-100";
                   }
 
                   const labels = ["A", "B", "C", "D"];
@@ -340,7 +370,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
                   animate={{ opacity: 1, height: "auto", y: 0 }}
                   className="mb-6"
                 >
-                  <div className={`p-6 rounded-3xl border-2 ${selectedOption === currentQuestion.correctIndex ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}`}>
+                  <div className={`p-6 rounded-3xl border-2 ${selectedOption === currentQuestion.correctIndex ? 'bg-emerald-50 border-emerald-200 dark:bg-emerald-950 dark:border-emerald-800' : 'bg-amber-50 border-amber-200 dark:bg-amber-950 dark:border-amber-800'}`}>
                     <h3 className={`font-black text-xl mb-2 flex items-center gap-2 ${selectedOption === currentQuestion.correctIndex ? 'text-emerald-700' : 'text-amber-700'}`}>
                       {selectedOption === currentQuestion.correctIndex ? (
                         <>✨ Hore! Jawabanmu Benar!</>

@@ -38,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={cn("font-sans", geistSans.variable)}>
+    <html lang="id" className={cn("font-sans", geistSans.variable)} suppressHydrationWarning>
       <head>
         <script src="https://unpkg.com/@phosphor-icons/web" async></script>
       </head>
