@@ -32,9 +32,10 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
 
 
   useEffect(() => {
-    const bgm = new Audio("/sounds/bgm.mp3");
+    const bgm = new Audio("/sounds/shameless.mp3");
     bgm.loop = true;
     bgm.volume = 0.3;
+    bgm.playbackRate = 0.85; // Diperlambat sedikit
     setBgmAudio(bgm);
 
     return () => {

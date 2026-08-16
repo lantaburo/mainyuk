@@ -4,6 +4,7 @@ import { requireAuth } from "@/lib/session";
 import { cookies } from "next/headers";
 import { GraduationCap, Award, CheckCircle, BookOpen, Star, Trophy, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { RaporAudio } from "@/components/dashboard/RaporAudio";
 
 export default async function RaporPage() {
   const session = await requireAuth();
@@ -79,6 +80,7 @@ export default async function RaporPage() {
 
   return (
     <div className="max-w-5xl mx-auto pb-12 space-y-8">
+      <RaporAudio />
       {/* Header Profile & Overall Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
