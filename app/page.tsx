@@ -67,7 +67,7 @@ const FAQS = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-indigo-200 selection:text-indigo-900 overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-indigo-200 selection:text-indigo-900 overflow-x-hidden">
       
       {/* Playful Background Elements */}
       <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob pointer-events-none"></div>
@@ -99,15 +99,15 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center pt-20 pb-32 px-6 sm:px-12 text-center">
+      <section className="relative z-10 flex flex-col items-center justify-center pt-8 sm:pt-20 pb-16 sm:pb-32 px-6 sm:px-12 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 font-bold text-sm mb-8 animate-bounce">
           <Star className="size-4 fill-indigo-500" />
           <span>Platform Edukasi Gamifikasi No. 1</span>
         </div>
         
-        <h1 className="text-5xl sm:text-7xl font-black text-slate-800 tracking-tight leading-[1.1] max-w-4xl mx-auto drop-shadow-sm">
+        <h1 className="text-4xl sm:text-7xl font-black text-slate-800 tracking-tight leading-[1.1] max-w-4xl mx-auto drop-shadow-sm">
           Belajar Jadi Lebih Seru <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">
+          <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500 py-1">
             Sambil Bermain!
           </span>
         </h1>
