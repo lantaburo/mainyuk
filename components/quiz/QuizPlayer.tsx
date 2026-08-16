@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, XCircle, ArrowRight, Trophy, RefreshCcw, Star } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowRight, Trophy, RefreshCcw, Star, Volume2, VolumeX, Music } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export type QuizQuestion = {
@@ -25,6 +25,31 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
+  const [correctAudio, setCorrectAudio] = useState<HTMLAudioElement | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const [hasStartedBgm, setHasStartedBgm] = useState(false);
+
+  useEffect(() => {
+    const bgm = new Audio("/sounds/bgm.mp3");
+    bgm.loop = true;
+    bgm.volume = 0.3;
+    setBgmAudio(bgm);
+
+    const correct = new Audio("/sounds/correct.mp3");
+    correct.volume = 0.8;
+    setCorrectAudio(correct);
+
+    return () => {
+      bgm.pause();
+      bgm.src = "";
+    };
+  }, []);
+
+  useEffect(() => {
+    if (bgmAudio) bgmAudio.muted = isMuted;
+    if (correctAudio) correctAudio.muted = isMuted;
+  }, [isMuted, bgmAudio, correctAudio]);
 
   const currentQuestion = questions[currentIndex];
 
@@ -38,6 +63,10 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   }
 
   const handleSelectOption = (index: number) => {
+    if (!hasStartedBgm && bgmAudio && !isMuted) {
+      bgmAudio.play().catch(e => console.error("Auto-play blocked", e));
+      setHasStartedBgm(true);
+    }
     if (!isAnswerChecked) {
       setSelectedOption(index);
     }
@@ -51,6 +80,10 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     
     if (isCorrect) {
       setScore((prev) => prev + 1);
+      if (correctAudio && !isMuted) {
+        correctAudio.currentTime = 0;
+        correctAudio.play().catch(e => console.error("Audio blocked", e));
+      }
       fireConfetti();
     }
   };
@@ -156,9 +189,24 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
       <div className="mb-8 space-y-4">
         <div className="flex justify-between items-end">
           <h1 className="text-2xl font-bold text-slate-800 drop-shadow-sm">{title}</h1>
-          <div className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full font-bold shadow-inner">
-            <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-            <span>Skor: {score * 100}</span>
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => {
+                setIsMuted(!isMuted);
+                if (isMuted && bgmAudio && !hasStartedBgm) {
+                  bgmAudio.play().catch(e => console.error(e));
+                  setHasStartedBgm(true);
+                }
+              }}
+              className="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 transition-colors"
+              title={isMuted ? "Bunyikan Suara" : "Matikan Suara"}
+            >
+              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </button>
+            <div className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full font-bold shadow-inner">
+              <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+              <span>Skor: {score * 100}</span>
+            </div>
           </div>
         </div>
         
