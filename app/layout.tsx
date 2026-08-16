@@ -17,8 +17,19 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "mainyuk.my.id — Bikin Toko Online UMKM",
-  description: "Platform SaaS untuk toko online, sales page, landing page, dan company profile UMKM.",
+  title: "MainYuk — Belajar Jadi Lebih Seru Sambil Bermain!",
+  description: "Belajar Jadi Lebih Seru Sambil Bermain! Platform edukatif interaktif dengan kuis, game edukasi, dan modul belajar untuk anak-anak.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
+  openGraph: {
+    title: "MainYuk — Belajar Jadi Lebih Seru Sambil Bermain!",
+    description: "Platform edukatif interaktif dengan kuis, game edukasi, dan modul belajar untuk anak-anak.",
+    siteName: "MainYuk",
+    locale: "id_ID",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
