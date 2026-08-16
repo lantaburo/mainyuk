@@ -51,6 +51,16 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     if (correctAudio) correctAudio.muted = isMuted;
   }, [isMuted, bgmAudio, correctAudio]);
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isAnswerChecked) {
+      timeout = setTimeout(() => {
+        handleNextQuestion();
+      }, 5000);
+    }
+    return () => clearTimeout(timeout);
+  }, [isAnswerChecked, currentIndex]);
+
   const currentQuestion = questions[currentIndex];
 
   if (!questions || questions.length === 0) {
@@ -324,7 +334,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
         </AnimatePresence>
 
         {/* Actions */}
-        <div className="flex justify-end mt-auto pt-6">
+        <div className="flex justify-end mt-4 pt-4 pb-6 sticky bottom-0 z-20 md:static md:bg-transparent md:p-0 md:mt-auto">
           {!isAnswerChecked ? (
             <button
               onClick={handleCheckAnswer}
@@ -338,7 +348,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               onClick={handleNextQuestion}
-              className="group flex items-center gap-3 py-4 px-10 rounded-2xl font-black text-lg bg-slate-800 text-white hover:bg-slate-900 transition-all duration-300 shadow-xl hover:-translate-y-1"
+              className="group flex items-center gap-3 py-4 px-10 rounded-2xl font-black text-lg bg-slate-800 text-white hover:bg-slate-900 transition-all duration-300 shadow-xl hover:-translate-y-1 w-full md:w-auto justify-center"
             >
               {currentIndex < questions.length - 1 ? 'Soal Selanjutnya' : 'Selesai'}
               <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
