@@ -38,8 +38,8 @@ export function AdminStudentListClient({ initialStudents }: { initialStudents: S
     const q = search.toLowerCase();
     return (
       student.name.toLowerCase().includes(q) ||
-      (student.parent.email && student.parent.email.toLowerCase().includes(q)) ||
-      (student.parent.name && student.parent.name.toLowerCase().includes(q))
+      (student.parent?.email && student.parent.email.toLowerCase().includes(q)) ||
+      (student.parent?.name && student.parent.name.toLowerCase().includes(q))
     );
   });
 
@@ -96,8 +96,8 @@ export function AdminStudentListClient({ initialStudents }: { initialStudents: S
                       </span>
                     </TableCell>
                     <TableCell>
-                      <div className="text-sm font-semibold text-slate-800">{student.parent.name || "Tidak ada nama"}</div>
-                      <div className="text-xs text-slate-500">{student.parent.email}</div>
+                      <div className="text-sm font-semibold text-slate-800">{student.parent?.name || "Tidak ada nama"}</div>
+                      <div className="text-xs text-slate-500">{student.parent?.email}</div>
                     </TableCell>
                     <TableCell>
                       <div className="text-sm font-semibold text-emerald-600">

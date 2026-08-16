@@ -117,7 +117,7 @@ export default async function AdminCurriculumQuestionsPage({
                   <span className="text-sm font-medium text-slate-500">{questions.length} soal</span>
                 </div>
                 {questions.map((q, idx) => {
-                  const options = q.options as string[];
+                  const options = (typeof q.options === 'string' ? JSON.parse(q.options) : q.options) as string[];
                   return (
                     <div key={q.id} className="relative overflow-hidden rounded-3xl border border-white/50 bg-white/60 p-6 shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                       <div className="flex items-start gap-4">
