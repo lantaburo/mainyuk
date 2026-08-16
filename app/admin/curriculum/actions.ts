@@ -123,7 +123,7 @@ export async function deleteQuestion(questionId: string) {
   return { ok: true };
 }
 
-export async function generateQuestionsForModule(moduleId: string, count: number) {
+export async function generateQuestionsForModule(moduleId: string, count: number, targetLevel: number | "all" = "all") {
   await requireAdmin();
 
   const moduleData = await prisma.module.findUnique({
@@ -135,14 +135,22 @@ export async function generateQuestionsForModule(moduleId: string, count: number
     return { ok: false, error: "Modul tidak ditemukan." };
   }
 
+  let levelInstructions = `
+- Berikan \`difficultyLevel\` antara 1 hingga 5 (1 = Sangat Mudah, 5 = Sangat Sulit/HOTS).
+- Distribusikan tingkat kesulitan secara merata dari Level 1 sampai 5. Walaupun level 5, pastikan bahasanya dan topiknya tetap sesuai dengan standar anak SD kelas ${moduleData.gradeLevel}.`;
+
+  if (targetLevel !== "all") {
+    levelInstructions = `
+- Karena ini difokuskan pada Level ${targetLevel}, berikan \`difficultyLevel\` tepat ${targetLevel} untuk semua soal.
+- Sesuaikan bobot kesulitan dengan Level ${targetLevel} (dimana 1 = Sangat Mudah, 3 = Sedang, 5 = Sangat Sulit/HOTS), namun bahasanya dan topiknya wajib tetap sesuai untuk anak SD kelas ${moduleData.gradeLevel}.`;
+  }
+
   const prompt = `Tugas Anda adalah membuat ${count} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) kelas ${moduleData.gradeLevel} pada mata pelajaran ${moduleData.subject.name} dengan topik "${moduleData.title}".
 
 Persyaratan Soal:
 - Bahasa yang digunakan harus ramah anak, jelas, dan mudah dipahami.
 - Opsi jawaban harus terdiri dari 4 pilihan (A, B, C, D).
-- correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).
-- Berikan \`difficultyLevel\` antara 1 hingga 5 (1 = Sangat Mudah, 5 = Sangat Sulit/HOTS).
-- Distribusikan tingkat kesulitan secara merata dari Level 1 sampai 5. Walaupun level 5, pastikan bahasanya dan topiknya tetap sesuai dengan standar anak SD kelas ${moduleData.gradeLevel}.
+- correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
 - Penjelasan harus mendidik dan sesuai kemampuan anak kelas ${moduleData.gradeLevel} SD.
 
 Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, tanpa teks pengantar.
@@ -187,7 +195,7 @@ Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, ta
       questionText: q.question,
       options: q.options,
       correctIndex: q.correctIndex,
-      difficultyLevel: q.difficultyLevel || 1,
+      difficultyLevel: targetLevel !== "all" ? targetLevel : (q.difficultyLevel || 1),
       explanation: q.explanation || null,
     }))
   });

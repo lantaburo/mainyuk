@@ -17,13 +17,14 @@ type Props = {
 export function AiQuestionGenerator({ moduleId, moduleTitle, subjectName, gradeLevel }: Props) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(10);
+  const [targetLevel, setTargetLevel] = useState<number | "all">("all");
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleGenerate = () => {
     setResult(null);
     startTransition(async () => {
-      const res = await generateQuestionsForModule(moduleId, count);
+      const res = await generateQuestionsForModule(moduleId, count, targetLevel);
       if (res.ok) {
         setResult({ ok: true, message: `✨ Berhasil! ${res.count} soal baru telah ditambahkan ke modul ini.` });
       } else {
@@ -70,6 +71,38 @@ export function AiQuestionGenerator({ moduleId, moduleTitle, subjectName, gradeL
                 </button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-bold text-indigo-800 mb-3">Target Level (Tingkat Kesulitan)</label>
+            <div className="flex gap-2 flex-wrap">
+              <button
+                onClick={() => setTargetLevel("all")}
+                className={`px-5 py-2 rounded-xl font-bold text-sm transition-all ${targetLevel === "all"
+                  ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md shadow-indigo-300'
+                  : 'bg-white border border-indigo-200 text-indigo-700 hover:border-indigo-400'
+                }`}
+              >
+                Semua Level (Otomatis)
+              </button>
+              {[1, 2, 3, 4, 5].map(lvl => (
+                <button
+                  key={lvl}
+                  onClick={() => setTargetLevel(lvl)}
+                  className={`px-5 py-2 rounded-xl font-bold text-sm transition-all ${targetLevel === lvl
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md shadow-indigo-300'
+                    : 'bg-white border border-indigo-200 text-indigo-700 hover:border-indigo-400'
+                  }`}
+                >
+                  Level {lvl}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-indigo-500 mt-2">
+              {targetLevel === "all" 
+                ? "AI akan membuat soal dan membaginya rata ke Level 1 hingga 5."
+                : `AI hanya akan membuat soal khusus untuk Level ${targetLevel}.`}
+            </p>
           </div>
 
           {result && (
