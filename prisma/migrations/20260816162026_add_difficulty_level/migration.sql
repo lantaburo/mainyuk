@@ -34,7 +34,7 @@ ADD COLUMN IF NOT EXISTS "current_level" INTEGER NOT NULL DEFAULT 1,
 ADD COLUMN IF NOT EXISTS "student_id" TEXT NOT NULL;
 
 -- CreateTable
-CREATE TABLE "student_profiles" (
+CREATE TABLE IF NOT EXISTS "student_profiles" (
     "id" TEXT NOT NULL,
     "parent_id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS "affiliate_codes" (
 );
 
 -- CreateIndex
-CREATE INDEX "student_profiles_parent_id_idx" ON "student_profiles"("parent_id");
+CREATE INDEX IF NOT EXISTS "student_profiles_parent_id_idx" ON "student_profiles"("parent_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX IF NOT EXISTS "discount_codes_code_key" ON "discount_codes"("code");
@@ -97,13 +97,21 @@ CREATE UNIQUE INDEX IF NOT EXISTS "discount_codes_code_key" ON "discount_codes"(
 CREATE UNIQUE INDEX IF NOT EXISTS "affiliate_codes_code_key" ON "affiliate_codes"("code");
 
 -- CreateIndex
-CREATE INDEX "student_progress_student_id_idx" ON "student_progress"("student_id");
+CREATE INDEX IF NOT EXISTS "student_progress_student_id_idx" ON "student_progress"("student_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "student_progress_student_id_module_id_key" ON "student_progress"("student_id", "module_id");
+CREATE UNIQUE INDEX IF NOT EXISTS "student_progress_student_id_module_id_key" ON "student_progress"("student_id", "module_id");
 
 -- AddForeignKey
-ALTER TABLE "student_profiles" ADD CONSTRAINT "student_profiles_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "student_profiles" ADD CONSTRAINT "student_profiles_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
 
 -- AddForeignKey
-ALTER TABLE "student_progress" ADD CONSTRAINT "student_progress_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student_profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "student_progress" ADD CONSTRAINT "student_progress_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student_profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
