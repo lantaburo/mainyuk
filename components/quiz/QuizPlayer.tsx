@@ -28,6 +28,15 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
 
   const currentQuestion = questions[currentIndex];
 
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="w-full max-w-2xl mx-auto p-12 text-center bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl shadow-xl">
+        <h2 className="text-2xl font-bold text-slate-800">Soal Belum Tersedia</h2>
+        <p className="text-slate-600 mt-2">Belum ada soal untuk bagian ini.</p>
+      </div>
+    );
+  }
+
   const handleSelectOption = (index: number) => {
     if (!isAnswerChecked) {
       setSelectedOption(index);
