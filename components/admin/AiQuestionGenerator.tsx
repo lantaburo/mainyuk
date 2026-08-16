@@ -24,11 +24,15 @@ export function AiQuestionGenerator({ moduleId, moduleTitle, subjectName, gradeL
   const handleGenerate = () => {
     setResult(null);
     startTransition(async () => {
-      const res = await generateQuestionsForModule(moduleId, count, targetLevel);
-      if (res.ok) {
-        setResult({ ok: true, message: `✨ Berhasil! ${res.count} soal baru telah ditambahkan ke modul ini.` });
-      } else {
-        setResult({ ok: false, message: res.error || "Terjadi kesalahan." });
+      try {
+        const res = await generateQuestionsForModule(moduleId, count, targetLevel);
+        if (res && res.ok) {
+          setResult({ ok: true, message: `✨ Berhasil! ${res.count} soal baru telah ditambahkan ke modul ini.` });
+        } else {
+          setResult({ ok: false, message: res?.error || "Terjadi kesalahan pada server saat memproses AI." });
+        }
+      } catch (err) {
+        setResult({ ok: false, message: "Koneksi ke server terputus atau proses AI terlalu lama (Error 502). Silakan coba lagi dengan jumlah soal yang lebih sedikit." });
       }
     });
   };
