@@ -67,7 +67,7 @@ const FAQS = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-indigo-200 selection:text-indigo-900 overflow-x-hidden">
+    <div className="relative min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-indigo-200 selection:text-indigo-900 overflow-x-hidden">
       
       {/* Playful Background Elements */}
       <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob pointer-events-none"></div>
