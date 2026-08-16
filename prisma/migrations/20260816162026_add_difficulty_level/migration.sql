@@ -7,7 +7,11 @@
 
 */
 -- CreateEnum
-CREATE TYPE "DiscountType" AS ENUM ('percentage', 'fixed');
+DO $$ BEGIN
+    CREATE TYPE "DiscountType" AS ENUM ('percentage', 'fixed');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
 
 -- DropForeignKey
 ALTER TABLE "student_progress" DROP CONSTRAINT "student_progress_user_id_fkey";
@@ -42,7 +46,7 @@ CREATE TABLE "student_profiles" (
 );
 
 -- CreateTable
-CREATE TABLE "system_settings" (
+CREATE TABLE IF NOT EXISTS "system_settings" (
     "key" TEXT NOT NULL,
     "value" TEXT NOT NULL,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -51,7 +55,7 @@ CREATE TABLE "system_settings" (
 );
 
 -- CreateTable
-CREATE TABLE "discount_codes" (
+CREATE TABLE IF NOT EXISTS "discount_codes" (
     "id" TEXT NOT NULL,
     "code" TEXT NOT NULL,
     "description" TEXT,
@@ -69,7 +73,7 @@ CREATE TABLE "discount_codes" (
 );
 
 -- CreateTable
-CREATE TABLE "affiliate_codes" (
+CREATE TABLE IF NOT EXISTS "affiliate_codes" (
     "id" TEXT NOT NULL,
     "code" TEXT NOT NULL,
     "owner_name" TEXT NOT NULL,
@@ -87,10 +91,10 @@ CREATE TABLE "affiliate_codes" (
 CREATE INDEX "student_profiles_parent_id_idx" ON "student_profiles"("parent_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "discount_codes_code_key" ON "discount_codes"("code");
+CREATE UNIQUE INDEX IF NOT EXISTS "discount_codes_code_key" ON "discount_codes"("code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "affiliate_codes_code_key" ON "affiliate_codes"("code");
+CREATE UNIQUE INDEX IF NOT EXISTS "affiliate_codes_code_key" ON "affiliate_codes"("code");
 
 -- CreateIndex
 CREATE INDEX "student_progress_student_id_idx" ON "student_progress"("student_id");
