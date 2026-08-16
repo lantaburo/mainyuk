@@ -26,19 +26,16 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
-  const [correctAudio, setCorrectAudio] = useState<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [hasStartedBgm, setHasStartedBgm] = useState(false);
+
+
 
   useEffect(() => {
     const bgm = new Audio("/sounds/bgm.mp3");
     bgm.loop = true;
     bgm.volume = 0.3;
     setBgmAudio(bgm);
-
-    const correct = new Audio("/sounds/correct.mp3");
-    correct.volume = 0.8;
-    setCorrectAudio(correct);
 
     return () => {
       bgm.pause();
@@ -48,8 +45,57 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
 
   useEffect(() => {
     if (bgmAudio) bgmAudio.muted = isMuted;
-    if (correctAudio) correctAudio.muted = isMuted;
-  }, [isMuted, bgmAudio, correctAudio]);
+  }, [isMuted, bgmAudio]);
+
+  const playYeaySound = () => {
+    if (isMuted) return;
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioContext();
+      const playNote = (freq: number, startTime: number, duration: number) => {
+          const osc = ctx.createOscillator();
+          const gainNode = ctx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gainNode.gain.setValueAtTime(0.3, startTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+          osc.start(startTime);
+          osc.stop(startTime + duration);
+      };
+      playNote(523.25, ctx.currentTime, 0.2);
+      playNote(659.25, ctx.currentTime + 0.1, 0.2);
+      playNote(783.99, ctx.currentTime + 0.2, 0.2);
+      playNote(1046.50, ctx.currentTime + 0.3, 0.4);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const playDingDong = () => {
+    if (isMuted) return;
+    try {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioContext();
+      const playNote = (freq: number, startTime: number, duration: number) => {
+          const osc = ctx.createOscillator();
+          const gainNode = ctx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(ctx.destination);
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          gainNode.gain.setValueAtTime(0.4, startTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+          osc.start(startTime);
+          osc.stop(startTime + duration);
+      };
+      playNote(659.25, ctx.currentTime, 0.5); // Ding
+      playNote(523.25, ctx.currentTime + 0.4, 0.8); // Dong
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -90,11 +136,10 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     
     if (isCorrect) {
       setScore((prev) => prev + 1);
-      if (correctAudio && !isMuted) {
-        correctAudio.currentTime = 0;
-        correctAudio.play().catch(e => console.error("Audio blocked", e));
-      }
+      playYeaySound();
       fireConfetti();
+    } else {
+      playDingDong();
     }
   };
 
