@@ -11,7 +11,7 @@ import { prisma } from "../lib/prisma";
 
 const SUPERADMIN_EMAIL = "admin@mainyuk.my.id";
 const SUPERADMIN_NAME = "Super Admin";
-const SUPERADMIN_PASSWORD = "MainYuk@2026!";
+const SUPERADMIN_PASSWORD = "password123";
 
 async function main() {
   console.log("🔐 Membuat akun super_admin...");
