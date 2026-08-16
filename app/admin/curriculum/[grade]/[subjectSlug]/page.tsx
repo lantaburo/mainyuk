@@ -1,9 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
-import { Library, Plus, ArrowLeft, ArrowRight } from "lucide-react";
+import { Library, ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AddModuleDialog } from "@/components/admin/AddModuleDialog";
 
 export default async function AdminCurriculumModulesPage({ params }: { params: { grade: string, subjectSlug: string } }) {
   await requireAdmin();
@@ -34,23 +35,23 @@ export default async function AdminCurriculumModulesPage({ params }: { params: {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center gap-4">
-        <Link href={`/admin/curriculum/${gradeLevel}`}>
-          <Button variant="ghost" size="icon" className="rounded-full bg-white/50 hover:bg-white/80">
-            <ArrowLeft className="h-5 w-5 text-slate-600" />
-          </Button>
-        </Link>
+      <div className="flex items-center justify-between">
         <div>
+          <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
+            <Link href="/admin/curriculum" className="hover:text-gray-600 transition-colors">Kurikulum</Link>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <Link href={`/admin/curriculum/${gradeLevel}`} className="hover:text-gray-600 transition-colors">Kelas {gradeLevel}</Link>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <span className="text-gray-500">{subject.name}</span>
+          </div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Modul {subject.name} (Kelas {gradeLevel})</h1>
           <p className="mt-2 text-sm text-gray-500">Kelola semua modul pembelajaran untuk kelas dan mata pelajaran ini.</p>
         </div>
-      </div>
-
-      <div className="flex justify-end">
-        <Button className="bg-emerald-600 hover:bg-emerald-700 shadow-md">
-          <Plus className="mr-2 h-4 w-4" />
-          Tambah Modul Baru
-        </Button>
+        <AddModuleDialog
+          subjectId={subject.id}
+          subjectName={subject.name}
+          gradeLevel={gradeLevel}
+        />
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

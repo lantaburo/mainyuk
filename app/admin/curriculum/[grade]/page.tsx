@@ -4,6 +4,7 @@ import { BookOpen, ArrowLeft, ArrowRight, Library, ChevronRight } from "lucide-r
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AddSubjectDialog } from "@/components/admin/AddSubjectDialog";
 
 const GRADE_COLORS = [
   { bg: "from-rose-400 to-pink-500",     light: "bg-rose-50",    text: "text-rose-600",    border: "border-rose-200",    badge: "bg-rose-100 text-rose-700" },
@@ -76,6 +77,11 @@ export default async function AdminCurriculumSubjectsPage({ params }: { params: 
             {subjects.length} mata pelajaran aktif di kelas ini.
           </p>
         </div>
+      </div>
+
+      {/* Button tambah */}
+      <div className="flex justify-end">
+        <AddSubjectDialog />
       </div>
 
       {/* Active subjects grid */}

@@ -6,6 +6,77 @@ import { requireAdmin } from "@/lib/session";
 import { getAiConfigs } from "@/lib/ai-actions";
 import { callAiProvider, extractJson, AiClientError } from "@/lib/ai-client";
 
+// ── Create Subject ────────────────────────────────────────────────────────────
+
+export async function createSubject(data: {
+  name: string;
+  slug: string;
+  color?: string;
+}) {
+  await requireAdmin();
+
+  if (!data.name.trim() || !data.slug.trim()) {
+    return { ok: false, error: "Nama dan slug wajib diisi." };
+  }
+
+  const existing = await prisma.subject.findUnique({ where: { slug: data.slug } });
+  if (existing) {
+    return { ok: false, error: "Slug sudah digunakan, coba yang lain." };
+  }
+
+  await prisma.subject.create({
+    data: {
+      name: data.name.trim(),
+      slug: data.slug.trim(),
+      color: data.color?.trim() || null,
+    },
+  });
+
+  revalidatePath("/admin/curriculum");
+  return { ok: true };
+}
+
+// ── Create Module ─────────────────────────────────────────────────────────────
+
+export async function createModule(data: {
+  subjectId: string;
+  gradeLevel: number;
+  title: string;
+  slug: string;
+  description?: string;
+  isPremium: boolean;
+  price?: number | null;
+}) {
+  await requireAdmin();
+
+  if (!data.title.trim() || !data.slug.trim()) {
+    return { ok: false, error: "Judul dan slug wajib diisi." };
+  }
+
+  const existing = await prisma.module.findFirst({
+    where: { subjectId: data.subjectId, slug: data.slug },
+  });
+  if (existing) {
+    return { ok: false, error: "Slug sudah digunakan di mapel ini, coba yang lain." };
+  }
+
+  const mod = await prisma.module.create({
+    data: {
+      subjectId: data.subjectId,
+      gradeLevel: data.gradeLevel,
+      title: data.title.trim(),
+      slug: data.slug.trim(),
+      description: data.description?.trim() || null,
+      isPremium: data.isPremium,
+      price: data.isPremium && data.price ? data.price : null,
+      isPublished: false,
+    },
+  });
+
+  revalidatePath("/admin/curriculum");
+  return { ok: true, moduleId: mod.id };
+}
+
 export async function generateQuestionsForModule(moduleId: string, count: number) {
   await requireAdmin();
 
