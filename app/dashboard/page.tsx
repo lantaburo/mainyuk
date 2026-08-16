@@ -101,14 +101,16 @@ export default async function DashboardOverviewPage() {
     select: { id: true, subjectId: true },
   });
 
-  const completedProgress = await prisma.studentProgress.findMany({
-    where: {
-      studentId: student.id,
-      moduleId: { in: allModuleIds.map((m) => m.id) },
-      isCompleted: true,
-    },
-    select: { moduleId: true },
-  });
+  const completedProgress = allModuleIds.length > 0
+    ? await prisma.studentProgress.findMany({
+        where: {
+          studentId: student.id,
+          moduleId: { in: allModuleIds.map((m) => m.id) },
+          isCompleted: true,
+        },
+        select: { moduleId: true },
+      })
+    : [];
 
   const completedModuleIds = new Set(completedProgress.map((p) => p.moduleId));
   const completedBySubject: Record<string, number> = {};
