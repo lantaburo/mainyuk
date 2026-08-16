@@ -20,6 +20,7 @@ export function AddQuestionDialog({ moduleId, moduleTitle }: Props) {
   const [questionText, setQuestionText] = useState("");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctIndex, setCorrectIndex] = useState<number | null>(null);
+  const [difficultyLevel, setDifficultyLevel] = useState<number>(1);
   const [explanation, setExplanation] = useState("");
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -36,6 +37,7 @@ export function AddQuestionDialog({ moduleId, moduleTitle }: Props) {
     setQuestionText("");
     setOptions(["", "", "", ""]);
     setCorrectIndex(null);
+    setDifficultyLevel(1);
     setExplanation("");
     setResult(null);
   };
@@ -52,6 +54,7 @@ export function AddQuestionDialog({ moduleId, moduleTitle }: Props) {
         questionText,
         options,
         correctIndex,
+        difficultyLevel,
         explanation,
       });
       if (res.ok) {
@@ -61,6 +64,7 @@ export function AddQuestionDialog({ moduleId, moduleTitle }: Props) {
           setQuestionText("");
           setOptions(["", "", "", ""]);
           setCorrectIndex(null);
+          setDifficultyLevel(1);
           setExplanation("");
           setResult(null);
           router.refresh();
@@ -165,6 +169,27 @@ export function AddQuestionDialog({ moduleId, moduleTitle }: Props) {
                     ✓ Jawaban benar: Opsi {OPTION_LABELS[correctIndex]}
                   </p>
                 )}
+              </div>
+
+              {/* Difficulty Level */}
+              <div className="space-y-2">
+                <Label className="font-semibold text-gray-700">Tingkat Kesulitan</Label>
+                <div className="flex gap-2 flex-wrap">
+                  {[1, 2, 3, 4, 5].map((lvl) => (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => setDifficultyLevel(lvl)}
+                      className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                        difficultyLevel === lvl
+                          ? "bg-emerald-600 text-white shadow-md"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      Level {lvl}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Explanation */}

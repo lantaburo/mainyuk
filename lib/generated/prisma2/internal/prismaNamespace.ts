@@ -2373,6 +2373,7 @@ export type ModuleScalarFieldEnum = (typeof ModuleScalarFieldEnum)[keyof typeof 
 export const QuestionScalarFieldEnum = {
   id: 'id',
   moduleId: 'moduleId',
+  difficultyLevel: 'difficultyLevel',
   questionText: 'questionText',
   options: 'options',
   correctIndex: 'correctIndex',
@@ -2400,6 +2401,7 @@ export const StudentProgressScalarFieldEnum = {
   studentId: 'studentId',
   moduleId: 'moduleId',
   score: 'score',
+  currentLevel: 'currentLevel',
   isCompleted: 'isCompleted',
   unlockedAt: 'unlockedAt',
   completedAt: 'completedAt'

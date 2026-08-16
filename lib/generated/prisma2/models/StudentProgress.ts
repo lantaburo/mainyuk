@@ -28,10 +28,12 @@ export type AggregateStudentProgress = {
 
 export type StudentProgressAvgAggregateOutputType = {
   score: number | null
+  currentLevel: number | null
 }
 
 export type StudentProgressSumAggregateOutputType = {
   score: number | null
+  currentLevel: number | null
 }
 
 export type StudentProgressMinAggregateOutputType = {
@@ -39,6 +41,7 @@ export type StudentProgressMinAggregateOutputType = {
   studentId: string | null
   moduleId: string | null
   score: number | null
+  currentLevel: number | null
   isCompleted: boolean | null
   unlockedAt: Date | null
   completedAt: Date | null
@@ -49,6 +52,7 @@ export type StudentProgressMaxAggregateOutputType = {
   studentId: string | null
   moduleId: string | null
   score: number | null
+  currentLevel: number | null
   isCompleted: boolean | null
   unlockedAt: Date | null
   completedAt: Date | null
@@ -59,6 +63,7 @@ export type StudentProgressCountAggregateOutputType = {
   studentId: number
   moduleId: number
   score: number
+  currentLevel: number
   isCompleted: number
   unlockedAt: number
   completedAt: number
@@ -68,10 +73,12 @@ export type StudentProgressCountAggregateOutputType = {
 
 export type StudentProgressAvgAggregateInputType = {
   score?: true
+  currentLevel?: true
 }
 
 export type StudentProgressSumAggregateInputType = {
   score?: true
+  currentLevel?: true
 }
 
 export type StudentProgressMinAggregateInputType = {
@@ -79,6 +86,7 @@ export type StudentProgressMinAggregateInputType = {
   studentId?: true
   moduleId?: true
   score?: true
+  currentLevel?: true
   isCompleted?: true
   unlockedAt?: true
   completedAt?: true
@@ -89,6 +97,7 @@ export type StudentProgressMaxAggregateInputType = {
   studentId?: true
   moduleId?: true
   score?: true
+  currentLevel?: true
   isCompleted?: true
   unlockedAt?: true
   completedAt?: true
@@ -99,6 +108,7 @@ export type StudentProgressCountAggregateInputType = {
   studentId?: true
   moduleId?: true
   score?: true
+  currentLevel?: true
   isCompleted?: true
   unlockedAt?: true
   completedAt?: true
@@ -196,6 +206,7 @@ export type StudentProgressGroupByOutputType = {
   studentId: string
   moduleId: string
   score: number
+  currentLevel: number
   isCompleted: boolean
   unlockedAt: Date
   completedAt: Date | null
@@ -229,6 +240,7 @@ export type StudentProgressWhereInput = {
   studentId?: Prisma.StringFilter<"StudentProgress"> | string
   moduleId?: Prisma.StringFilter<"StudentProgress"> | string
   score?: Prisma.IntFilter<"StudentProgress"> | number
+  currentLevel?: Prisma.IntFilter<"StudentProgress"> | number
   isCompleted?: Prisma.BoolFilter<"StudentProgress"> | boolean
   unlockedAt?: Prisma.DateTimeFilter<"StudentProgress"> | Date | string
   completedAt?: Prisma.DateTimeNullableFilter<"StudentProgress"> | Date | string | null
@@ -241,6 +253,7 @@ export type StudentProgressOrderByWithRelationInput = {
   studentId?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
   unlockedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -257,6 +270,7 @@ export type StudentProgressWhereUniqueInput = Prisma.AtLeast<{
   studentId?: Prisma.StringFilter<"StudentProgress"> | string
   moduleId?: Prisma.StringFilter<"StudentProgress"> | string
   score?: Prisma.IntFilter<"StudentProgress"> | number
+  currentLevel?: Prisma.IntFilter<"StudentProgress"> | number
   isCompleted?: Prisma.BoolFilter<"StudentProgress"> | boolean
   unlockedAt?: Prisma.DateTimeFilter<"StudentProgress"> | Date | string
   completedAt?: Prisma.DateTimeNullableFilter<"StudentProgress"> | Date | string | null
@@ -269,6 +283,7 @@ export type StudentProgressOrderByWithAggregationInput = {
   studentId?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
   unlockedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -287,6 +302,7 @@ export type StudentProgressScalarWhereWithAggregatesInput = {
   studentId?: Prisma.StringWithAggregatesFilter<"StudentProgress"> | string
   moduleId?: Prisma.StringWithAggregatesFilter<"StudentProgress"> | string
   score?: Prisma.IntWithAggregatesFilter<"StudentProgress"> | number
+  currentLevel?: Prisma.IntWithAggregatesFilter<"StudentProgress"> | number
   isCompleted?: Prisma.BoolWithAggregatesFilter<"StudentProgress"> | boolean
   unlockedAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProgress"> | Date | string
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentProgress"> | Date | string | null
@@ -295,6 +311,7 @@ export type StudentProgressScalarWhereWithAggregatesInput = {
 export type StudentProgressCreateInput = {
   id?: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -307,6 +324,7 @@ export type StudentProgressUncheckedCreateInput = {
   studentId: string
   moduleId: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -315,6 +333,7 @@ export type StudentProgressUncheckedCreateInput = {
 export type StudentProgressUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -327,6 +346,7 @@ export type StudentProgressUncheckedUpdateInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -337,6 +357,7 @@ export type StudentProgressCreateManyInput = {
   studentId: string
   moduleId: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -345,6 +366,7 @@ export type StudentProgressCreateManyInput = {
 export type StudentProgressUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -355,6 +377,7 @@ export type StudentProgressUncheckedUpdateManyInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -380,6 +403,7 @@ export type StudentProgressCountOrderByAggregateInput = {
   studentId?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
   unlockedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -387,6 +411,7 @@ export type StudentProgressCountOrderByAggregateInput = {
 
 export type StudentProgressAvgOrderByAggregateInput = {
   score?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
 }
 
 export type StudentProgressMaxOrderByAggregateInput = {
@@ -394,6 +419,7 @@ export type StudentProgressMaxOrderByAggregateInput = {
   studentId?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
   unlockedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -404,6 +430,7 @@ export type StudentProgressMinOrderByAggregateInput = {
   studentId?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
   isCompleted?: Prisma.SortOrder
   unlockedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -411,6 +438,7 @@ export type StudentProgressMinOrderByAggregateInput = {
 
 export type StudentProgressSumOrderByAggregateInput = {
   score?: Prisma.SortOrder
+  currentLevel?: Prisma.SortOrder
 }
 
 export type StudentProgressCreateNestedManyWithoutModuleInput = {
@@ -500,6 +528,7 @@ export type StudentProgressUncheckedUpdateManyWithoutStudentNestedInput = {
 export type StudentProgressCreateWithoutModuleInput = {
   id?: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -510,6 +539,7 @@ export type StudentProgressUncheckedCreateWithoutModuleInput = {
   id?: string
   studentId: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -549,6 +579,7 @@ export type StudentProgressScalarWhereInput = {
   studentId?: Prisma.StringFilter<"StudentProgress"> | string
   moduleId?: Prisma.StringFilter<"StudentProgress"> | string
   score?: Prisma.IntFilter<"StudentProgress"> | number
+  currentLevel?: Prisma.IntFilter<"StudentProgress"> | number
   isCompleted?: Prisma.BoolFilter<"StudentProgress"> | boolean
   unlockedAt?: Prisma.DateTimeFilter<"StudentProgress"> | Date | string
   completedAt?: Prisma.DateTimeNullableFilter<"StudentProgress"> | Date | string | null
@@ -557,6 +588,7 @@ export type StudentProgressScalarWhereInput = {
 export type StudentProgressCreateWithoutStudentInput = {
   id?: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -567,6 +599,7 @@ export type StudentProgressUncheckedCreateWithoutStudentInput = {
   id?: string
   moduleId: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -602,6 +635,7 @@ export type StudentProgressCreateManyModuleInput = {
   id?: string
   studentId: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -610,6 +644,7 @@ export type StudentProgressCreateManyModuleInput = {
 export type StudentProgressUpdateWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -620,6 +655,7 @@ export type StudentProgressUncheckedUpdateWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -629,6 +665,7 @@ export type StudentProgressUncheckedUpdateManyWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -638,6 +675,7 @@ export type StudentProgressCreateManyStudentInput = {
   id?: string
   moduleId: string
   score?: number
+  currentLevel?: number
   isCompleted?: boolean
   unlockedAt?: Date | string
   completedAt?: Date | string | null
@@ -646,6 +684,7 @@ export type StudentProgressCreateManyStudentInput = {
 export type StudentProgressUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -656,6 +695,7 @@ export type StudentProgressUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -665,6 +705,7 @@ export type StudentProgressUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
+  currentLevel?: Prisma.IntFieldUpdateOperationsInput | number
   isCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   unlockedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -677,6 +718,7 @@ export type StudentProgressSelect<ExtArgs extends runtime.Types.Extensions.Inter
   studentId?: boolean
   moduleId?: boolean
   score?: boolean
+  currentLevel?: boolean
   isCompleted?: boolean
   unlockedAt?: boolean
   completedAt?: boolean
@@ -689,6 +731,7 @@ export type StudentProgressSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   studentId?: boolean
   moduleId?: boolean
   score?: boolean
+  currentLevel?: boolean
   isCompleted?: boolean
   unlockedAt?: boolean
   completedAt?: boolean
@@ -701,6 +744,7 @@ export type StudentProgressSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   studentId?: boolean
   moduleId?: boolean
   score?: boolean
+  currentLevel?: boolean
   isCompleted?: boolean
   unlockedAt?: boolean
   completedAt?: boolean
@@ -713,12 +757,13 @@ export type StudentProgressSelectScalar = {
   studentId?: boolean
   moduleId?: boolean
   score?: boolean
+  currentLevel?: boolean
   isCompleted?: boolean
   unlockedAt?: boolean
   completedAt?: boolean
 }
 
-export type StudentProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "moduleId" | "score" | "isCompleted" | "unlockedAt" | "completedAt", ExtArgs["result"]["studentProgress"]>
+export type StudentProgressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "moduleId" | "score" | "currentLevel" | "isCompleted" | "unlockedAt" | "completedAt", ExtArgs["result"]["studentProgress"]>
 export type StudentProgressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentProfileDefaultArgs<ExtArgs>
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
@@ -743,6 +788,7 @@ export type $StudentProgressPayload<ExtArgs extends runtime.Types.Extensions.Int
     studentId: string
     moduleId: string
     score: number
+    currentLevel: number
     isCompleted: boolean
     unlockedAt: Date
     completedAt: Date | null
@@ -1175,6 +1221,7 @@ export interface StudentProgressFieldRefs {
   readonly studentId: Prisma.FieldRef<"StudentProgress", 'String'>
   readonly moduleId: Prisma.FieldRef<"StudentProgress", 'String'>
   readonly score: Prisma.FieldRef<"StudentProgress", 'Int'>
+  readonly currentLevel: Prisma.FieldRef<"StudentProgress", 'Int'>
   readonly isCompleted: Prisma.FieldRef<"StudentProgress", 'Boolean'>
   readonly unlockedAt: Prisma.FieldRef<"StudentProgress", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"StudentProgress", 'DateTime'>

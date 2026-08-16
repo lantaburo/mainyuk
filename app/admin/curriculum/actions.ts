@@ -84,6 +84,7 @@ export async function createQuestion(data: {
   questionText: string;
   options: string[];
   correctIndex: number;
+  difficultyLevel: number;
   explanation?: string;
 }) {
   await requireAdmin();
@@ -104,6 +105,7 @@ export async function createQuestion(data: {
       questionText: data.questionText.trim(),
       options: data.options.map((o) => o.trim()),
       correctIndex: data.correctIndex,
+      difficultyLevel: data.difficultyLevel,
       explanation: data.explanation?.trim() || null,
     },
   });
@@ -139,6 +141,8 @@ Persyaratan Soal:
 - Bahasa yang digunakan harus ramah anak, jelas, dan mudah dipahami.
 - Opsi jawaban harus terdiri dari 4 pilihan (A, B, C, D).
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).
+- Berikan \`difficultyLevel\` antara 1 hingga 5 (1 = Sangat Mudah, 5 = Sangat Sulit/HOTS).
+- Distribusikan tingkat kesulitan secara merata dari Level 1 sampai 5. Walaupun level 5, pastikan bahasanya dan topiknya tetap sesuai dengan standar anak SD kelas ${moduleData.gradeLevel}.
 - Penjelasan harus mendidik dan sesuai kemampuan anak kelas ${moduleData.gradeLevel} SD.
 
 Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, tanpa teks pengantar.
@@ -147,6 +151,7 @@ Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, ta
     "question": "Pertanyaan soal",
     "options": ["Opsi A", "Opsi B", "Opsi C", "Opsi D"],
     "correctIndex": 0,
+    "difficultyLevel": 3,
     "explanation": "Penjelasan singkat mengapa jawabannya benar."
   }
 ]`;
@@ -180,9 +185,10 @@ Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, ta
     data: parsedQuestions.map(q => ({
       moduleId,
       questionText: q.question,
-      options: q.options || [],
-      correctIndex: q.correctIndex || 0,
-      explanation: q.explanation || ""
+      options: q.options,
+      correctIndex: q.correctIndex,
+      difficultyLevel: q.difficultyLevel || 1,
+      explanation: q.explanation || null,
     }))
   });
 

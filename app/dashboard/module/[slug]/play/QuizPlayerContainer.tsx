@@ -17,6 +17,7 @@ export default function QuizPlayerContainer({
   subjectSlug: string;
   questions: QuizQuestion[];
   studentId: string;
+  currentLevel: number;
 }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,10 +39,17 @@ export default function QuizPlayerContainer({
       });
       
       if (res.ok) {
-        // Wait a brief moment then go back to the subject page to see unlocked modules
+        const data = await res.json();
         setTimeout(() => {
-          router.push(`/dashboard/subject/${subjectSlug}`);
-          router.refresh(); // Refresh to update locks
+          if (data.passedLevel && !data.isCompleted) {
+            // Passed a level but there are more levels! Stay and refresh to play next level.
+            router.refresh();
+            setIsSubmitting(false); // Enable playing again
+          } else {
+            // Failed, or completed all levels (isCompleted: true)
+            router.push(`/dashboard/subject/${subjectSlug}`);
+            router.refresh();
+          }
         }, 2000);
       }
     } catch (error) {

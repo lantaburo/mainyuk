@@ -23,7 +23,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Student not found or unauthorized" }, { status: 403 });
     }
 
-    const isCompleted = score >= 50; // Passing grade is 50% for dummy
+    let newLevel = 1;
+    let newIsCompleted = false;
+
+    const existingProgress = await prisma.studentProgress.findUnique({
+      where: {
+        studentId_moduleId: {
+          studentId: studentId,
+          moduleId: moduleId,
+        }
+      }
+    });
+
+    if (existingProgress) {
+      newLevel = existingProgress.currentLevel;
+    }
+
+    const passedLevel = score >= 60; // 60% passing grade for level
+
+    if (passedLevel) {
+      if (newLevel < 5) {
+        newLevel += 1;
+      } else {
+        newIsCompleted = true; // Passed level 5
+      }
+    } else {
+      newIsCompleted = existingProgress?.isCompleted || false;
+    }
 
     await prisma.studentProgress.upsert({
       where: {
@@ -33,20 +59,22 @@ export async function POST(req: Request) {
         }
       },
       update: {
-        score: Math.max(score, 0), // Ideally we only update if higher, but for now just update
-        isCompleted: isCompleted,
-        completedAt: isCompleted ? new Date() : null,
+        score: Math.max(score, existingProgress?.score || 0),
+        currentLevel: Math.max(newLevel, existingProgress?.currentLevel || 1),
+        isCompleted: newIsCompleted || existingProgress?.isCompleted || false,
+        completedAt: (!existingProgress?.isCompleted && newIsCompleted) ? new Date() : existingProgress?.completedAt,
       },
       create: {
         studentId: body.studentId,
         moduleId: moduleId,
         score: score,
-        isCompleted: isCompleted,
-        completedAt: isCompleted ? new Date() : null,
+        currentLevel: newLevel,
+        isCompleted: newIsCompleted,
+        completedAt: newIsCompleted ? new Date() : null,
       }
     });
 
-    return NextResponse.json({ success: true, isCompleted });
+    return NextResponse.json({ success: true, isCompleted: newIsCompleted, newLevel, passedLevel });
   } catch (error) {
     console.error("[SUBMIT_QUIZ_ERROR]", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

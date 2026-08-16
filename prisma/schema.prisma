@@ -311,6 +311,7 @@ model Module {
 model Question {
   id           String   @id @default(cuid())
   moduleId     String   @map("module_id")
+  difficultyLevel Int   @default(1) @map("difficulty_level")
   questionText String   @map("question_text")
   options      Json
   correctIndex Int      @map("correct_index")
@@ -394,6 +395,7 @@ model StudentProgress {
   studentId   String    @map("student_id")
   moduleId    String    @map("module_id")
   score       Int       @default(0)
+  currentLevel Int      @default(1) @map("current_level")
   isCompleted Boolean   @default(false) @map("is_completed")
   unlockedAt  DateTime  @default(now()) @map("unlocked_at")
   completedAt DateTime? @map("completed_at")

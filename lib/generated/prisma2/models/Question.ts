@@ -27,16 +27,19 @@ export type AggregateQuestion = {
 }
 
 export type QuestionAvgAggregateOutputType = {
+  difficultyLevel: number | null
   correctIndex: number | null
 }
 
 export type QuestionSumAggregateOutputType = {
+  difficultyLevel: number | null
   correctIndex: number | null
 }
 
 export type QuestionMinAggregateOutputType = {
   id: string | null
   moduleId: string | null
+  difficultyLevel: number | null
   questionText: string | null
   correctIndex: number | null
   explanation: string | null
@@ -46,6 +49,7 @@ export type QuestionMinAggregateOutputType = {
 export type QuestionMaxAggregateOutputType = {
   id: string | null
   moduleId: string | null
+  difficultyLevel: number | null
   questionText: string | null
   correctIndex: number | null
   explanation: string | null
@@ -55,6 +59,7 @@ export type QuestionMaxAggregateOutputType = {
 export type QuestionCountAggregateOutputType = {
   id: number
   moduleId: number
+  difficultyLevel: number
   questionText: number
   options: number
   correctIndex: number
@@ -65,16 +70,19 @@ export type QuestionCountAggregateOutputType = {
 
 
 export type QuestionAvgAggregateInputType = {
+  difficultyLevel?: true
   correctIndex?: true
 }
 
 export type QuestionSumAggregateInputType = {
+  difficultyLevel?: true
   correctIndex?: true
 }
 
 export type QuestionMinAggregateInputType = {
   id?: true
   moduleId?: true
+  difficultyLevel?: true
   questionText?: true
   correctIndex?: true
   explanation?: true
@@ -84,6 +92,7 @@ export type QuestionMinAggregateInputType = {
 export type QuestionMaxAggregateInputType = {
   id?: true
   moduleId?: true
+  difficultyLevel?: true
   questionText?: true
   correctIndex?: true
   explanation?: true
@@ -93,6 +102,7 @@ export type QuestionMaxAggregateInputType = {
 export type QuestionCountAggregateInputType = {
   id?: true
   moduleId?: true
+  difficultyLevel?: true
   questionText?: true
   options?: true
   correctIndex?: true
@@ -190,6 +200,7 @@ export type QuestionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type QuestionGroupByOutputType = {
   id: string
   moduleId: string
+  difficultyLevel: number
   questionText: string
   options: runtime.JsonValue
   correctIndex: number
@@ -223,6 +234,7 @@ export type QuestionWhereInput = {
   NOT?: Prisma.QuestionWhereInput | Prisma.QuestionWhereInput[]
   id?: Prisma.StringFilter<"Question"> | string
   moduleId?: Prisma.StringFilter<"Question"> | string
+  difficultyLevel?: Prisma.IntFilter<"Question"> | number
   questionText?: Prisma.StringFilter<"Question"> | string
   options?: Prisma.JsonFilter<"Question">
   correctIndex?: Prisma.IntFilter<"Question"> | number
@@ -234,6 +246,7 @@ export type QuestionWhereInput = {
 export type QuestionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  difficultyLevel?: Prisma.SortOrder
   questionText?: Prisma.SortOrder
   options?: Prisma.SortOrder
   correctIndex?: Prisma.SortOrder
@@ -248,6 +261,7 @@ export type QuestionWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.QuestionWhereInput[]
   NOT?: Prisma.QuestionWhereInput | Prisma.QuestionWhereInput[]
   moduleId?: Prisma.StringFilter<"Question"> | string
+  difficultyLevel?: Prisma.IntFilter<"Question"> | number
   questionText?: Prisma.StringFilter<"Question"> | string
   options?: Prisma.JsonFilter<"Question">
   correctIndex?: Prisma.IntFilter<"Question"> | number
@@ -259,6 +273,7 @@ export type QuestionWhereUniqueInput = Prisma.AtLeast<{
 export type QuestionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  difficultyLevel?: Prisma.SortOrder
   questionText?: Prisma.SortOrder
   options?: Prisma.SortOrder
   correctIndex?: Prisma.SortOrder
@@ -277,6 +292,7 @@ export type QuestionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.QuestionScalarWhereWithAggregatesInput | Prisma.QuestionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Question"> | string
   moduleId?: Prisma.StringWithAggregatesFilter<"Question"> | string
+  difficultyLevel?: Prisma.IntWithAggregatesFilter<"Question"> | number
   questionText?: Prisma.StringWithAggregatesFilter<"Question"> | string
   options?: Prisma.JsonWithAggregatesFilter<"Question">
   correctIndex?: Prisma.IntWithAggregatesFilter<"Question"> | number
@@ -286,6 +302,7 @@ export type QuestionScalarWhereWithAggregatesInput = {
 
 export type QuestionCreateInput = {
   id?: string
+  difficultyLevel?: number
   questionText: string
   options: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex: number
@@ -297,6 +314,7 @@ export type QuestionCreateInput = {
 export type QuestionUncheckedCreateInput = {
   id?: string
   moduleId: string
+  difficultyLevel?: number
   questionText: string
   options: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex: number
@@ -306,6 +324,7 @@ export type QuestionUncheckedCreateInput = {
 
 export type QuestionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  difficultyLevel?: Prisma.IntFieldUpdateOperationsInput | number
   questionText?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex?: Prisma.IntFieldUpdateOperationsInput | number
@@ -317,6 +336,7 @@ export type QuestionUpdateInput = {
 export type QuestionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  difficultyLevel?: Prisma.IntFieldUpdateOperationsInput | number
   questionText?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex?: Prisma.IntFieldUpdateOperationsInput | number
@@ -327,6 +347,7 @@ export type QuestionUncheckedUpdateInput = {
 export type QuestionCreateManyInput = {
   id?: string
   moduleId: string
+  difficultyLevel?: number
   questionText: string
   options: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex: number
@@ -336,6 +357,7 @@ export type QuestionCreateManyInput = {
 
 export type QuestionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  difficultyLevel?: Prisma.IntFieldUpdateOperationsInput | number
   questionText?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex?: Prisma.IntFieldUpdateOperationsInput | number
@@ -346,6 +368,7 @@ export type QuestionUpdateManyMutationInput = {
 export type QuestionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   moduleId?: Prisma.StringFieldUpdateOperationsInput | string
+  difficultyLevel?: Prisma.IntFieldUpdateOperationsInput | number
   questionText?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex?: Prisma.IntFieldUpdateOperationsInput | number
@@ -366,6 +389,7 @@ export type QuestionOrderByRelationAggregateInput = {
 export type QuestionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  difficultyLevel?: Prisma.SortOrder
   questionText?: Prisma.SortOrder
   options?: Prisma.SortOrder
   correctIndex?: Prisma.SortOrder
@@ -374,12 +398,14 @@ export type QuestionCountOrderByAggregateInput = {
 }
 
 export type QuestionAvgOrderByAggregateInput = {
+  difficultyLevel?: Prisma.SortOrder
   correctIndex?: Prisma.SortOrder
 }
 
 export type QuestionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  difficultyLevel?: Prisma.SortOrder
   questionText?: Prisma.SortOrder
   correctIndex?: Prisma.SortOrder
   explanation?: Prisma.SortOrder
@@ -389,6 +415,7 @@ export type QuestionMaxOrderByAggregateInput = {
 export type QuestionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   moduleId?: Prisma.SortOrder
+  difficultyLevel?: Prisma.SortOrder
   questionText?: Prisma.SortOrder
   correctIndex?: Prisma.SortOrder
   explanation?: Prisma.SortOrder
@@ -396,6 +423,7 @@ export type QuestionMinOrderByAggregateInput = {
 }
 
 export type QuestionSumOrderByAggregateInput = {
+  difficultyLevel?: Prisma.SortOrder
   correctIndex?: Prisma.SortOrder
 }
 
@@ -443,6 +471,7 @@ export type QuestionUncheckedUpdateManyWithoutModuleNestedInput = {
 
 export type QuestionCreateWithoutModuleInput = {
   id?: string
+  difficultyLevel?: number
   questionText: string
   options: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex: number
@@ -452,6 +481,7 @@ export type QuestionCreateWithoutModuleInput = {
 
 export type QuestionUncheckedCreateWithoutModuleInput = {
   id?: string
+  difficultyLevel?: number
   questionText: string
   options: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex: number
@@ -491,6 +521,7 @@ export type QuestionScalarWhereInput = {
   NOT?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
   id?: Prisma.StringFilter<"Question"> | string
   moduleId?: Prisma.StringFilter<"Question"> | string
+  difficultyLevel?: Prisma.IntFilter<"Question"> | number
   questionText?: Prisma.StringFilter<"Question"> | string
   options?: Prisma.JsonFilter<"Question">
   correctIndex?: Prisma.IntFilter<"Question"> | number
@@ -500,6 +531,7 @@ export type QuestionScalarWhereInput = {
 
 export type QuestionCreateManyModuleInput = {
   id?: string
+  difficultyLevel?: number
   questionText: string
   options: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex: number
@@ -509,6 +541,7 @@ export type QuestionCreateManyModuleInput = {
 
 export type QuestionUpdateWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  difficultyLevel?: Prisma.IntFieldUpdateOperationsInput | number
   questionText?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex?: Prisma.IntFieldUpdateOperationsInput | number
@@ -518,6 +551,7 @@ export type QuestionUpdateWithoutModuleInput = {
 
 export type QuestionUncheckedUpdateWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  difficultyLevel?: Prisma.IntFieldUpdateOperationsInput | number
   questionText?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex?: Prisma.IntFieldUpdateOperationsInput | number
@@ -527,6 +561,7 @@ export type QuestionUncheckedUpdateWithoutModuleInput = {
 
 export type QuestionUncheckedUpdateManyWithoutModuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  difficultyLevel?: Prisma.IntFieldUpdateOperationsInput | number
   questionText?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   correctIndex?: Prisma.IntFieldUpdateOperationsInput | number
@@ -539,6 +574,7 @@ export type QuestionUncheckedUpdateManyWithoutModuleInput = {
 export type QuestionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   moduleId?: boolean
+  difficultyLevel?: boolean
   questionText?: boolean
   options?: boolean
   correctIndex?: boolean
@@ -550,6 +586,7 @@ export type QuestionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type QuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   moduleId?: boolean
+  difficultyLevel?: boolean
   questionText?: boolean
   options?: boolean
   correctIndex?: boolean
@@ -561,6 +598,7 @@ export type QuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type QuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   moduleId?: boolean
+  difficultyLevel?: boolean
   questionText?: boolean
   options?: boolean
   correctIndex?: boolean
@@ -572,6 +610,7 @@ export type QuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type QuestionSelectScalar = {
   id?: boolean
   moduleId?: boolean
+  difficultyLevel?: boolean
   questionText?: boolean
   options?: boolean
   correctIndex?: boolean
@@ -579,7 +618,7 @@ export type QuestionSelectScalar = {
   createdAt?: boolean
 }
 
-export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "moduleId" | "questionText" | "options" | "correctIndex" | "explanation" | "createdAt", ExtArgs["result"]["question"]>
+export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "moduleId" | "difficultyLevel" | "questionText" | "options" | "correctIndex" | "explanation" | "createdAt", ExtArgs["result"]["question"]>
 export type QuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   module?: boolean | Prisma.ModuleDefaultArgs<ExtArgs>
 }
@@ -598,6 +637,7 @@ export type $QuestionPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     moduleId: string
+    difficultyLevel: number
     questionText: string
     options: runtime.JsonValue
     correctIndex: number
@@ -1029,6 +1069,7 @@ export interface Prisma__QuestionClient<T, Null = never, ExtArgs extends runtime
 export interface QuestionFieldRefs {
   readonly id: Prisma.FieldRef<"Question", 'String'>
   readonly moduleId: Prisma.FieldRef<"Question", 'String'>
+  readonly difficultyLevel: Prisma.FieldRef<"Question", 'Int'>
   readonly questionText: Prisma.FieldRef<"Question", 'String'>
   readonly options: Prisma.FieldRef<"Question", 'Json'>
   readonly correctIndex: Prisma.FieldRef<"Question", 'Int'>
