@@ -26,6 +26,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
+  const [correctAudio, setCorrectAudio] = useState<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [hasStartedBgm, setHasStartedBgm] = useState(false);
 
@@ -38,39 +39,27 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     bgm.playbackRate = 0.85; // Diperlambat sedikit
     setBgmAudio(bgm);
 
+    const correct = new Audio("/sounds/yaeh.mp3");
+    correct.volume = 0.8;
+    setCorrectAudio(correct);
+
     return () => {
       bgm.pause();
       bgm.src = "";
+      correct.pause();
+      correct.src = "";
     };
   }, []);
 
   useEffect(() => {
     if (bgmAudio) bgmAudio.muted = isMuted;
-  }, [isMuted, bgmAudio]);
+    if (correctAudio) correctAudio.muted = isMuted;
+  }, [isMuted, bgmAudio, correctAudio]);
 
   const playYeaySound = () => {
-    if (isMuted) return;
-    try {
-      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-      const ctx = new AudioContext();
-      const playNote = (freq: number, startTime: number, duration: number) => {
-          const osc = ctx.createOscillator();
-          const gainNode = ctx.createGain();
-          osc.connect(gainNode);
-          gainNode.connect(ctx.destination);
-          osc.type = 'sine';
-          osc.frequency.value = freq;
-          gainNode.gain.setValueAtTime(0.3, startTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-          osc.start(startTime);
-          osc.stop(startTime + duration);
-      };
-      playNote(523.25, ctx.currentTime, 0.2);
-      playNote(659.25, ctx.currentTime + 0.1, 0.2);
-      playNote(783.99, ctx.currentTime + 0.2, 0.2);
-      playNote(1046.50, ctx.currentTime + 0.3, 0.4);
-    } catch (e) {
-      console.error(e);
+    if (correctAudio && !isMuted) {
+      correctAudio.currentTime = 0;
+      correctAudio.play().catch(e => console.error("Audio blocked", e));
     }
   };
 
