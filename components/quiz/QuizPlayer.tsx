@@ -27,6 +27,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [isFinished, setIsFinished] = useState(false);
   const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
   const [correctAudio, setCorrectAudio] = useState<HTMLAudioElement | null>(null);
+  const [wrongAudio, setWrongAudio] = useState<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [hasStartedBgm, setHasStartedBgm] = useState(false);
 
@@ -43,18 +44,25 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     correct.volume = 0.8;
     setCorrectAudio(correct);
 
+    const wrong = new Audio("/sounds/wrong.mp3");
+    wrong.volume = 0.8;
+    setWrongAudio(wrong);
+
     return () => {
       bgm.pause();
       bgm.src = "";
       correct.pause();
       correct.src = "";
+      wrong.pause();
+      wrong.src = "";
     };
   }, []);
 
   useEffect(() => {
     if (bgmAudio) bgmAudio.muted = isMuted;
     if (correctAudio) correctAudio.muted = isMuted;
-  }, [isMuted, bgmAudio, correctAudio]);
+    if (wrongAudio) wrongAudio.muted = isMuted;
+  }, [isMuted, bgmAudio, correctAudio, wrongAudio]);
 
   const playYeaySound = () => {
     if (correctAudio && !isMuted) {
@@ -63,27 +71,10 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     }
   };
 
-  const playDingDong = () => {
-    if (isMuted) return;
-    try {
-      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-      const ctx = new AudioContext();
-      const playNote = (freq: number, startTime: number, duration: number) => {
-          const osc = ctx.createOscillator();
-          const gainNode = ctx.createGain();
-          osc.connect(gainNode);
-          gainNode.connect(ctx.destination);
-          osc.type = 'triangle';
-          osc.frequency.value = freq;
-          gainNode.gain.setValueAtTime(0.4, startTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
-          osc.start(startTime);
-          osc.stop(startTime + duration);
-      };
-      playNote(659.25, ctx.currentTime, 0.5); // Ding
-      playNote(523.25, ctx.currentTime + 0.4, 0.8); // Dong
-    } catch (e) {
-      console.error(e);
+  const playWrongSound = () => {
+    if (wrongAudio && !isMuted) {
+      wrongAudio.currentTime = 0;
+      wrongAudio.play().catch(e => console.error("Audio blocked", e));
     }
   };
 
@@ -129,7 +120,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
       playYeaySound();
       fireConfetti();
     } else {
-      playDingDong();
+      playWrongSound();
     }
   };
 
