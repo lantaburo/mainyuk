@@ -37,8 +37,8 @@ export default async function ModulePlayPage({ params }: { params: { slug: strin
   const currentLevel = progress ? progress.currentLevel : 1;
   const isCompleted = progress ? progress.isCompleted : false;
 
-  // Filter questions for the current level
-  const levelQuestions = moduleData.questions.filter(q => q.difficultyLevel === currentLevel);
+  // Load all questions for the module
+  const levelQuestions = moduleData.questions;
 
   const formattedQuestions = levelQuestions.map(q => ({
     id: q.id,
@@ -51,9 +51,8 @@ export default async function ModulePlayPage({ params }: { params: { slug: strin
   return (
     <div className="max-w-4xl mx-auto py-8">
       <div className="mb-4 text-center">
-        <h2 className="text-xl font-bold text-indigo-900">Level {currentLevel}</h2>
         {isCompleted && (
-          <p className="text-sm text-emerald-600 font-bold mt-1">Kamu sudah menyelesaikan semua level di modul ini! 🎉</p>
+          <p className="text-sm text-emerald-600 font-bold mt-1">Kamu sudah menyelesaikan modul ini! 🎉</p>
         )}
       </div>
       <QuizPlayerContainer 

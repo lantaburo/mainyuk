@@ -39,14 +39,10 @@ export async function POST(req: Request) {
       newLevel = existingProgress.currentLevel;
     }
 
-    const passedLevel = score >= 60; // 60% passing grade for level
+    const passedLevel = score >= 60; // 60% passing grade for module
 
     if (passedLevel) {
-      if (newLevel < 5) {
-        newLevel += 1;
-      } else {
-        newIsCompleted = true; // Passed level 5
-      }
+      newIsCompleted = true; // Passed the module
     } else {
       newIsCompleted = existingProgress?.isCompleted || false;
     }
