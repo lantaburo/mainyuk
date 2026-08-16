@@ -1,11 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
-import { HelpCircle, Plus, ArrowLeft } from "lucide-react";
+import { HelpCircle, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AiQuestionGenerator } from "@/components/admin/AiQuestionGenerator";
 import { ModuleSettingsPanel } from "@/components/admin/ModuleSettingsPanel";
+import { AddQuestionDialog } from "@/components/admin/AddQuestionDialog";
+import { DeleteQuestionButton } from "@/components/admin/DeleteQuestionButton";
 
 export default async function AdminCurriculumQuestionsPage({ 
   params 
@@ -86,10 +88,10 @@ export default async function AdminCurriculumQuestionsPage({
             Daftar Soal 
             <span className="ml-2 text-base font-medium text-slate-400">({moduleData.questions.length} soal)</span>
           </h2>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 shadow-md">
-            <Plus className="mr-2 h-4 w-4" />
-            Tambah Manual
-          </Button>
+          <AddQuestionDialog
+            moduleId={moduleData.id}
+            moduleTitle={moduleData.title}
+          />
         </div>
 
         {moduleData.questions.length === 0 ? (
@@ -130,7 +132,7 @@ export default async function AdminCurriculumQuestionsPage({
                     )}
                   </div>
                   <div className="flex-shrink-0">
-                    <Button variant="outline" size="sm">Edit</Button>
+                    <DeleteQuestionButton questionId={q.id} />
                   </div>
                 </div>
               </div>

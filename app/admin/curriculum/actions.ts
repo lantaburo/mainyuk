@@ -77,6 +77,50 @@ export async function createModule(data: {
   return { ok: true, moduleId: mod.id };
 }
 
+// ── Create Question ───────────────────────────────────────────────────────────
+
+export async function createQuestion(data: {
+  moduleId: string;
+  questionText: string;
+  options: string[];
+  correctIndex: number;
+  explanation?: string;
+}) {
+  await requireAdmin();
+
+  if (!data.questionText.trim()) {
+    return { ok: false, error: "Teks soal wajib diisi." };
+  }
+  if (data.options.length !== 4 || data.options.some((o) => !o.trim())) {
+    return { ok: false, error: "Semua 4 opsi jawaban wajib diisi." };
+  }
+  if (data.correctIndex < 0 || data.correctIndex > 3) {
+    return { ok: false, error: "Pilih jawaban yang benar." };
+  }
+
+  await prisma.question.create({
+    data: {
+      moduleId: data.moduleId,
+      questionText: data.questionText.trim(),
+      options: data.options.map((o) => o.trim()),
+      correctIndex: data.correctIndex,
+      explanation: data.explanation?.trim() || null,
+    },
+  });
+
+  revalidatePath("/admin/curriculum");
+  return { ok: true };
+}
+
+// ── Delete Question ───────────────────────────────────────────────────────────
+
+export async function deleteQuestion(questionId: string) {
+  await requireAdmin();
+  await prisma.question.delete({ where: { id: questionId } });
+  revalidatePath("/admin/curriculum");
+  return { ok: true };
+}
+
 export async function generateQuestionsForModule(moduleId: string, count: number) {
   await requireAdmin();
 
