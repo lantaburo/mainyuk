@@ -24,7 +24,7 @@ export async function saveProviderAction(formData: FormData) {
     model: formData.get("model"),
   });
 
-  if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "Data tidak valid");
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Data tidak valid" };
 
   const { id, provider, baseUrl, apiKey, model } = parsed.data;
 
@@ -41,7 +41,7 @@ export async function saveProviderAction(formData: FormData) {
     });
   } else {
     // Create
-    if (!apiKey) throw new Error("API Key wajib diisi untuk provider baru");
+    if (!apiKey) return { ok: false, error: "API Key wajib diisi untuk provider baru" };
     
     // Set priority to be at the bottom by default
     const count = await prisma.aiProvider.count();
@@ -58,6 +58,7 @@ export async function saveProviderAction(formData: FormData) {
   }
 
   revalidatePath("/admin/pengaturan-ai");
+  return { ok: true };
 }
 
 export async function deleteProviderAction(id: string) {

@@ -62,11 +62,15 @@ export function AiProviderManager({ providers }: { providers: AiProvider[] }) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     try {
-      await saveProviderAction(formData);
+      const res = await saveProviderAction(formData);
+      if (res && !res.ok) {
+        toast.error(res.error || "Gagal menyimpan");
+        return;
+      }
       toast.success("Provider berhasil disimpan");
       setIsOpen(false);
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.message || "Terjadi kesalahan");
     }
   };
 
