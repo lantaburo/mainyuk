@@ -24,6 +24,11 @@ export default async function RaporPage() {
 
   // Fetch all subjects and their modules for the student's grade level
   const subjects = await prisma.subject.findMany({
+    where: {
+      modules: {
+        some: { gradeLevel: student.gradeLevel }
+      }
+    },
     include: {
       modules: {
         where: { gradeLevel: student.gradeLevel }
