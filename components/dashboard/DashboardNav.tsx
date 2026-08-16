@@ -10,7 +10,8 @@ import {
   LogOut,
   Menu,
   X,
-  Users
+  Users,
+  Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -42,25 +43,34 @@ export function DashboardNav({ user }: DashboardNavProps) {
       <div className="flex-1 overflow-y-auto p-4 space-y-1 scrollbar-hide">
         {items.map((item) => {
           const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href));
+          const isRapor = item.href === "/dashboard/rapor";
+          
           return (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 overflow-hidden",
                 isActive 
-                  ? "bg-indigo-50 text-indigo-700" 
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  ? (isRapor ? "bg-gradient-to-r from-amber-100 to-yellow-200 text-amber-900 border border-yellow-300 shadow-sm" : "bg-indigo-50 text-indigo-700") 
+                  : (isRapor ? "text-amber-700 hover:bg-amber-50 hover:text-amber-900" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")
               )}
             >
+              {/* Glitter Shine Effect */}
+              {isRapor && (
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 to-transparent group-hover:animate-progress-indeterminate pointer-events-none" />
+              )}
               <item.icon 
                 className={cn(
-                  "h-4 w-4 transition-colors", 
-                  isActive ? "text-indigo-600" : "text-gray-400 group-hover:text-gray-600"
+                  "h-4 w-4 transition-colors relative z-10", 
+                  isActive ? (isRapor ? "text-amber-600" : "text-indigo-600") : (isRapor ? "text-amber-500 group-hover:text-amber-600" : "text-gray-400 group-hover:text-gray-600")
                 )} 
               />
-              {item.label}
+              <span className="relative z-10 flex-1">{item.label}</span>
+              {isRapor && (
+                <Sparkles className="w-4 h-4 text-yellow-500 animate-pulse relative z-10" />
+              )}
             </Link>
           );
         })}
