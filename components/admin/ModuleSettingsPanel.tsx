@@ -11,6 +11,7 @@ type Props = {
   moduleId: string;
   initialData: {
     title: string;
+    slug: string;
     description: string | null;
     isPremium: boolean;
     price: string | null; // Decimal comes as string from Prisma
@@ -21,6 +22,7 @@ type Props = {
 export function ModuleSettingsPanel({ moduleId, initialData }: Props) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(initialData.title);
+  const [slug, setSlug] = useState(initialData.slug);
   const [description, setDescription] = useState(initialData.description || "");
   const [isPremium, setIsPremium] = useState(initialData.isPremium);
   const [price, setPrice] = useState(initialData.price ? String(initialData.price) : "");
@@ -33,6 +35,7 @@ export function ModuleSettingsPanel({ moduleId, initialData }: Props) {
     startTransition(async () => {
       const res = await updateModuleSettings(moduleId, {
         title,
+        slug,
         description,
         isPremium,
         price: isPremium && price ? parseFloat(price) : null,
@@ -75,11 +78,21 @@ export function ModuleSettingsPanel({ moduleId, initialData }: Props) {
           <div className="h-px bg-amber-200/60" />
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2 sm:col-span-2">
+            <div className="space-y-2 sm:col-span-1">
               <Label className="font-bold text-amber-900">Judul Modul</Label>
               <Input
                 value={title}
                 onChange={e => setTitle(e.target.value)}
+                className="rounded-xl border-amber-200 focus-visible:ring-amber-500 bg-white"
+              />
+            </div>
+
+            <div className="space-y-2 sm:col-span-1">
+              <Label className="font-bold text-amber-900">Slug (URL)</Label>
+              <Input
+                value={slug}
+                onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-'))}
+                placeholder="contoh: modul-1"
                 className="rounded-xl border-amber-200 focus-visible:ring-amber-500 bg-white"
               />
             </div>

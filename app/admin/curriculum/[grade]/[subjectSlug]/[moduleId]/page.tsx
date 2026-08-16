@@ -71,6 +71,7 @@ export default async function AdminCurriculumQuestionsPage({
         moduleId={moduleData.id}
         initialData={{
           title: moduleData.title,
+          slug: moduleData.slug,
           description: moduleData.description,
           isPremium: moduleData.isPremium,
           price: moduleData.price ? String(moduleData.price) : null,

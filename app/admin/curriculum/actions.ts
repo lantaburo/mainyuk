@@ -203,6 +203,7 @@ export async function updateModuleSettings(
     price: number | null;
     isPublished: boolean;
     title: string;
+    slug: string;
     description: string;
   }
 ) {
@@ -215,6 +216,7 @@ export async function updateModuleSettings(
       price: data.isPremium && data.price ? data.price : null,
       isPublished: data.isPublished,
       title: data.title,
+      slug: data.slug,
       description: data.description,
     }
   });
