@@ -291,16 +291,21 @@ Format Output WAJIB JSON murni (Array of Objects). Tanpa blok markdown \`\`\`jso
     return { ok: false, error: "AI tidak mengembalikan soal apapun." };
   }
 
-  await prisma.question.createMany({
-    data: parsedQuestions.map(q => ({
-      moduleId,
-      questionText: q.question,
-      options: q.options,
-      correctIndex: q.correctIndex,
-      difficultyLevel: targetLevel !== "all" ? targetLevel : (q.difficultyLevel || 1),
-      explanation: q.explanation || null,
-    }))
-  });
+  try {
+    await prisma.question.createMany({
+      data: parsedQuestions.map(q => ({
+        moduleId,
+        questionText: q.question,
+        options: q.options,
+        correctIndex: q.correctIndex,
+        difficultyLevel: targetLevel !== "all" ? targetLevel : (q.difficultyLevel || 1),
+        explanation: q.explanation || null,
+      }))
+    });
+  } catch (dbError: any) {
+    console.error("[generateQuestionsForModule] DB Error:", dbError);
+    return { ok: false, error: "Gagal menyimpan soal ke database. Mungkin struktur database belum sinkron. " + (dbError.message || "") };
+  }
 
   revalidatePath(`/admin/curriculum`);
   return { ok: true, count: parsedQuestions.length };
