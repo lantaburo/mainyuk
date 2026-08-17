@@ -136,31 +136,52 @@ export async function generateQuestionsForModule(moduleId: string, count: number
   }
 
   let levelInstructions = `
-- Berikan \`difficultyLevel\` antara 1 hingga 5 (1 = Sangat Mudah, 5 = Sangat Sulit/HOTS).
-- Distribusikan tingkat kesulitan secara merata dari Level 1 sampai 5. Walaupun level 5, pastikan bahasanya dan topiknya tetap sesuai dengan standar anak SD kelas ${moduleData.gradeLevel}.`;
+- Berikan \`difficultyLevel\` antara 1 hingga 5 (1 = Pemahaman Dasar, 5 = HOTS/Penalaran Kritis).
+- Distribusikan tingkat kesulitan secara merata.`;
 
   if (targetLevel !== "all") {
     levelInstructions = `
-- Karena ini difokuskan pada Level ${targetLevel}, berikan \`difficultyLevel\` tepat ${targetLevel} untuk semua soal.
-- Sesuaikan bobot kesulitan dengan Level ${targetLevel} (dimana 1 = Sangat Mudah, 3 = Sedang, 5 = Sangat Sulit/HOTS), namun bahasanya dan topiknya wajib tetap sesuai untuk anak SD kelas ${moduleData.gradeLevel}.`;
+- Berikan \`difficultyLevel\` tepat ${targetLevel} untuk semua soal. (1=Pemahaman Dasar, 3=Penerapan, 5=HOTS/Penalaran Kritis).`;
   }
 
-  const prompt = `Tugas Anda adalah membuat ${count} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) kelas ${moduleData.gradeLevel} pada mata pelajaran ${moduleData.subject.name} dengan topik "${moduleData.title}".
+  // Tentukan fase Kurikulum Merdeka
+  const grade = moduleData.gradeLevel;
+  let faseMerdeka = "";
+  let pedomanBahasa = "";
+  
+  if (grade <= 2) {
+    faseMerdeka = "Fase A (Kelas 1-2 SD)";
+    pedomanBahasa = "Gunakan kalimat sangat pendek, kosakata sehari-hari yang sangat sederhana, hindari kalimat majemuk bertingkat. Fokus pada pengamatan konkret, cerita hewan, benda sekitar, dan literasi dasar.";
+  } else if (grade <= 4) {
+    faseMerdeka = "Fase B (Kelas 3-4 SD)";
+    pedomanBahasa = "Gunakan kalimat yang mudah dicerna, mulai perkenalkan konsep sebab-akibat sederhana. Cerita bisa sedikit lebih kompleks tapi tetap membumi pada kehidupan nyata siswa.";
+  } else {
+    faseMerdeka = "Fase C (Kelas 5-6 SD)";
+    pedomanBahasa = "Gunakan paragraf pendek yang melatih literasi membaca. Perkenalkan istilah ilmiah dasar, analisis masalah, logika kritis (HOTS), dan pemecahan masalah (Problem Solving) sesuai standar AKM (Asesmen Kompetensi Minimum).";
+  }
 
-Persyaratan Soal:
-- Bahasa yang digunakan harus ramah anak, jelas, dan mudah dipahami.
-- Opsi jawaban harus terdiri dari 4 pilihan (A, B, C, D).
+  const prompt = `Anda adalah seorang ahli penyusun soal evaluasi pendidikan berdasarkan standar **Kurikulum Merdeka**.
+Tugas Anda adalah membuat ${count} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) **Kelas ${grade} (${faseMerdeka})**.
+Mata Pelajaran: ${moduleData.subject.name}
+Topik/Materi: "${moduleData.title}"
+
+**PEDOMAN PENYUSUNAN SOAL KURIKULUM MERDEKA:**
+1. **Pendekatan:** Soal tidak boleh sekadar hafalan murni (C1). Gunakan pendekatan literasi, numerasi, atau studi kasus naratif yang relevan dengan kehidupan anak.
+2. **Kesesuaian Usia:** ${pedomanBahasa}
+3. **Struktur Jawaban:** Opsi jawaban harus terdiri dari 4 pilihan (A, B, C, D) dengan pengecoh (distractor) yang logis, bukan asal-asalan.
+4. **Pembahasan:** Penjelasan (explanation) harus edukatif, memberitahu mengapa jawaban itu benar dengan bahasa yang menyemangati anak.
+
+**INSTRUKSI TEKNIS:**
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
-- Penjelasan harus mendidik dan sesuai kemampuan anak kelas ${moduleData.gradeLevel} SD.
 
-Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, tanpa teks pengantar.
+Format Output WAJIB JSON murni (Array of Objects). Tanpa blok markdown \`\`\`json, tanpa teks pengantar, langsung dimulai dengan kurung siku buka '['.
 [
   {
-    "question": "Pertanyaan soal",
-    "options": ["Opsi A", "Opsi B", "Opsi C", "Opsi D"],
+    "question": "Cerita singkat atau pertanyaan soal...",
+    "options": ["Opsi 1", "Opsi 2", "Opsi 3", "Opsi 4"],
     "correctIndex": 0,
     "difficultyLevel": 3,
-    "explanation": "Penjelasan singkat mengapa jawabannya benar."
+    "explanation": "Penjelasan mendidik dengan bahasa sesuai anak Kelas ${grade}."
   }
 ]`;
 
