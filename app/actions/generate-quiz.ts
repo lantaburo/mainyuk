@@ -47,15 +47,41 @@ export async function generateQuizModule(
       pedomanBahasa = "Gunakan paragraf pendek yang melatih literasi membaca. Perkenalkan istilah ilmiah dasar, logika kritis (HOTS), dan pemecahan masalah.";
     }
 
-    const prompt = `Tugas Anda adalah membuat ${questionCount} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) Kelas ${gradeLevel} (${faseMerdeka}) pada mata pelajaran ${subjectName} dengan topik "${moduleTitle}".
+    // Ambil daftar soal yang sudah ada agar tidak diulang
+    const existingQuestions = await prisma.question.findMany({
+      where: { 
+        module: { 
+          subjectId: subject.id,
+          gradeLevel: gradeLevel 
+        } 
+      },
+      select: { questionText: true },
+      orderBy: { createdAt: 'desc' },
+      take: 50
+    });
 
+    let existingQuestionsText = "";
+    if (existingQuestions.length > 0) {
+      existingQuestionsText = `\n**PENTING: PENCEGAHAN DUPLIKASI**\nBerikut adalah beberapa soal yang SUDAH ADA di database untuk kelas dan mata pelajaran ini. Anda **DILARANG KERAS** membuat soal yang sama atau sangat mirip dengan soal-soal di bawah ini:\n`;
+      existingQuestions.forEach((q, i) => {
+        existingQuestionsText += `- ${q.questionText}\n`;
+      });
+    }
+
+    let arabicInstruction = "";
+    if (subjectName.toLowerCase().includes('arab')) {
+      arabicInstruction = `\n7. **Khat Arabic**: Khusus untuk mata pelajaran Bahasa Arab, semua kosakata, frasa, atau kalimat berbahasa Arab **WAJIB ditulis menggunakan tulisan/khat huruf Arab asli**, bukan latinnya. (Contoh: tulis كِتَابٌ bukan kitabun).`;
+    }
+
+    const prompt = `Tugas Anda adalah membuat ${questionCount} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) Kelas ${gradeLevel} (${faseMerdeka}) pada mata pelajaran ${subjectName} dengan topik "${moduleTitle}".
+${existingQuestionsText}
 Persyaratan Soal:
 1. **Pendekatan & Kesesuaian Usia**: ${pedomanBahasa}
 2. **Bahasa Interaktif**: Bahasa yang digunakan harus seperti bercerita, ramah anak, dan memancing rasa ingin tahu.
 3. **Konteks Nyata**: Gunakan nama tokoh anak-anak, hewan peliharaan, atau situasi sehari-hari yang seru sebagai konteks soal. JANGAN gunakan bahasa teoritis kaku.
 4. **Opsi Jawaban**: Opsi jawaban harus 4 pilihan (A, B, C, D) yang masuk akal. Pengecoh (distractor) harus dari kesalahan logika yang wajar, bukan sembarangan.
 5. **Kalimat Positif**: Hindari pertanyaan "Berikut ini yang BUKAN..." atau "Kecuali".
-6. **Penjelasan Mendidik**: Penjelasan harus ekstra menyenangkan, seperti kakak yang sedang mengajari adiknya dengan memberikan analogi sederhana!
+6. **Penjelasan Mendidik**: Penjelasan harus ekstra menyenangkan, seperti kakak yang sedang mengajari adiknya dengan memberikan analogi sederhana!${arabicInstruction}
 
 **INSTRUKSI TEKNIS:**
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}

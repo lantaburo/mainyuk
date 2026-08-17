@@ -160,6 +160,21 @@ export async function deleteQuestion(questionId: string) {
   return { ok: true };
 }
 
+export async function deleteBulkQuestions(questionIds: string[]) {
+  await requireAdmin();
+  
+  if (!questionIds || questionIds.length === 0) {
+    return { ok: false, error: "Tidak ada soal yang dipilih." };
+  }
+
+  await prisma.question.deleteMany({
+    where: { id: { in: questionIds } }
+  });
+
+  revalidatePath("/admin/curriculum");
+  return { ok: true };
+}
+
 export async function generateQuestionsForModule(moduleId: string, count: number, targetLevel: number | "all" = "all") {
   await requireAdmin();
 
@@ -197,17 +212,43 @@ export async function generateQuestionsForModule(moduleId: string, count: number
     pedomanBahasa = "Gunakan paragraf pendek yang melatih literasi membaca. Perkenalkan istilah ilmiah dasar, analisis masalah, logika kritis (HOTS), dan pemecahan masalah (Problem Solving) sesuai standar AKM (Asesmen Kompetensi Minimum).";
   }
 
+  // Ambil daftar soal yang sudah ada agar tidak diulang
+  const existingQuestions = await prisma.question.findMany({
+    where: { 
+      module: { 
+        subjectId: moduleData.subjectId,
+        gradeLevel: grade 
+      } 
+    },
+    select: { questionText: true },
+    orderBy: { createdAt: 'desc' },
+    take: 50
+  });
+
+  let existingQuestionsText = "";
+  if (existingQuestions.length > 0) {
+    existingQuestionsText = `\n**PENTING: PENCEGAHAN DUPLIKASI**\nBerikut adalah beberapa soal yang SUDAH ADA di database untuk kelas dan mata pelajaran ini. Anda **DILARANG KERAS** membuat soal yang sama atau sangat mirip dengan soal-soal di bawah ini:\n`;
+    existingQuestions.forEach((q, i) => {
+      existingQuestionsText += `- ${q.questionText}\n`;
+    });
+  }
+
+  let arabicInstruction = "";
+  if (moduleData.subject.name.toLowerCase().includes('arab')) {
+    arabicInstruction = `\n6. **Khat Arabic**: Khusus untuk mata pelajaran Bahasa Arab, semua kosakata, frasa, atau kalimat berbahasa Arab **WAJIB ditulis menggunakan tulisan/khat huruf Arab asli**, bukan latinnya. (Contoh: tulis كِتَابٌ bukan kitabun).`;
+  }
+
   const prompt = `Anda adalah seorang ahli penyusun soal evaluasi pendidikan berdasarkan standar **Kurikulum Merdeka**.
 Tugas Anda adalah membuat ${count} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) **Kelas ${grade} (${faseMerdeka})**.
 Mata Pelajaran: ${moduleData.subject.name}
 Topik/Materi: "${moduleData.title}"
-
+${existingQuestionsText}
 **PEDOMAN PENYUSUNAN SOAL KURIKULUM MERDEKA:**
 1. **Pendekatan:** Soal tidak boleh sekadar hafalan murni (C1). Gunakan cerita naratif pendek yang interaktif, studi kasus kehidupan sehari-hari, atau teka-teki yang menyenangkan bagi anak. JANGAN buat soal teoritis kaku.
 2. **Kesesuaian Usia:** ${pedomanBahasa}
 3. **Struktur Jawaban:** Opsi jawaban harus 4 pilihan yang masuk akal dan panjangnya setara. Pengecoh (distractor) HARUS berupa kesalahan umum yang sering dipikirkan anak, BUKAN teks asal-asalan. DILARANG keras menggunakan opsi "Semua jawaban benar" atau "Kecuali".
 4. **Kalimat Positif:** Gunakan kalimat tanya yang positif dan jelas. Hindari jebakan kata "yang bukan" atau "kecuali".
-5. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!
+5. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!${arabicInstruction}
 
 **INSTRUKSI TEKNIS:**
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
