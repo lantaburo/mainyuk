@@ -166,10 +166,11 @@ Mata Pelajaran: ${moduleData.subject.name}
 Topik/Materi: "${moduleData.title}"
 
 **PEDOMAN PENYUSUNAN SOAL KURIKULUM MERDEKA:**
-1. **Pendekatan:** Soal tidak boleh sekadar hafalan murni (C1). Gunakan pendekatan literasi, numerasi, atau studi kasus naratif yang relevan dengan kehidupan anak.
+1. **Pendekatan:** Soal tidak boleh sekadar hafalan murni (C1). Gunakan cerita naratif pendek yang interaktif, studi kasus kehidupan sehari-hari, atau teka-teki yang menyenangkan bagi anak. JANGAN buat soal teoritis kaku.
 2. **Kesesuaian Usia:** ${pedomanBahasa}
-3. **Struktur Jawaban:** Opsi jawaban harus terdiri dari 4 pilihan (A, B, C, D) dengan pengecoh (distractor) yang logis, bukan asal-asalan.
-4. **Pembahasan:** Penjelasan (explanation) harus edukatif, memberitahu mengapa jawaban itu benar dengan bahasa yang menyemangati anak.
+3. **Struktur Jawaban:** Opsi jawaban harus 4 pilihan yang masuk akal dan panjangnya setara. Pengecoh (distractor) HARUS berupa kesalahan umum yang sering dipikirkan anak, BUKAN teks asal-asalan. DILARANG keras menggunakan opsi "Semua jawaban benar" atau "Kecuali".
+4. **Kalimat Positif:** Gunakan kalimat tanya yang positif dan jelas. Hindari jebakan kata "yang bukan" atau "kecuali".
+5. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!
 
 **INSTRUKSI TEKNIS:**
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}

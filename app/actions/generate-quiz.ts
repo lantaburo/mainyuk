@@ -8,7 +8,8 @@ export async function generateQuizModule(
   subjectName: string,
   gradeLevel: number,
   moduleTitle: string,
-  questionCount: number
+  questionCount: number,
+  targetLevel: number | "all" = "all"
 ) {
   try {
     // 1. Get or Create Subject
@@ -28,20 +29,44 @@ export async function generateQuizModule(
     }
 
     // 2. Generate prompt
-    const prompt = `Tugas Anda adalah membuat ${questionCount} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) kelas ${gradeLevel} pada mata pelajaran ${subjectName} dengan topik "${moduleTitle}".
+    let levelInstructions = `\n- Berikan \`difficultyLevel\` antara 1 hingga 5 (1 = Dasar, 5 = HOTS).\n- Distribusikan tingkat kesulitan secara merata.`;
+    if (targetLevel !== "all") {
+      levelInstructions = `\n- Berikan \`difficultyLevel\` tepat ${targetLevel} untuk semua soal. (1=Dasar, 3=Penerapan, 5=HOTS).`;
+    }
+
+    let faseMerdeka = "";
+    let pedomanBahasa = "";
+    if (gradeLevel <= 2) {
+      faseMerdeka = "Fase A (Kelas 1-2 SD)";
+      pedomanBahasa = "Gunakan kalimat sangat pendek, kosakata sehari-hari yang sangat sederhana. Fokus pada pengamatan konkret, benda sekitar, dan literasi dasar.";
+    } else if (gradeLevel <= 4) {
+      faseMerdeka = "Fase B (Kelas 3-4 SD)";
+      pedomanBahasa = "Gunakan kalimat yang mudah dicerna, mulai perkenalkan konsep sebab-akibat sederhana. Cerita bisa sedikit lebih kompleks tapi membumi pada kehidupan nyata.";
+    } else {
+      faseMerdeka = "Fase C (Kelas 5-6 SD)";
+      pedomanBahasa = "Gunakan paragraf pendek yang melatih literasi membaca. Perkenalkan istilah ilmiah dasar, logika kritis (HOTS), dan pemecahan masalah.";
+    }
+
+    const prompt = `Tugas Anda adalah membuat ${questionCount} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) Kelas ${gradeLevel} (${faseMerdeka}) pada mata pelajaran ${subjectName} dengan topik "${moduleTitle}".
 
 Persyaratan Soal:
-- Bahasa yang digunakan harus ramah anak, jelas, dan mudah dipahami.
-- Opsi jawaban harus terdiri dari 4 pilihan (A, B, C, D).
-- Penjelasan harus mendidik dan memberikan konteks mengapa jawaban tersebut benar dengan analogi yang cocok untuk anak-anak.
+1. **Pendekatan & Kesesuaian Usia**: ${pedomanBahasa}
+2. **Bahasa Interaktif**: Bahasa yang digunakan harus seperti bercerita, ramah anak, dan memancing rasa ingin tahu.
+3. **Konteks Nyata**: Gunakan nama tokoh anak-anak, hewan peliharaan, atau situasi sehari-hari yang seru sebagai konteks soal. JANGAN gunakan bahasa teoritis kaku.
+4. **Opsi Jawaban**: Opsi jawaban harus 4 pilihan (A, B, C, D) yang masuk akal. Pengecoh (distractor) harus dari kesalahan logika yang wajar, bukan sembarangan.
+5. **Kalimat Positif**: Hindari pertanyaan "Berikut ini yang BUKAN..." atau "Kecuali".
+6. **Penjelasan Mendidik**: Penjelasan harus ekstra menyenangkan, seperti kakak yang sedang mengajari adiknya dengan memberikan analogi sederhana!
+
+**INSTRUKSI TEKNIS:**
+- correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
 
 Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, tanpa teks pengantar.
-Contoh struktur yang diinginkan:
 [
   {
     "question": "Berapa hasil dari 5 + 3?",
     "options": ["6", "7", "8", "9"],
     "correctIndex": 2,
+    "difficultyLevel": ${targetLevel === "all" ? 1 : targetLevel},
     "explanation": "5 ditambah 3 sama dengan 8. Bayangkan kamu punya 5 apel, lalu diberi 3 apel lagi, jadi totalnya 8 apel!"
   }
 ]
@@ -93,6 +118,7 @@ Contoh struktur yang diinginkan:
             questionText: q.question,
             options: q.options || [],
             correctIndex: q.correctIndex || 0,
+            difficultyLevel: targetLevel !== "all" ? targetLevel : (q.difficultyLevel || 1),
             explanation: q.explanation || ""
           }))
         }

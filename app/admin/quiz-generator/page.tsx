@@ -13,21 +13,10 @@ export default function QuizGeneratorPage() {
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("1");
   const [title, setTitle] = useState("");
-  const [count, setCount] = useState("5");
+  const [count, setCount] = useState("10");
+  const [targetLevel, setTargetLevel] = useState("all");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ok: boolean, error?: string, slug?: string} | null>(null);
-
-  // Function to get required question count based on grade
-  const getQuestionCountForGrade = (gradeStr: string) => {
-    const g = parseInt(gradeStr);
-    if (g === 1 || g === 2) return 10;
-    if (g === 3) return 15;
-    if (g === 4 || g === 5) return 20;
-    if (g === 6) return 25;
-    return 10;
-  };
-
-  const currentCount = getQuestionCountForGrade(grade);
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault();
@@ -37,7 +26,13 @@ export default function QuizGeneratorPage() {
     setResult(null);
     
     try {
-      const res = await generateQuizModule(subject, parseInt(grade), title, currentCount);
+      const res = await generateQuizModule(
+        subject, 
+        parseInt(grade), 
+        title, 
+        parseInt(count),
+        targetLevel === "all" ? "all" : parseInt(targetLevel)
+      );
       setResult(res as any);
     } catch (err: any) {
       setResult({ ok: false, error: err.message });
@@ -93,11 +88,34 @@ export default function QuizGeneratorPage() {
             />
           </div>
 
-          <div className="space-y-2 p-4 bg-slate-50 rounded-lg border border-slate-100">
-            <Label className="font-semibold text-slate-700">Ketentuan Modul</Label>
-            <p className="text-sm text-slate-600 mt-1">
-              Berdasarkan kurikulum, untuk Kelas {grade}, modul ini akan di-generate dengan <strong>{currentCount} Soal</strong>.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="count" className="font-semibold">Jumlah Soal</Label>
+              <Select value={count} onValueChange={(val) => { if (val) setCount(val); }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih Jumlah" />
+                </SelectTrigger>
+                <SelectContent>
+                  {[5, 10, 15, 20, 25].map(c => (
+                    <SelectItem key={c} value={c.toString()}>{c} Soal</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="level" className="font-semibold">Target Level (Kesulitan)</Label>
+              <Select value={targetLevel} onValueChange={(val) => { if (val) setTargetLevel(val); }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih Level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Campur (Semua Level)</SelectItem>
+                  {[1, 2, 3, 4, 5].map(l => (
+                    <SelectItem key={l} value={l.toString()}>Level {l}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <Button 
