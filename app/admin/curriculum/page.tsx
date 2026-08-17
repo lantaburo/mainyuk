@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
-import { GraduationCap, ArrowRight, BookOpen, Library } from "lucide-react";
+import { GraduationCap, ArrowRight, BookOpen, Library, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import { SeedCurriculumButton } from "@/components/admin/SeedCurriculumButton";
 
@@ -43,9 +43,14 @@ export default async function AdminCurriculumGradeSelectionPage() {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manajemen Kurikulum</h1>
           <p className="mt-2 text-sm text-gray-500">
             Pilih jenjang kelas untuk mengelola mata pelajaran, modul, dan soal.
-          </p>
         </div>
-        <SeedCurriculumButton />
+        <div className="flex items-center gap-3">
+          <Link href="/admin/curriculum/batch-regenerate" className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-xl hover:bg-indigo-100 transition-colors shadow-sm">
+            <RefreshCcw className="w-4 h-4" />
+            Batch Regenerate Soal
+          </Link>
+          <SeedCurriculumButton />
+        </div>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
