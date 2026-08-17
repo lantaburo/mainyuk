@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import { signOut } from "next-auth/react";
 import {
   BookOpen,
@@ -11,7 +12,9 @@ import {
   Menu,
   X,
   Users,
-  Sparkles
+  Sparkles,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -23,6 +26,7 @@ interface DashboardNavProps {
 export function DashboardNav({ user }: DashboardNavProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   const items = [
     { href: "/dashboard", label: "Ruang Belajar", icon: BookOpen },
@@ -31,12 +35,12 @@ export function DashboardNav({ user }: DashboardNavProps) {
 
   const SidebarContent = () => (
     <>
-      <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+      <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-indigo-500 mb-1">
             Siswa Kelas {user.classLevel}
           </p>
-          <p className="font-bold text-gray-900 truncate">{user.name}</p>
+          <p className="font-bold text-gray-900 dark:text-gray-100 truncate">{user.name}</p>
         </div>
       </div>
       
@@ -53,11 +57,10 @@ export function DashboardNav({ user }: DashboardNavProps) {
               className={cn(
                 "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 overflow-hidden",
                 isActive 
-                  ? (isRapor ? "bg-gradient-to-r from-amber-100 to-yellow-200 text-amber-900 border border-yellow-300 shadow-sm" : "bg-indigo-50 text-indigo-700") 
-                  : (isRapor ? "text-amber-700 hover:bg-amber-50 hover:text-amber-900" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")
+                  ? (isRapor ? "bg-gradient-to-r from-amber-100 to-yellow-200 text-amber-900 border border-yellow-300 shadow-sm" : "bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300") 
+                  : (isRapor ? "text-amber-700 hover:bg-amber-50 hover:text-amber-900" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100")
               )}
             >
-              {/* Glitter Shine Effect */}
               {isRapor && (
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/60 to-transparent group-hover:animate-progress-indeterminate pointer-events-none" />
               )}
@@ -76,7 +79,15 @@ export function DashboardNav({ user }: DashboardNavProps) {
         })}
       </div>
       
-      <div className="p-4 border-t border-gray-100 flex flex-col gap-2">
+      <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-2">
+        {/* Dark Mode Toggle (desktop sidebar) */}
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="flex items-center gap-2 w-full px-3 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100 transition-colors"
+        >
+          {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {theme === "dark" ? "Mode Terang" : "Mode Gelap"}
+        </button>
         <Link href="/select-profile">
           <Button
             variant="outline"
@@ -100,30 +111,40 @@ export function DashboardNav({ user }: DashboardNavProps) {
 
   return (
     <>
-      {/* Mobile Header & Dropdown Wrapper */}
-      <div className="md:hidden w-full bg-white relative z-40">
-        <div className="flex items-center justify-between border-b border-gray-100 p-4">
-          <div className="font-bold text-gray-900 truncate flex-1">
+      {/* Mobile & Tablet Header (hidden on lg+) */}
+      <div className="lg:hidden w-full bg-white dark:bg-slate-900 relative z-40 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center justify-between p-4">
+          <div className="font-bold text-gray-900 dark:text-gray-100 truncate flex-1">
             <span className="text-indigo-500">Kelas {user.classLevel}</span> • {user.name}
           </div>
-          <button 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 -mr-2 text-gray-600 hover:bg-gray-50 rounded-lg"
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex items-center gap-1">
+            {/* Dark Mode Toggle in header */}
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400 transition-colors"
+              title={theme === "dark" ? "Mode Terang" : "Mode Gelap"}
+            >
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
         
-        {/* Mobile Dropdown */}
+        {/* Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white shadow-xl border-b border-gray-100 flex flex-col max-h-[80vh] overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 bg-white dark:bg-slate-900 shadow-xl border-b border-gray-100 dark:border-gray-800 flex flex-col max-h-[80vh] overflow-y-auto">
             <SidebarContent />
           </div>
         )}
       </div>
 
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-64 shrink-0 flex-col border-r bg-white shadow-sm h-screen sticky top-0">
+      {/* Desktop Sidebar (visible on lg+) */}
+      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-gray-100 dark:border-gray-800 bg-white dark:bg-slate-900 shadow-sm h-screen sticky top-0">
         <SidebarContent />
       </aside>
     </>

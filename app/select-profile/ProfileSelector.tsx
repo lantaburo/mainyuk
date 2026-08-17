@@ -96,7 +96,7 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
                 <SelectValue placeholder="Pilih Kelas" />
               </SelectTrigger>
               <SelectContent>
-                {[1,2,3,4,5,6].map(g => (
+                {[1,2,3,4,5,6,7,8,9].map(g => (
                   <SelectItem key={g} value={g.toString()}>Kelas {g}</SelectItem>
                 ))}
               </SelectContent>

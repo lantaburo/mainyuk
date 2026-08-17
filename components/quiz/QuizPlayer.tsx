@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, XCircle, ArrowRight, Trophy, RefreshCcw, Star, Volume2, VolumeX, Music, Moon, Sun, BookOpen } from "lucide-react";
-import { useTheme } from "next-themes";
+import { CheckCircle2, XCircle, ArrowRight, Trophy, RefreshCcw, Star, Volume2, VolumeX, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import confetti from "canvas-confetti";
 
@@ -27,11 +26,8 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
-  const { theme, setTheme } = useTheme();
   const [isReadingMode, setIsReadingMode] = useState(false);
   const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
-  const [correctAudio, setCorrectAudio] = useState<HTMLAudioElement | null>(null);
-  const [wrongAudio, setWrongAudio] = useState<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [hasStartedBgm, setHasStartedBgm] = useState(false);
 
@@ -224,6 +220,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
         <div className="flex justify-between items-end">
           <h1 className="text-2xl font-bold text-slate-800 drop-shadow-sm">{title}</h1>
           <div className="flex items-center gap-3">
+            {/* Reading Mode */}
             <button 
               onClick={() => setIsReadingMode(!isReadingMode)}
               className={cn("p-2 rounded-full transition-colors", isReadingMode ? "bg-amber-200 text-amber-800" : "bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700")}
@@ -231,13 +228,7 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
             >
               <BookOpen className="w-5 h-5" />
             </button>
-            <button 
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 transition-colors"
-              title="Mode Gelap"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
+            {/* Mute */}
             <button 
               onClick={() => {
                 setIsMuted(!isMuted);

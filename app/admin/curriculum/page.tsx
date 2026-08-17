@@ -11,12 +11,15 @@ const GRADE_COLORS = [
   { bg: "from-emerald-400 to-teal-500",  light: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-100" },
   { bg: "from-cyan-400 to-sky-500",      light: "bg-cyan-50",    text: "text-cyan-600",    border: "border-cyan-100" },
   { bg: "from-blue-400 to-indigo-500",   light: "bg-blue-50",    text: "text-blue-600",    border: "border-blue-100" },
+  { bg: "from-violet-400 to-purple-500", light: "bg-violet-50",  text: "text-violet-600",  border: "border-violet-100" },
+  { bg: "from-fuchsia-400 to-pink-600",  light: "bg-fuchsia-50", text: "text-fuchsia-600", border: "border-fuchsia-100" },
+  { bg: "from-slate-400 to-gray-600",    light: "bg-slate-50",   text: "text-slate-600",   border: "border-slate-100" },
 ];
 
 export default async function AdminCurriculumGradeSelectionPage() {
   await requireAdmin();
 
-  const grades = [1, 2, 3, 4, 5, 6];
+  const grades = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   // Ambil statistik per kelas: jumlah mapel (subject dengan modul) & jumlah modul
   const statsPerGrade = await Promise.all(
