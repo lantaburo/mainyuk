@@ -111,11 +111,31 @@ export async function requestWithdrawal(amount: number) {
 
 export async function getMyAffiliate() {
   const session = await requireAuth();
-  const aff = await prisma.affiliateCode.findUnique({
+  
+  let aff = await prisma.affiliateCode.findUnique({
     where: { userId: session.user.id },
     include: { withdrawals: { orderBy: { createdAt: "desc" }, take: 10 } },
   });
+
+  // Jika tidak ketemu berdasarkan userId, coba cari berdasarkan email login
+  if (!aff && session.user.email) {
+    const affByEmail = await prisma.affiliateCode.findFirst({
+      where: { ownerEmail: session.user.email },
+      include: { withdrawals: { orderBy: { createdAt: "desc" }, take: 10 } },
+    });
+
+    if (affByEmail) {
+      // Link akun afiliasi ke userId yang baru ini (berguna jika user login via Google/Email yang berbeda ID tapi email sama)
+      aff = await prisma.affiliateCode.update({
+        where: { id: affByEmail.id },
+        data: { userId: session.user.id },
+        include: { withdrawals: { orderBy: { createdAt: "desc" }, take: 10 } },
+      });
+    }
+  }
+
   if (!aff) return null;
+
   return {
     ...aff,
     commissionPct: aff.commissionPct.toString(),

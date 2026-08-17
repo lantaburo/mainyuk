@@ -28,8 +28,18 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [isFinished, setIsFinished] = useState(false);
   const [isReadingMode, setIsReadingMode] = useState(false);
   const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
+  const [finishAudioObj, setFinishAudioObj] = useState<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [hasStartedBgm, setHasStartedBgm] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (finishAudioObj) {
+        finishAudioObj.pause();
+        finishAudioObj.src = "";
+      }
+    };
+  }, [finishAudioObj]);
 
 
 
@@ -48,7 +58,8 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
 
   useEffect(() => {
     if (bgmAudio) bgmAudio.muted = isMuted;
-  }, [isMuted, bgmAudio]);
+    if (finishAudioObj) finishAudioObj.muted = isMuted;
+  }, [isMuted, bgmAudio, finishAudioObj]);
 
   const playYeaySound = () => {
     if (!isMuted) {
@@ -113,6 +124,8 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   };
 
   const handleNextQuestion = () => {
+    if (isFinished) return; // Mencegah timeout memanggil ini 2x
+    
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
       setSelectedOption(null);
@@ -120,21 +133,32 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     } else {
       setIsFinished(true);
       if (bgmAudio) bgmAudio.pause();
+      
+      const audio = new Audio("/sounds/PapanSkorCeria.mp3");
+      audio.volume = 0.8;
+      audio.muted = isMuted;
+      setFinishAudioObj(audio);
+
       if (!isMuted) {
-        const finishAudio = new Audio("/sounds/PapanSkorCeria.mp3");
-        finishAudio.volume = 0.8;
-        finishAudio.play().catch(e => console.error("Audio blocked", e));
+        audio.play().catch(e => console.error("Audio blocked", e));
       }
       if (onComplete) onComplete(score, questions.length);
     }
   };
 
   const handleRetry = () => {
+    if (finishAudioObj) {
+      finishAudioObj.pause();
+      finishAudioObj.currentTime = 0;
+    }
     setCurrentIndex(0);
     setSelectedOption(null);
     setIsAnswerChecked(false);
     setScore(0);
     setIsFinished(false);
+    if (bgmAudio && !isMuted) {
+      bgmAudio.play().catch(e => console.error(e));
+    }
   };
 
   const fireConfetti = () => {
@@ -178,8 +202,19 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", bounce: 0.5 }}
-          className="flex flex-col items-center text-center space-y-6"
+          className="flex flex-col items-center text-center space-y-6 relative"
         >
+          {/* Mute button di layar selesai */}
+          <div className="absolute -top-4 -right-4 md:top-0 md:right-0 z-50">
+            <button 
+              onClick={() => setIsMuted(!isMuted)}
+              className="p-3 rounded-full bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 transition-colors shadow-sm border border-slate-200"
+              title={isMuted ? "Bunyikan Suara" : "Matikan Suara"}
+            >
+              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </button>
+          </div>
+
           <div className="relative">
             <div className="absolute inset-0 bg-yellow-400 blur-2xl opacity-40 rounded-full" />
             <Trophy className="w-24 h-24 text-yellow-500 relative z-10" />

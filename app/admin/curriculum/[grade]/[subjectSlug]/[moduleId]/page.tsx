@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { AiQuestionGenerator } from "@/components/admin/AiQuestionGenerator";
 import { ModuleSettingsPanel } from "@/components/admin/ModuleSettingsPanel";
 import { AddQuestionDialog } from "@/components/admin/AddQuestionDialog";
+import { EditQuestionDialog } from "@/components/admin/EditQuestionDialog";
 import { DeleteQuestionButton } from "@/components/admin/DeleteQuestionButton";
 
 export default async function AdminCurriculumQuestionsPage({ 
@@ -144,7 +145,15 @@ export default async function AdminCurriculumQuestionsPage({
                             </p>
                           )}
                         </div>
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 flex items-center gap-2">
+                          <EditQuestionDialog
+                            questionId={q.id}
+                            initialText={q.questionText}
+                            initialOptions={options}
+                            initialCorrectIndex={q.correctIndex}
+                            initialDifficultyLevel={q.difficultyLevel}
+                            initialExplanation={q.explanation}
+                          />
                           <DeleteQuestionButton questionId={q.id} />
                         </div>
                       </div>

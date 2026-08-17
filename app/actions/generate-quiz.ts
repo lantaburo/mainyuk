@@ -61,6 +61,7 @@ Persyaratan Soal:
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
 
 Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, tanpa teks pengantar.
+**CONTOH STRUKTUR OUTPUT:**
 [
   {
     "question": "Berapa hasil dari 5 + 3?",

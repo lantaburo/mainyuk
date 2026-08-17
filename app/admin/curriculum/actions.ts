@@ -114,6 +114,43 @@ export async function createQuestion(data: {
   return { ok: true };
 }
 
+// ── Update Question ───────────────────────────────────────────────────────────
+
+export async function updateQuestion(data: {
+  questionId: string;
+  questionText: string;
+  options: string[];
+  correctIndex: number;
+  difficultyLevel: number;
+  explanation?: string;
+}) {
+  await requireAdmin();
+
+  if (!data.questionText.trim()) {
+    return { ok: false, error: "Teks soal wajib diisi." };
+  }
+  if (data.options.length !== 4 || data.options.some((o) => !o.trim())) {
+    return { ok: false, error: "Semua 4 opsi jawaban wajib diisi." };
+  }
+  if (data.correctIndex < 0 || data.correctIndex > 3) {
+    return { ok: false, error: "Pilih jawaban yang benar." };
+  }
+
+  await prisma.question.update({
+    where: { id: data.questionId },
+    data: {
+      questionText: data.questionText.trim(),
+      options: data.options.map((o) => o.trim()),
+      correctIndex: data.correctIndex,
+      difficultyLevel: data.difficultyLevel,
+      explanation: data.explanation?.trim() || null,
+    },
+  });
+
+  revalidatePath("/admin/curriculum");
+  return { ok: true };
+}
+
 // ── Delete Question ───────────────────────────────────────────────────────────
 
 export async function deleteQuestion(questionId: string) {
@@ -176,6 +213,7 @@ Topik/Materi: "${moduleData.title}"
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
 
 Format Output WAJIB JSON murni (Array of Objects). Tanpa blok markdown \`\`\`json, tanpa teks pengantar, langsung dimulai dengan kurung siku buka '['.
+**CONTOH STRUKTUR OUTPUT:**
 [
   {
     "question": "Cerita singkat atau pertanyaan soal...",
