@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { GraduationCap, Award, CheckCircle, BookOpen, Star, Trophy, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RaporAudio } from "@/components/dashboard/RaporAudio";
+import { RaporAiAnalysis } from "@/components/dashboard/RaporAiAnalysis";
 
 export default async function RaporPage() {
   const session = await requireAuth();
@@ -197,6 +198,9 @@ export default async function RaporPage() {
           </div>
         )}
       </div>
+
+      {/* AI Analysis */}
+      <RaporAiAnalysis studentId={student.id} />
 
       {/* Subject List */}
       <div>
