@@ -75,41 +75,53 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
 
   if (isAdding) {
     return (
-      <form onSubmit={handleAdd} className="bg-white p-6 rounded-2xl shadow-xl max-w-md mx-auto">
-        <h2 className="text-xl font-bold mb-4 text-gray-900">Tambah Profil Anak</h2>
+      <form onSubmit={handleAdd} className="bg-white p-8 rounded-[2rem] border-4 border-indigo-400 shadow-[0_8px_0_0_rgba(129,140,248,1)] max-w-md mx-auto relative overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-300 rounded-full opacity-50 blur-2xl"></div>
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-pink-300 rounded-full opacity-50 blur-2xl"></div>
+        
+        <h2 className="text-2xl font-black mb-6 text-indigo-900 text-center relative z-10 flex items-center justify-center gap-2">
+          <span className="text-4xl">👧👦</span>
+          Tambah Anak Baru
+        </h2>
         
         {errorMsg && (
-          <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm font-medium border border-red-200">
+          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-2xl text-sm font-bold border-2 border-red-300 relative z-10 text-center">
             {errorMsg}
           </div>
         )}
 
-        <div className="space-y-4">
-          <div className="space-y-1.5">
-            <Label>Nama Panggilan</Label>
-            <Input value={name} onChange={e => setName(e.target.value)} required placeholder="Mis. Budi" />
+        <div className="space-y-6 relative z-10">
+          <div className="space-y-2">
+            <Label className="font-bold text-lg text-indigo-900">Nama Panggilan</Label>
+            <Input 
+              value={name} 
+              onChange={e => setName(e.target.value)} 
+              required 
+              placeholder="Contoh: Budi" 
+              className="rounded-2xl border-2 border-indigo-200 focus-visible:ring-indigo-400 focus-visible:border-indigo-400 h-14 text-lg font-medium px-4 shadow-sm"
+            />
           </div>
-          <div className="space-y-1.5">
-            <Label>Tingkat Kelas</Label>
+          <div className="space-y-2">
+            <Label className="font-bold text-lg text-indigo-900">Tingkat Kelas</Label>
             <Select value={grade} onValueChange={(val) => { if (val) setGrade(val); }}>
-              <SelectTrigger>
+              <SelectTrigger className="rounded-2xl border-2 border-indigo-200 h-14 text-lg font-medium shadow-sm focus:ring-indigo-400">
                 <SelectValue placeholder="Pilih Kelas" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-2xl border-2 border-indigo-200">
                 {[1,2,3,4,5,6,7,8,9].map(g => (
-                  <SelectItem key={g} value={g.toString()}>Kelas {g}</SelectItem>
+                  <SelectItem key={g} value={g.toString()} className="text-lg font-medium py-3 cursor-pointer">Kelas {g}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          <div className="pt-2 flex gap-3">
+          <div className="pt-4 flex gap-4">
             {profiles.length > 0 && (
-              <Button type="button" variant="outline" className="flex-1" onClick={() => setIsAdding(false)}>
-                Batal
+              <Button type="button" variant="outline" className="flex-1 rounded-2xl h-14 text-lg font-bold border-2 border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-700" onClick={() => setIsAdding(false)}>
+                Kembali
               </Button>
             )}
-            <Button type="submit" className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Simpan"}
+            <Button type="submit" className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-yellow-950 rounded-2xl h-14 text-lg font-black border-b-4 border-yellow-600 active:border-b-0 active:translate-y-1 transition-all" disabled={loading}>
+              {loading ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Simpan Yuk! 🚀"}
             </Button>
           </div>
         </div>

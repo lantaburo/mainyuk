@@ -23,7 +23,8 @@ export default async function SelectProfilePage() {
   return (
     <div className="min-h-screen bg-[#0B2B26] flex items-center justify-center p-4">
       <div className="max-w-3xl w-full">
-        <h1 className="text-3xl md:text-5xl font-bold text-center text-white mb-12">
+        <h1 className="text-3xl md:text-5xl font-black text-center text-white mb-12 drop-shadow-md flex flex-col items-center gap-4">
+          <span className="text-6xl animate-bounce">👋</span>
           Siapa yang mau belajar?
         </h1>
         <ProfileSelector profiles={profiles} />
