@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/session";
-import { Role } from "@prisma/client";
+import { Role } from "@/lib/generated/prisma2/client";
 
 // ── Delete User (Parent) ──────────────────────────────────────────────────────
 export async function deleteUserAccount(userId: string) {

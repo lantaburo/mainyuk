@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User, StudentProfile } from "@prisma/client";
+import { User, StudentProfile } from "@/lib/generated/prisma2/client";
 import { 
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from "@/components/ui/table";
@@ -14,7 +14,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger 
 } from "@/components/ui/dialog";
 import { Trash2, Shield, Users, Baby, AlertTriangle } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { deleteUserAccount, updateUserRole, deleteChildProfile } from "@/app/admin/pengguna/actions";
 import { useRouter } from "next/navigation";
 
@@ -116,11 +116,9 @@ export function PenggunaClient({ users, currentUserId }: { users: UserWithChildr
               </TableCell>
               <TableCell className="text-center">
                 <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-8 gap-2">
-                      <Baby className="w-4 h-4 text-indigo-500" />
-                      {user.children.length} Anak
-                    </Button>
+                  <DialogTrigger render={<Button variant="outline" size="sm" className="h-8 gap-2" />}>
+                    <Baby className="w-4 h-4 text-indigo-500" />
+                    {user.children.length} Anak
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
@@ -135,7 +133,7 @@ export function PenggunaClient({ users, currentUserId }: { users: UserWithChildr
                           Pengguna ini belum membuat profil anak.
                         </div>
                       ) : (
-                        user.children.map((child) => (
+                        user.children.map((child: StudentProfile) => (
                           <div key={child.id} className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
                             <div>
                               <div className="font-semibold text-gray-900">{child.name}</div>
