@@ -97,6 +97,15 @@ export function DashboardNav({ user }: DashboardNavProps) {
             Ganti Profil Anak
           </Button>
         </Link>
+        <Link href="/affiliate">
+          <Button
+            variant="outline"
+            className="w-full justify-start text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 border-emerald-200 dark:border-emerald-800/30 dark:text-emerald-400 dark:hover:bg-emerald-950"
+          >
+            <Sparkles className="mr-2 h-4 w-4 text-emerald-500" />
+            Program Afiliasi
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 group"
