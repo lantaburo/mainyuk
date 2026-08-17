@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Gift, Plus, Package } from "lucide-react";
-import { createGlobalGift } from "./actions";
+import { createGlobalGift } from "@/app/admin/gifts/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
