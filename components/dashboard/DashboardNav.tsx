@@ -100,35 +100,32 @@ export function DashboardNav({ user }: DashboardNavProps) {
 
   return (
     <>
-      {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center justify-between bg-white border-b border-gray-100 p-4 sticky top-0 z-40">
-        <div className="font-bold text-gray-900 truncate flex-1">
-          <span className="text-indigo-500">Kelas {user.classLevel}</span> • {user.name}
+      {/* Mobile Header & Dropdown Wrapper */}
+      <div className="md:hidden w-full bg-white relative z-40">
+        <div className="flex items-center justify-between border-b border-gray-100 p-4">
+          <div className="font-bold text-gray-900 truncate flex-1">
+            <span className="text-indigo-500">Kelas {user.classLevel}</span> • {user.name}
+          </div>
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 -mr-2 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
-        <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 -mr-2 text-gray-600 hover:bg-gray-50 rounded-lg"
-        >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        
+        {/* Mobile Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="absolute top-full left-0 right-0 bg-white shadow-xl border-b border-gray-100 flex flex-col max-h-[80vh] overflow-y-auto">
+            <SidebarContent />
+          </div>
+        )}
       </div>
 
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex w-64 shrink-0 flex-col border-r bg-white shadow-sm h-screen sticky top-0">
         <SidebarContent />
       </aside>
-
-      {/* Mobile Sidebar Overlay */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-gray-900/50 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}>
-          <aside 
-            className="absolute top-0 left-0 bottom-0 w-64 bg-white flex flex-col shadow-xl"
-            onClick={e => e.stopPropagation()}
-          >
-            <SidebarContent />
-          </aside>
-        </div>
-      )}
     </>
   );
 }

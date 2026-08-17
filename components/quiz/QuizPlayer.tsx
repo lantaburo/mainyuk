@@ -44,41 +44,29 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
     bgm.playbackRate = 0.85; // Diperlambat sedikit
     setBgmAudio(bgm);
 
-    const correct = new Audio("/sounds/yaeh.mp3");
-    correct.volume = 0.8;
-    setCorrectAudio(correct);
-
-    const wrong = new Audio("/sounds/wrong.mp3");
-    wrong.volume = 0.8;
-    setWrongAudio(wrong);
-
     return () => {
       bgm.pause();
       bgm.src = "";
-      correct.pause();
-      correct.src = "";
-      wrong.pause();
-      wrong.src = "";
     };
   }, []);
 
   useEffect(() => {
     if (bgmAudio) bgmAudio.muted = isMuted;
-    if (correctAudio) correctAudio.muted = isMuted;
-    if (wrongAudio) wrongAudio.muted = isMuted;
-  }, [isMuted, bgmAudio, correctAudio, wrongAudio]);
+  }, [isMuted, bgmAudio]);
 
   const playYeaySound = () => {
-    if (correctAudio && !isMuted) {
-      correctAudio.currentTime = 0;
-      correctAudio.play().catch(e => console.error("Audio blocked", e));
+    if (!isMuted) {
+      const correct = new Audio("/sounds/yaeh.mp3");
+      correct.volume = 0.8;
+      correct.play().catch(e => console.error("Audio blocked", e));
     }
   };
 
   const playWrongSound = () => {
-    if (wrongAudio && !isMuted) {
-      wrongAudio.currentTime = 0;
-      wrongAudio.play().catch(e => console.error("Audio blocked", e));
+    if (!isMuted) {
+      const wrong = new Audio("/sounds/wrong.mp3");
+      wrong.volume = 0.8;
+      wrong.play().catch(e => console.error("Audio blocked", e));
     }
   };
 
@@ -135,6 +123,12 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
       setIsAnswerChecked(false);
     } else {
       setIsFinished(true);
+      if (bgmAudio) bgmAudio.pause();
+      if (!isMuted) {
+        const finishAudio = new Audio("/sounds/PapanSkorCeria.mp3");
+        finishAudio.volume = 0.8;
+        finishAudio.play().catch(e => console.error("Audio blocked", e));
+      }
       if (onComplete) onComplete(score, questions.length);
     }
   };

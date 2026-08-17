@@ -6,6 +6,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddModuleDialog } from "@/components/admin/AddModuleDialog";
 
+import { DeleteModuleButton } from "@/components/admin/DeleteModuleButton";
+
 export default async function AdminCurriculumModulesPage({ params }: { params: { grade: string, subjectSlug: string } }) {
   await requireAdmin();
 
@@ -73,8 +75,11 @@ export default async function AdminCurriculumModulesPage({ params }: { params: {
                   <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-50 to-white shadow-sm border border-emerald-100/50 text-emerald-600 flex-shrink-0 group-hover:scale-110 transition-transform">
                     <Library className="h-8 w-8" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-xl text-slate-900">{mod.title}</h3>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between">
+                      <h3 className="font-bold text-xl text-slate-900">{mod.title}</h3>
+                      <DeleteModuleButton moduleId={mod.id} moduleTitle={mod.title} />
+                    </div>
                     <p className="text-sm font-medium text-emerald-600 mt-1">{mod._count.questions} Soal Tersedia</p>
                     <div className="mt-2 flex gap-2">
                       {mod.isPremium && (

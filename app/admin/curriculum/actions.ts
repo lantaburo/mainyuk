@@ -232,3 +232,17 @@ export async function updateModuleSettings(
   revalidatePath(`/admin/curriculum`);
   return { ok: true };
 }
+
+export async function deleteSubject(subjectId: string) {
+  await requireAdmin();
+  await prisma.subject.delete({ where: { id: subjectId } });
+  revalidatePath("/admin/curriculum");
+  return { ok: true };
+}
+
+export async function deleteModule(moduleId: string) {
+  await requireAdmin();
+  await prisma.module.delete({ where: { id: moduleId } });
+  revalidatePath("/admin/curriculum");
+  return { ok: true };
+}

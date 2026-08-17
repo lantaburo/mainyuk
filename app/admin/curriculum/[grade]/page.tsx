@@ -6,6 +6,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddSubjectDialog } from "@/components/admin/AddSubjectDialog";
 
+import { DeleteSubjectButton } from "@/components/admin/DeleteSubjectButton";
+
 const GRADE_COLORS = [
   { bg: "from-rose-400 to-pink-500",     light: "bg-rose-50",    text: "text-rose-600",    border: "border-rose-200",    badge: "bg-rose-100 text-rose-700" },
   { bg: "from-orange-400 to-amber-500",  light: "bg-orange-50",  text: "text-orange-600",  border: "border-orange-200",  badge: "bg-orange-100 text-orange-700" },
@@ -112,8 +114,11 @@ export default async function AdminCurriculumSubjectsPage({ params }: { params: 
                   >
                     <BookOpen className="h-7 w-7" style={subject.color ? { color: subject.color } : {}} />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-xl text-slate-900">{subject.name}</h3>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between">
+                      <h3 className="font-bold text-xl text-slate-900">{subject.name}</h3>
+                      <DeleteSubjectButton subjectId={subject.id} subjectName={subject.name} />
+                    </div>
                     <div className="flex items-center gap-2 mt-1.5">
                       <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${color.badge}`}>
                         <Library className="h-3 w-3" />
