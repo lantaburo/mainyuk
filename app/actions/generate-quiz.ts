@@ -76,15 +76,15 @@ export async function generateQuizModule(
     const prompt = `Tugas Anda adalah membuat ${questionCount} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) Kelas ${gradeLevel} (${faseMerdeka}) pada mata pelajaran ${subjectName} dengan topik "${moduleTitle}".
 ${existingQuestionsText}
 Persyaratan Soal:
-1. **Pendekatan & Kesesuaian Usia**: ${pedomanBahasa}
+1. **Pendekatan & Diferensiasi Kelas**: ${pedomanBahasa} **Tingkat kesulitan dan gaya bahasa WAJIB sangat berbeda antar kelas!** (Soal Kelas 1 harus jauh lebih simpel dari Kelas 6).
 2. **Bahasa Interaktif**: Bahasa yang digunakan harus seperti bercerita, ramah anak, dan memancing rasa ingin tahu.
-3. **Konteks Nyata**: Gunakan nama tokoh anak-anak, hewan peliharaan, atau situasi sehari-hari yang seru sebagai konteks soal. JANGAN gunakan bahasa teoritis kaku.
-4. **Opsi Jawaban**: Opsi jawaban harus 4 pilihan (A, B, C, D) yang masuk akal. Pengecoh (distractor) harus dari kesalahan logika yang wajar, bukan sembarangan.
+3. **Konteks Nyata & Anti-Pengulangan**: Gunakan nama tokoh anak-anak, hewan peliharaan, atau situasi sehari-hari yang seru sebagai konteks soal. **Setiap soal HARUS unik, dilarang mengulang pola atau konteks yang sama.** JANGAN gunakan bahasa teoritis kaku.
+4. **Opsi Jawaban (Randomize)**: Opsi jawaban harus 4 pilihan (A, B, C, D) yang masuk akal. Pengecoh (distractor) harus dari kesalahan logika yang wajar. **PENTING: Letak kunci jawaban (correctIndex) HARUS diacak (jangan selalu di A atau 0).**
 5. **Kalimat Positif**: Hindari pertanyaan "Berikut ini yang BUKAN..." atau "Kecuali".
 6. **Penjelasan Mendidik**: Penjelasan harus ekstra menyenangkan, seperti kakak yang sedang mengajari adiknya dengan memberikan analogi sederhana!${arabicInstruction}
 
 **INSTRUKSI TEKNIS:**
-- correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
+- correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3). Pastikan terdistribusi acak.${levelInstructions}
 
 Format Output WAJIB JSON murni (Array of Objects). Tanpa markdown \`\`\`json, tanpa teks pengantar.
 **CONTOH STRUKTUR OUTPUT:**

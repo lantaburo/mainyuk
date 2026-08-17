@@ -11,7 +11,7 @@ export function SeedCurriculumButton() {
   const [isDone, setIsDone] = useState(false);
 
   async function handleSeed() {
-    if (!confirm("Jalankan seed kurikulum? Proses ini akan menambahkan 6 mata pelajaran, 180 modul, dan 1800 soal. Data yang sudah ada TIDAK akan ditimpa.")) return;
+    if (!confirm("Jalankan seed kurikulum? Proses ini akan men-generate ulang 1800 soal realistis dan MENGHAPUS/MENIMPA semua soal lama yang ada di database. Lanjutkan?")) return;
 
     setIsSeeding(true);
     setIsDone(false);

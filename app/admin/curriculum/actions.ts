@@ -244,14 +244,15 @@ Mata Pelajaran: ${moduleData.subject.name}
 Topik/Materi: "${moduleData.title}"
 ${existingQuestionsText}
 **PEDOMAN PENYUSUNAN SOAL KURIKULUM MERDEKA:**
-1. **Pendekatan:** Soal tidak boleh sekadar hafalan murni (C1). Gunakan cerita naratif pendek yang interaktif, studi kasus kehidupan sehari-hari, atau teka-teki yang menyenangkan bagi anak. JANGAN buat soal teoritis kaku.
+1. **Pendekatan & Diferensiasi Kelas:** Soal tidak boleh sekadar hafalan murni (C1). Gunakan cerita naratif pendek yang interaktif, studi kasus, atau teka-teki. **Tingkat kesulitan dan gaya bahasa WAJIB sangat berbeda antar kelas!** (Soal Kelas 1 harus jauh lebih simpel dari Kelas 6).
 2. **Kesesuaian Usia:** ${pedomanBahasa}
-3. **Struktur Jawaban:** Opsi jawaban harus 4 pilihan yang masuk akal dan panjangnya setara. Pengecoh (distractor) HARUS berupa kesalahan umum yang sering dipikirkan anak, BUKAN teks asal-asalan. DILARANG keras menggunakan opsi "Semua jawaban benar" atau "Kecuali".
-4. **Kalimat Positif:** Gunakan kalimat tanya yang positif dan jelas. Hindari jebakan kata "yang bukan" atau "kecuali".
-5. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!${arabicInstruction}
+3. **Struktur Jawaban (Randomize):** Opsi jawaban harus 4 pilihan yang masuk akal. Pengecoh (distractor) HARUS berupa kesalahan umum anak. **PENTING: Letak kunci jawaban yang benar (correctIndex) HARUS diacak secara merata (tidak boleh selalu A atau 0 terus menerus).** DILARANG keras menggunakan opsi "Semua jawaban benar".
+4. **Keberagaman & Anti-Pengulangan:** Setiap soal yang Anda buat HARUS unik. Dilarang keras mengulang pola soal, nama tokoh, atau konteks cerita yang sama secara berulang.
+5. **Kalimat Positif:** Gunakan kalimat tanya yang positif dan jelas. Hindari jebakan kata "yang bukan" atau "kecuali".
+6. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!${arabicInstruction}
 
 **INSTRUKSI TEKNIS:**
-- correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3).${levelInstructions}
+- correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3). Pastikan terdistribusi acak (misal 1, 3, 0, 2, dll).${levelInstructions}
 
 Format Output WAJIB JSON murni (Array of Objects). Tanpa blok markdown \`\`\`json, tanpa teks pengantar, langsung dimulai dengan kurung siku buka '['.
 **CONTOH STRUKTUR OUTPUT:**
@@ -364,49 +365,138 @@ type SeedQ = { questionText: string; options: string[]; correctIndex: number; di
 function makeSeedQuestions(subjectSlug: string, gradeLevel: number, moduleIndex: number): SeedQ[] {
   const questions: SeedQ[] = [];
   
+  // Variabel agar soal tidak pernah sama
+  const names = ["Andi", "Siti", "Budi", "Lina", "Edo", "Lani", "Dayu", "Udin", "Beni", "Meli"];
+  const fruits = ["apel", "jeruk", "mangga", "pisang", "anggur", "semangka", "melon", "pepaya", "nanas", "stroberi"];
+  const animals = ["kucing", "anjing", "burung", "ikan", "kelinci", "ayam", "bebek", "kuda", "sapi", "kambing"];
+  const locations = ["di taman", "di sekolah", "di perpustakaan", "di pasar", "di rumah", "di lapangan", "di pegunungan", "di pantai", "di museum", "di kebun binatang"];
+
   for (let i = 1; i <= 10; i++) {
     let qText = "";
     let opts: string[] = [];
     let explanation = "";
 
-    const baseNum = (gradeLevel * 10) + moduleIndex + i;
+    // Modifier unik per soal
+    const n = names[(moduleIndex + i) % names.length];
+    const n2 = names[(moduleIndex + i + 1) % names.length];
+    const f = fruits[(gradeLevel + i) % fruits.length];
+    const a = animals[(gradeLevel + moduleIndex + i) % animals.length];
+    const loc = locations[(gradeLevel * moduleIndex + i) % locations.length];
+    const num1 = gradeLevel * 2 + i;
+    const num2 = moduleIndex + i;
+
+    // Kesulitan berdasarkan kelas (Fase A, B, C)
+    const isFaseA = gradeLevel <= 2;
+    const isFaseB = gradeLevel === 3 || gradeLevel === 4;
+    const isFaseC = gradeLevel >= 5;
 
     if (subjectSlug === "matematika") {
-      const a = baseNum;
-      const b = gradeLevel * i;
-      const ans = a + b;
-      qText = `Pada pelajaran Modul ${moduleIndex} Kelas ${gradeLevel}, berapakah hasil dari ${a} + ${b}?`;
-      opts = [String(ans), String(ans + 1), String(ans - 1), String(ans + 2)];
-      explanation = `${a} + ${b} = ${ans}`;
+      if (isFaseA) {
+        qText = `${n} memiliki ${num1} buah ${f}. Kemudian, ${n2} memberinya ${num2} buah ${f} lagi. Berapa total ${f} milik ${n} sekarang?`;
+        opts = [String(num1 + num2), String(num1 + num2 - 1), String(num1 + num2 + 1), String(num1 + num2 + 2)];
+        explanation = `Penjumlahan sederhana: ${num1} + ${num2} = ${num1 + num2}. Total buahnya menjadi ${num1 + num2}.`;
+      } else if (isFaseB) {
+        qText = `Pak ${n} memanen ${num1 * 12} ${f} dari kebunnya. Ia ingin membagikan buah tersebut ke dalam ${num2} keranjang secara merata. Berapa perkiraan jumlah ${f} di setiap keranjang?`;
+        const ans = Math.floor((num1 * 12) / num2);
+        opts = [String(ans), String(ans + 2), String(ans - 2), String(ans + 5)];
+        explanation = `Ini adalah konsep pembagian. Total buah dibagi jumlah keranjang: ${num1 * 12} ÷ ${num2} = ${ans}.`;
+      } else {
+        qText = `${loc}, ${n} membeli barang seharga Rp${num1 * 5000}. Jika ia mendapat diskon ${num2}%, berapa uang yang harus ia bayar?`;
+        const discount = ((num1 * 5000) * num2) / 100;
+        const ans = (num1 * 5000) - discount;
+        opts = [`Rp${ans}`, `Rp${ans + 1000}`, `Rp${ans - 1000}`, `Rp${ans + 2500}`];
+        explanation = `Diskon = ${num2}% dari Rp${num1 * 5000} yaitu Rp${discount}. Harga akhir: Rp${num1 * 5000} - Rp${discount} = Rp${ans}. Ini melatih logika persentase HOTS.`;
+      }
     } else if (subjectSlug === "sains") {
-      qText = `Topik Sains Modul ${moduleIndex} Kelas ${gradeLevel}: Hewan atau benda nomor ${baseNum} di buku adalah...`;
-      opts = [`Jawaban Benar ${baseNum}`, `Salah A ${baseNum}`, `Salah B ${baseNum}`, `Salah C ${baseNum}`];
-      explanation = `Sesuai dengan materi sains kelas ${gradeLevel} modul ${moduleIndex}.`;
-    } else if (subjectSlug === "geografi") {
-      qText = `Geografi Kelas ${gradeLevel} Modul ${moduleIndex}: Wilayah dengan kode area ${baseNum} terletak di...`;
-      opts = [`Zona ${baseNum}`, `Zona ${baseNum+1}`, `Zona ${baseNum+2}`, `Zona ${baseNum+3}`];
-      explanation = `Wilayah tersebut masuk ke dalam zona utama pelajaran geografi kelas ${gradeLevel}.`;
+      if (isFaseA) {
+        qText = `${n} melihat seekor ${a} ${loc}. Ciri utama hewan tersebut agar bisa bertahan hidup adalah...`;
+        opts = [`Memiliki tubuh yang sesuai habitatnya`, `Bisa berbicara seperti manusia`, `Selalu bersembunyi di dalam tanah`, `Hanya makan rumput kering`];
+        explanation = `Setiap makhluk hidup memiliki ciri khusus yang menyesuaikan dengan habitatnya untuk bertahan hidup.`;
+      } else if (isFaseB) {
+        qText = `Saat melakukan pengamatan ${loc}, ${n2} menyadari perubahan wujud benda. Manakah contoh perubahan wujud yang membutuhkan kalor terbesar?`;
+        opts = [`Mencair dan menguap`, `Membeku dan mengembun`, `Menyublim dan membeku`, `Menguap dan mengembun`];
+        explanation = `Mencair (padat ke cair) dan menguap (cair ke gas) membutuhkan serapan kalor (panas) agar prosesnya terjadi.`;
+      } else {
+        qText = `Perhatikan rantai makanan ${loc}! Jika populasi ${a} tiba-tiba menurun drastis karena perburuan, dampak ekosistem tingkat lanjut (HOTS) yang paling logis adalah...`;
+        opts = [`Konsumen tingkat berikutnya akan kekurangan makanan dan populasinya menurun`, `Produsen akan mati semua`, `Ekosistem akan menjadi lebih stabil`, `Konsumen tingkat pertama akan mencari habitat lain secara serentak`];
+        explanation = `Penurunan mendadak pada satu rantai makanan akan langsung berdampak pada konsumen di atasnya (kekurangan mangsa) dan peningkatan populasi di bawahnya.`;
+      }
     } else if (subjectSlug === "bahasa-indonesia") {
-      qText = `Bahasa Indonesia Kelas ${gradeLevel} Modul ${moduleIndex}: Kalimat contoh ke-${i} yang paling tepat adalah...`;
-      opts = [`Kalimat Benar ${i}`, `Kalimat Salah A ${i}`, `Kalimat Salah B ${i}`, `Kalimat Salah C ${i}`];
-      explanation = `Struktur kalimat yang benar diajarkan di modul ${moduleIndex} kelas ${gradeLevel}.`;
+      if (isFaseA) {
+        qText = `Bacalah kalimat ini: "${n} sedang bermain bola ${loc}." Siapa yang sedang bermain bola?`;
+        opts = [n, n2, "Ayah", "Ibu"];
+        explanation = `Berdasarkan kalimat pendek tersebut, subjek yang melakukan kegiatan adalah ${n}.`;
+      } else if (isFaseB) {
+        qText = `Teks: ${n} rajin menabung setiap hari. Ia ingin membeli tas baru. Amanat yang tepat dari cerita tersebut adalah...`;
+        opts = [`Kita harus berhemat dan rajin menabung untuk mencapai tujuan`, `Meminta uang kepada orang tua adalah cara terbaik`, `Menabung membuat kita kaya raya seketika`, `Tas baru hanya bisa dibeli jika harganya murah`];
+        explanation = `Amanat atau pesan moral dari kebiasaan ${n} adalah pentingnya berhemat dan menabung untuk membeli sesuatu yang diimpikan.`;
+      } else {
+        qText = `(HOTS) "Angin berhembus kencang, menyapu dedaunan kering yang berserakan ${loc}." Majas yang terdapat pada kalimat tersebut adalah...`;
+        opts = [`Personifikasi`, `Hiperbola`, `Metafora`, `Litotes`];
+        explanation = `Kata 'menyapu' yang dilakukan oleh angin seolah memberikan sifat manusia (bisa menyapu) pada benda mati, sehingga disebut majas personifikasi.`;
+      }
     } else if (subjectSlug === "bahasa-arab") {
-      qText = `Pelajaran Bahasa Arab Kelas ${gradeLevel} Modul ${moduleIndex}: Kosa kata nomor ${i} adalah...`;
-      opts = [`Mufradat ${i}`, `Khatam ${i}`, `Khabar ${i}`, `Mubtada ${i}`];
-      explanation = `Mufradat ini adalah bagian dari hafalan kelas ${gradeLevel} modul ${moduleIndex}.`;
+      const isms = ["كِتَابٌ", "قَلَمٌ", "بَابٌ", "نَافِذَةٌ", "مَكْتَبٌ", "كُرْسِيٌّ", "سَبُّورَةٌ", "مَدْرَسَةٌ"];
+      const hruf = ["فِي", "عَلَى", "مِنْ", "إِلَى"];
+      const arab_w = isms[(moduleIndex + i) % isms.length];
+      const h = hruf[i % hruf.length];
+
+      if (isFaseA) {
+        qText = `Apa arti dari kata bahasa Arab berikut ini: ${arab_w} ?`;
+        opts = [`Sesuai kosakata ke-${i}`, `Salah arti A`, `Salah arti B`, `Salah arti C`];
+        explanation = `Kata ${arab_w} adalah kosakata dasar (mufradat) yang wajib dihafal pada fase ini.`;
+      } else if (isFaseB) {
+        qText = `Lengkapi kalimat berikut: الْقَلَمُ ... الْمَكْتَبِ (${h})`;
+        opts = [h, hruf[(i+1)%hruf.length], hruf[(i+2)%hruf.length], hruf[(i+3)%hruf.length]];
+        explanation = `Penggunaan huruf jar yang tepat akan membariskan kata setelahnya menjadi majrur (kasrah).`;
+      } else {
+        qText = `Susunlah kalimat berikut menjadi jumlah mufidah: ${arab_w} - هَذَا - جَمِيلٌ`;
+        opts = [`هَذَا ${arab_w} جَمِيلٌ`, `جَمِيلٌ هَذَا ${arab_w}`, `${arab_w} هَذَا جَمِيلٌ`, `هَذَا جَمِيلٌ ${arab_w}`];
+        explanation = `Susunan yang benar untuk Mubtada dan Khabar yang sesuai dengan kaidah tata bahasa Arab.`;
+      }
+    } else if (subjectSlug === "geografi") {
+      if (isFaseA) {
+        qText = `Tempat yang banyak pohon, hewan, dan udaranya sejuk biasanya disebut...`;
+        opts = [`Hutan atau Pegunungan`, `Perkotaan`, `Pabrik`, `Jalan Raya`];
+        explanation = `Pengenalan lingkungan sekitar yang mendasar untuk kelas rendah.`;
+      } else if (isFaseB) {
+        qText = `Penduduk yang tinggal ${loc} mayoritas bekerja sebagai...`;
+        opts = [`Tergantung kondisi alamnya (Petani/Nelayan)`, `Pegawai Bank`, `Pilot Pesawat`, `Semua jawaban benar`];
+        explanation = `Kondisi geografis sangat mempengaruhi mata pencaharian penduduk di daerah tersebut.`;
+      } else {
+        qText = `Pergerakan lempeng tektonik di wilayah nomor ${num1} sering memicu fenomena...`;
+        opts = [`Gempa bumi dan vulkanisme`, `Hujan salju ekstrem`, `Kekeringan berkepanjangan`, `Angin puting beliung harian`];
+        explanation = `HOTS Geografi: Lempeng tektonik yang saling bertabrakan melepaskan energi berupa gempa bumi.`;
+      }
     } else {
-      qText = `Tsaqofah Kelas ${gradeLevel} Modul ${moduleIndex}: Pelajaran sejarah ke-${i} menyebutkan bahwa...`;
-      opts = [`Fakta Benar ${i}`, `Fakta Salah A ${i}`, `Fakta Salah B ${i}`, `Fakta Salah C ${i}`];
-      explanation = `Fakta sejarah ini sesuai dengan kurikulum tsaqofah kelas ${gradeLevel}.`;
+      // Tsaqofah
+      if (isFaseA) {
+        qText = `Saat bertemu dengan guru ${loc}, apa yang sebaiknya ${n} lakukan?`;
+        opts = [`Mengucapkan salam dan tersenyum`, `Berpura-pura tidak melihat`, `Berlari menjauh`, `Diam saja menunduk`];
+        explanation = `Adab kepada guru adalah mengucapkan salam dan bersikap sopan.`;
+      } else if (isFaseB) {
+        qText = `Kisah teladan nomor ${num2} mengajarkan kita bahwa sikap jujur akan membawa...`;
+        opts = [`Ketenangan hati dan kepercayaan orang lain`, `Banyak masalah baru`, `Kemiskinan`, `Kebencian dari teman`];
+        explanation = `Kejujuran adalah pondasi akhlak (tsaqofah) yang selalu diajarkan oleh para tokoh sejarah Islam.`;
+      } else {
+        qText = `(HOTS) ${n} menemukan uang di jalan saat berjalan ${loc}. Sesuai fikih/tsaqofah, langkah paling tepat yang harus ia lakukan adalah...`;
+        opts = [`Mengumumkan temuan tersebut atau menyerahkan ke pihak berwenang`, `Langsung menyumbangkannya ke masjid tanpa pikir panjang`, `Menggunakan uang itu untuk membeli makanan karena ia lapar`, `Membiarkan saja karena bukan miliknya`];
+        explanation = `Barang temuan (Luqathah) memiliki aturan khusus dalam Islam, yaitu harus diumumkan terlebih dahulu sebelum bisa dimanfaatkan atau disumbangkan.`;
+      }
     }
 
     const correctAns = opts[0];
-    const shuffled = [...opts].sort(() => Math.random() - 0.5);
+    
+    // Acak posisi pilihan jawaban secara murni
+    const shuffled = [...opts].map(value => ({ value, sort: Math.random() }))
+                            .sort((a, b) => a.sort - b.sort)
+                            .map(({ value }) => value);
+                            
     questions.push({ 
       questionText: qText, 
       options: shuffled, 
       correctIndex: shuffled.indexOf(correctAns), 
-      difficultyLevel: 1, 
+      difficultyLevel: isFaseC ? 5 : isFaseB ? 3 : 1, 
       explanation 
     });
   }
@@ -445,12 +535,12 @@ export async function seedCurriculum() {
           totalModules++;
         }
 
-        const questionCount = await prisma.question.count({ where: { moduleId: mod.id } });
-        if (questionCount === 0) {
-          const qs = makeSeedQuestions(sub.slug, grade, m);
-          await prisma.question.createMany({ data: qs.map((q) => ({ moduleId: mod!.id, ...q })) });
-          totalQuestions += qs.length;
-        }
+        // Hapus soal lama (overwrite)
+        await prisma.question.deleteMany({ where: { moduleId: mod.id } });
+        
+        const qs = makeSeedQuestions(sub.slug, grade, m);
+        await prisma.question.createMany({ data: qs.map((q) => ({ moduleId: mod!.id, ...q })) });
+        totalQuestions += qs.length;
       }
     }
   }
