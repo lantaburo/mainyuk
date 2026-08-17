@@ -15,6 +15,7 @@ import {
   Sparkles,
   Moon,
   Sun,
+  Gift,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
 
   const items = [
     { href: "/dashboard", label: "Ruang Belajar", icon: BookOpen },
+    { href: "/dashboard/marketplace", label: "Toko Hadiah", icon: Gift },
     { href: "/dashboard/rapor", label: "Rapor & Nilai", icon: GraduationCap },
   ];
 
@@ -95,6 +97,15 @@ export function DashboardNav({ user }: DashboardNavProps) {
           >
             <Users className="mr-2 h-4 w-4 text-gray-500" />
             Ganti Profil Anak
+          </Button>
+        </Link>
+        <Link href="/dashboard/parents/gifts">
+          <Button
+            variant="outline"
+            className="w-full justify-start text-amber-700 hover:text-amber-800 hover:bg-amber-50 border-amber-200 dark:border-amber-800/30 dark:text-amber-400 dark:hover:bg-amber-950"
+          >
+            <Gift className="mr-2 h-4 w-4 text-amber-500" />
+            Kelola Hadiah Anak
           </Button>
         </Link>
         <Link href="/affiliate">
