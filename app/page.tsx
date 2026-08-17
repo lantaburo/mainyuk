@@ -283,8 +283,9 @@ export default function Home() {
             <h4 className="text-white font-bold text-lg mb-4">Akun</h4>
             <ul className="space-y-3">
               <li><Link href="/login" className="hover:text-white transition-colors">Masuk</Link></li>
-              <li><Link href="/register" className="hover:text-white transition-colors">Daftar Baru</Link></li>
-              <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard Guru</Link></li>
+              <li><Link href="/register" className="hover:text-white transition-colors">Daftar Akun Belajar</Link></li>
+              <li><Link href="/affiliate/daftar" className="hover:text-white transition-colors">Daftar Afiliasi (Partner)</Link></li>
+              <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard Orang Tua</Link></li>
             </ul>
           </div>
         </div>
