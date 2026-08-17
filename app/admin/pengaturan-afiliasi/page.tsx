@@ -6,13 +6,27 @@ import { Users } from "lucide-react";
 export default async function PengaturanAfiliasiPage() {
   await requireSuperAdmin();
 
-  const rawCodes = await prisma.affiliateCode.findMany({ orderBy: { createdAt: "desc" } });
-  // Serialize Decimal to string so it's compatible with Client Component props
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rawCodes = await prisma.affiliateCode.findMany({ 
+    orderBy: { createdAt: "desc" },
+    include: { withdrawals: true }
+  });
+  
+  const rawWithdrawals = await prisma.affiliateWithdrawal.findMany({
+    orderBy: { createdAt: "desc" },
+    include: { affiliate: true }
+  });
+
   const codes = rawCodes.map(c => ({
     ...c,
     commissionPct: c.commissionPct.toString(),
     totalEarnings: c.totalEarnings.toString(),
+    pendingBalance: c.pendingBalance.toString(),
+    paidOut: c.paidOut.toString(),
+  })) as any;
+
+  const withdrawals = rawWithdrawals.map(w => ({
+    ...w,
+    amount: w.amount.toString(),
   })) as any;
 
   return (
@@ -27,7 +41,7 @@ export default async function PengaturanAfiliasiPage() {
         </div>
       </div>
 
-      <AffiliateCodesClient initialCodes={codes} />
+      <AffiliateCodesClient initialCodes={codes} initialWithdrawals={withdrawals} />
     </div>
   );
 }
