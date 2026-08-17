@@ -72,7 +72,7 @@ export default function AffiliateDashboardClient({ affiliate }: { affiliate: any
           <p className="text-gray-500 mb-6">
             Akun afiliasi Anda sedang direview oleh admin. Silakan cek kembali nanti.
           </p>
-          <Button variant="outline" onClick={() => signOut({ callbackUrl: "/" })} className="w-full">
+          <Button variant="outline" onClick={() => signOut({ callbackUrl: "https://mainyuk.my.id/" })} className="w-full">
             <LogOut className="w-4 h-4 mr-2" /> Keluar
           </Button>
         </div>
@@ -91,7 +91,7 @@ export default function AffiliateDashboardClient({ affiliate }: { affiliate: any
           <p className="text-gray-500 mb-6">
             Akun afiliasi Anda telah dibekukan. Silakan hubungi admin untuk informasi lebih lanjut.
           </p>
-          <Button variant="outline" onClick={() => signOut({ callbackUrl: "/" })} className="w-full">
+          <Button variant="outline" onClick={() => signOut({ callbackUrl: "https://mainyuk.my.id/" })} className="w-full">
             <LogOut className="w-4 h-4 mr-2" /> Keluar
           </Button>
         </div>
@@ -107,7 +107,7 @@ export default function AffiliateDashboardClient({ affiliate }: { affiliate: any
             <h1 className="text-2xl font-bold text-gray-900">Dashboard Afiliasi</h1>
             <p className="text-gray-500">Halo, {affiliate.ownerName}!</p>
           </div>
-          <Button variant="outline" onClick={() => signOut({ callbackUrl: "/" })} className="text-red-600 hover:text-red-700 hover:bg-red-50">
+          <Button variant="outline" onClick={() => signOut({ callbackUrl: "https://mainyuk.my.id/" })} className="text-red-600 hover:text-red-700 hover:bg-red-50">
             <LogOut className="w-4 h-4 mr-2" /> Keluar
           </Button>
         </div>

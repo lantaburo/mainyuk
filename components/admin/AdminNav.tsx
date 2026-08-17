@@ -117,7 +117,7 @@ export function AdminNav({ user }: AdminNavProps) {
         <Button
           variant="ghost"
           className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 group"
-          onClick={() => signOut({ callbackUrl: "/" })}
+          onClick={() => signOut({ callbackUrl: "https://mainyuk.my.id/" })}
         >
           <LogOut className="mr-2 h-4 w-4 text-red-500 group-hover:text-red-600" />
           Keluar
