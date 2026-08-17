@@ -22,15 +22,11 @@ export function DeleteModuleButton({ moduleId, moduleTitle }: { moduleId: string
   async function handleDelete() {
     setIsDeleting(true);
     try {
-      const res = await deleteModule(moduleId);
-      if (res.ok) {
-        toast.success(`Modul ${moduleTitle} beserta seluruh soalnya telah dihapus.`);
-        setOpen(false);
-      } else {
-        toast.error(res.error || "Terjadi kesalahan saat menghapus modul.");
-      }
+      await deleteModule(moduleId);
+      toast.success(`Modul ${moduleTitle} beserta seluruh soalnya telah dihapus.`);
+      setOpen(false);
     } catch {
-      toast.error("Gagal menghubungi server.");
+      toast.error("Gagal menghapus modul.");
     } finally {
       setIsDeleting(false);
     }
@@ -38,16 +34,18 @@ export function DeleteModuleButton({ moduleId, moduleTitle }: { moduleId: string
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-rose-500 hover:text-rose-600 hover:bg-rose-50 z-20"
-          onClick={(e) => e.preventDefault()}
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-rose-500 hover:text-rose-600 hover:bg-rose-50 z-20"
+            onClick={(e) => e.preventDefault()}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        }
+      />
       <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle>Hapus Modul?</DialogTitle>

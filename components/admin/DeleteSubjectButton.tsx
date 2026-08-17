@@ -22,15 +22,11 @@ export function DeleteSubjectButton({ subjectId, subjectName }: { subjectId: str
   async function handleDelete() {
     setIsDeleting(true);
     try {
-      const res = await deleteSubject(subjectId);
-      if (res.ok) {
-        toast.success(`Mata pelajaran ${subjectName} berhasil dihapus beserta seluruh modul dan soalnya.`);
-        setOpen(false);
-      } else {
-        toast.error(res.error || "Terjadi kesalahan saat menghapus mata pelajaran.");
-      }
+      await deleteSubject(subjectId);
+      toast.success(`Mata pelajaran ${subjectName} berhasil dihapus beserta seluruh modul dan soalnya.`);
+      setOpen(false);
     } catch {
-      toast.error("Gagal menghubungi server.");
+      toast.error("Gagal menghapus mata pelajaran.");
     } finally {
       setIsDeleting(false);
     }
@@ -38,16 +34,18 @@ export function DeleteSubjectButton({ subjectId, subjectName }: { subjectId: str
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-rose-500 hover:text-rose-600 hover:bg-rose-50 z-20"
-          onClick={(e) => e.preventDefault()}
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-rose-500 hover:text-rose-600 hover:bg-rose-50 z-20"
+            onClick={(e) => e.preventDefault()}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        }
+      />
       <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle>Hapus Mata Pelajaran?</DialogTitle>
