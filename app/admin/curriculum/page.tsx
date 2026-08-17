@@ -43,6 +43,7 @@ export default async function AdminCurriculumGradeSelectionPage() {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manajemen Kurikulum</h1>
           <p className="mt-2 text-sm text-gray-500">
             Pilih jenjang kelas untuk mengelola mata pelajaran, modul, dan soal.
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/admin/curriculum/batch-regenerate" className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-xl hover:bg-indigo-100 transition-colors shadow-sm">
