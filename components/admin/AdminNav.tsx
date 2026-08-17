@@ -25,6 +25,7 @@ export function AdminNav({ user }: AdminNavProps) {
     { href: "/admin", label: "Dashboard Utama", icon: LayoutDashboard },
     { href: "/admin/pengguna", label: "Pengguna & Siswa", icon: Users },
     { href: "/admin/curriculum", label: "Mata Pelajaran & Modul", icon: Wand2 },
+    { href: "/admin/gifts", label: "Toko Hadiah (Global)", icon: Tag },
     ...(isSuperAdmin ? [{ href: "/admin/operator", label: "Operator & Staf", icon: ShieldCheck }] : []),
   ];
 
