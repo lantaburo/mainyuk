@@ -73,18 +73,18 @@ export default async function DashboardOverviewPage() {
     redirect("/select-profile");
   }
 
-  // Get all subjects that have modules for this student's grade level
+  // Get all subjects that have modules for this student's grade level and below
   const subjects = await prisma.subject.findMany({
     where: {
       modules: {
-        some: { gradeLevel: student.gradeLevel },
+        some: { gradeLevel: { lte: student.gradeLevel } },
       },
     },
     include: {
       _count: {
         select: {
           modules: {
-            where: { gradeLevel: student.gradeLevel },
+            where: { gradeLevel: { lte: student.gradeLevel } },
           },
         },
       },
@@ -95,7 +95,7 @@ export default async function DashboardOverviewPage() {
   // Get completed modules count per subject for progress
   const allModuleIds = await prisma.module.findMany({
     where: {
-      gradeLevel: student.gradeLevel,
+      gradeLevel: { lte: student.gradeLevel },
       subject: { slug: { in: subjects.map((s) => s.slug) } },
     },
     select: { id: true, subjectId: true },

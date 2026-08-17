@@ -53,8 +53,11 @@ export default async function SubjectDetailPage({ params }: { params: { slug: st
     where: { slug: params.slug },
     include: {
       modules: {
-        where: { gradeLevel: student.gradeLevel },
-        orderBy: { title: "asc" }, // Orders "Modul 1", "Modul 2", etc.
+        where: { gradeLevel: { lte: student.gradeLevel } },
+        orderBy: [
+          { gradeLevel: "asc" },
+          { title: "asc" }
+        ],
       },
     },
   });
@@ -195,7 +198,7 @@ export default async function SubjectDetailPage({ params }: { params: { slug: st
                     <div>
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                          Modul {index + 1}
+                          Kelas {module.gradeLevel} • Modul {index + 1}
                         </span>
                         {isCompleted && (
                           <span className="text-xs font-semibold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">
