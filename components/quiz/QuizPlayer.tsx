@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, XCircle, ArrowRight, Trophy, RefreshCcw, Star, Volume2, VolumeX, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,39 +27,35 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [isReadingMode, setIsReadingMode] = useState(false);
-  const [bgmAudio, setBgmAudio] = useState<HTMLAudioElement | null>(null);
-  const [finishAudioObj, setFinishAudioObj] = useState<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [hasStartedBgm, setHasStartedBgm] = useState(false);
 
-  useEffect(() => {
-    return () => {
-      if (finishAudioObj) {
-        finishAudioObj.pause();
-        finishAudioObj.src = "";
-      }
-    };
-  }, [finishAudioObj]);
-
-
+  const bgmRef = useRef<HTMLAudioElement | null>(null);
+  const finishRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const bgm = new Audio("/sounds/shameless.mp3");
     bgm.loop = true;
     bgm.volume = 0.3;
     bgm.playbackRate = 0.85; // Diperlambat sedikit
-    setBgmAudio(bgm);
+    bgmRef.current = bgm;
 
     return () => {
-      bgm.pause();
-      bgm.src = "";
+      if (bgmRef.current) {
+        bgmRef.current.pause();
+        bgmRef.current.src = "";
+      }
+      if (finishRef.current) {
+        finishRef.current.pause();
+        finishRef.current.src = "";
+      }
     };
   }, []);
 
   useEffect(() => {
-    if (bgmAudio) bgmAudio.muted = isMuted;
-    if (finishAudioObj) finishAudioObj.muted = isMuted;
-  }, [isMuted, bgmAudio, finishAudioObj]);
+    if (bgmRef.current) bgmRef.current.muted = isMuted;
+    if (finishRef.current) finishRef.current.muted = isMuted;
+  }, [isMuted]);
 
   const playYeaySound = () => {
     if (!isMuted) {
@@ -99,12 +95,17 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   }
 
   const handleSelectOption = (index: number) => {
-    if (!hasStartedBgm && bgmAudio && !isMuted) {
-      bgmAudio.play().catch(e => console.error("Auto-play blocked", e));
+    if (!hasStartedBgm && bgmRef.current && !isMuted) {
+      bgmRef.current.play().catch(e => console.error("Auto-play blocked", e));
       setHasStartedBgm(true);
     }
     if (!isAnswerChecked) {
       setSelectedOption(index);
+      if (!isMuted) {
+        const clickSound = new Audio("/sounds/correct.mp3");
+        clickSound.volume = 0.4;
+        clickSound.play().catch(e => console.error("Audio blocked", e));
+      }
     }
   };
 
@@ -132,12 +133,12 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
       setIsAnswerChecked(false);
     } else {
       setIsFinished(true);
-      if (bgmAudio) bgmAudio.pause();
+      if (bgmRef.current) bgmRef.current.pause();
       
       const audio = new Audio("/sounds/PapanSkorCeria.mp3");
       audio.volume = 0.8;
       audio.muted = isMuted;
-      setFinishAudioObj(audio);
+      finishRef.current = audio;
 
       if (!isMuted) {
         audio.play().catch(e => console.error("Audio blocked", e));
@@ -147,17 +148,17 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
   };
 
   const handleRetry = () => {
-    if (finishAudioObj) {
-      finishAudioObj.pause();
-      finishAudioObj.currentTime = 0;
+    if (finishRef.current) {
+      finishRef.current.pause();
+      finishRef.current.currentTime = 0;
     }
     setCurrentIndex(0);
     setSelectedOption(null);
     setIsAnswerChecked(false);
     setScore(0);
     setIsFinished(false);
-    if (bgmAudio && !isMuted) {
-      bgmAudio.play().catch(e => console.error(e));
+    if (bgmRef.current && !isMuted) {
+      bgmRef.current.play().catch(e => console.error(e));
     }
   };
 
@@ -204,17 +205,6 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
           transition={{ type: "spring", bounce: 0.5 }}
           className="flex flex-col items-center text-center space-y-6 relative"
         >
-          {/* Mute button di layar selesai */}
-          <div className="absolute -top-4 -right-4 md:top-0 md:right-0 z-50">
-            <button 
-              onClick={() => setIsMuted(!isMuted)}
-              className="p-3 rounded-full bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 transition-colors shadow-sm border border-slate-200"
-              title={isMuted ? "Bunyikan Suara" : "Matikan Suara"}
-            >
-              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-            </button>
-          </div>
-
           <div className="relative">
             <div className="absolute inset-0 bg-yellow-400 blur-2xl opacity-40 rounded-full" />
             <Trophy className="w-24 h-24 text-yellow-500 relative z-10" />
@@ -262,20 +252,6 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
               title="Mode Baca"
             >
               <BookOpen className="w-5 h-5" />
-            </button>
-            {/* Mute */}
-            <button 
-              onClick={() => {
-                setIsMuted(!isMuted);
-                if (isMuted && bgmAudio && !hasStartedBgm) {
-                  bgmAudio.play().catch(e => console.error(e));
-                  setHasStartedBgm(true);
-                }
-              }}
-              className="p-2 rounded-full bg-slate-100 text-slate-500 hover:bg-indigo-100 hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-indigo-900 dark:hover:text-indigo-400 transition-colors"
-              title={isMuted ? "Bunyikan Suara" : "Matikan Suara"}
-            >
-              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
             <div className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full font-bold shadow-inner">
               <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
@@ -432,6 +408,21 @@ export default function QuizPlayer({ title, questions, onComplete }: QuizPlayerP
           )}
         </div>
       </div>
+
+      {/* Floating Sound Control */}
+      <button
+        onClick={() => {
+          setIsMuted(!isMuted);
+          if (isMuted && bgmRef.current && !hasStartedBgm && !isFinished) {
+            bgmRef.current.play().catch(e => console.error(e));
+            setHasStartedBgm(true);
+          }
+        }}
+        className="fixed bottom-6 right-6 p-4 rounded-full bg-indigo-600 text-white shadow-xl hover:bg-indigo-700 hover:-translate-y-1 hover:scale-110 transition-all z-[100] flex items-center justify-center border-4 border-white/50"
+        title={isMuted ? "Bunyikan Suara" : "Matikan Suara"}
+      >
+        {isMuted ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
+      </button>
     </div>
   );
 }
