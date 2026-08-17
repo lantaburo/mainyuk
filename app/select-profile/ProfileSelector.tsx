@@ -138,20 +138,19 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
 
           return (
             <div key={profile.id} className="relative group flex flex-col items-center">
-              <button
+              <div
                 onClick={() => !isEditing && handleSelect(profile.id)}
-                className={`group flex flex-col items-center transition-transform ${!isEditing && 'hover:scale-110'}`}
-                disabled={isEditing}
+                className={`group flex flex-col items-center transition-transform ${!isEditing ? 'hover:scale-110 cursor-pointer' : ''}`}
               >
-                <div className={`w-28 h-28 md:w-36 md:h-36 rounded-2xl ${color} flex items-center justify-center shadow-lg border-4 border-transparent ${!isEditing && 'group-hover:border-white'} transition-all relative overflow-hidden`}>
+                <div className={`w-28 h-28 md:w-36 md:h-36 rounded-2xl ${color} flex items-center justify-center shadow-lg border-4 border-transparent ${!isEditing ? 'group-hover:border-white' : ''} transition-all relative overflow-hidden`}>
                   <span className="text-4xl md:text-6xl text-white font-bold">
                     {profile.name.charAt(0).toUpperCase()}
                   </span>
                   {isEditing && (
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
                       <button 
                         onClick={(e) => handleDelete(profile.id, e)}
-                        className="bg-red-500 hover:bg-red-600 text-white p-3 rounded-full transition-transform hover:scale-110"
+                        className="bg-red-500 hover:bg-red-600 text-white p-3 rounded-full transition-transform hover:scale-110 cursor-pointer"
                         title="Hapus Profil"
                       >
                         <Trash2 className="w-6 h-6" />
@@ -159,13 +158,13 @@ export function ProfileSelector({ profiles }: { profiles: Profile[] }) {
                     </div>
                   )}
                 </div>
-                <span className="mt-4 text-xl font-medium text-slate-300 group-hover:text-white">
+                <span className={`mt-4 text-xl font-medium text-slate-300 ${!isEditing ? 'group-hover:text-white' : ''}`}>
                   {profile.name}
                 </span>
                 <span className="mt-1 text-sm text-slate-400">
                   Kelas {profile.gradeLevel}
                 </span>
-              </button>
+              </div>
             </div>
           );
         })}
