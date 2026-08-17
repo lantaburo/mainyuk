@@ -98,31 +98,29 @@ export function EditQuestionDialog({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl p-6 space-y-5 max-h-[92vh] overflow-y-auto text-left">
-            {/* Close */}
-            <button
-              onClick={handleClose}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
-            >
-              <X className="h-5 w-5 text-gray-400" />
-            </button>
-
-            {/* Header */}
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-amber-100 text-amber-600">
-                <Pencil className="h-5 w-5" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-0 sm:p-6">
+          <div className="relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-3xl bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden text-left animate-in zoom-in-95 duration-200">
+            {/* Header (Fixed) */}
+            <div className="shrink-0 p-5 sm:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-amber-100 text-amber-600">
+                  <Pencil className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="font-bold text-lg text-gray-900">Edit Soal</h2>
+                  <p className="text-xs text-gray-400">Perbarui data soal ini</p>
+                </div>
               </div>
-              <div>
-                <h2 className="font-bold text-lg text-gray-900">Edit Soal</h2>
-                <p className="text-xs text-gray-400 truncate max-w-xs">Perbarui data soal ini</p>
-              </div>
+              <button
+                onClick={handleClose}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <X className="h-5 w-5 text-gray-400" />
+              </button>
             </div>
 
-            <div className="h-px bg-gray-100" />
-
-            {/* Form */}
-            <div className="space-y-5">
+            {/* Body (Scrollable) */}
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
               {/* Question text */}
               <div className="space-y-1.5">
                 <Label className="font-semibold text-gray-700">Pertanyaan</Label>
@@ -215,33 +213,35 @@ export function EditQuestionDialog({
               </div>
             </div>
 
-            {result && (
-              <div className={`flex items-center gap-2 p-3 rounded-xl text-sm font-medium ${result.ok ? "bg-emerald-50 border border-emerald-200 text-emerald-800" : "bg-rose-50 border border-rose-200 text-rose-800"}`}>
-                {result.ok ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <XCircle className="h-4 w-4 shrink-0" />}
-                {result.message}
+            {/* Footer (Fixed) */}
+            <div className="shrink-0 p-5 sm:p-6 border-t border-gray-100 bg-gray-50 flex flex-col gap-3">
+              {result && (
+                <div className={`flex items-center gap-2 p-3 rounded-xl text-sm font-medium ${result.ok ? "bg-emerald-50 border border-emerald-200 text-emerald-800" : "bg-rose-50 border border-rose-200 text-rose-800"}`}>
+                  {result.ok ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <XCircle className="h-4 w-4 shrink-0" />}
+                  {result.message}
+                </div>
+              )}
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1 rounded-xl py-6 bg-white"
+                  onClick={handleClose}
+                  disabled={isPending}
+                >
+                  Batal
+                </Button>
+                <Button
+                  className="flex-1 rounded-xl bg-amber-600 hover:bg-amber-700 text-white py-6"
+                  onClick={handleSubmit}
+                  disabled={isPending || !isValid}
+                >
+                  {isPending ? (
+                    <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Menyimpan...</>
+                  ) : (
+                    "Simpan Perubahan"
+                  )}
+                </Button>
               </div>
-            )}
-
-            <div className="flex gap-3 pt-1">
-              <Button
-                variant="outline"
-                className="flex-1 rounded-xl"
-                onClick={handleClose}
-                disabled={isPending}
-              >
-                Batal
-              </Button>
-              <Button
-                className="flex-1 rounded-xl bg-amber-600 hover:bg-amber-700 text-white"
-                onClick={handleSubmit}
-                disabled={isPending || !isValid}
-              >
-                {isPending ? (
-                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Menyimpan...</>
-                ) : (
-                  "Simpan Perubahan"
-                )}
-              </Button>
             </div>
           </div>
         </div>
