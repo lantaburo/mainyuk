@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 import { GraduationCap, ArrowRight, BookOpen, Library } from "lucide-react";
 import Link from "next/link";
+import { SeedCurriculumButton } from "@/components/admin/SeedCurriculumButton";
 
 const GRADE_COLORS = [
   { bg: "from-rose-400 to-pink-500",     light: "bg-rose-50",    text: "text-rose-600",    border: "border-rose-100" },
@@ -34,11 +35,14 @@ export default async function AdminCurriculumGradeSelectionPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manajemen Kurikulum</h1>
-        <p className="mt-2 text-sm text-gray-500">
-          Pilih jenjang kelas untuk mengelola mata pelajaran, modul, dan soal.
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manajemen Kurikulum</h1>
+          <p className="mt-2 text-sm text-gray-500">
+            Pilih jenjang kelas untuk mengelola mata pelajaran, modul, dan soal.
+          </p>
+        </div>
+        <SeedCurriculumButton />
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
