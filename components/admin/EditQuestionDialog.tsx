@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Loader2, CheckCircle2, XCircle, X, HelpCircle, Check, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +36,12 @@ export function EditQuestionDialog({
   const [explanation, setExplanation] = useState(initialExplanation || "");
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleOptionChange = (idx: number, val: string) => {
     const updated = [...options];
@@ -97,8 +103,8 @@ export function EditQuestionDialog({
         <Pencil className="h-4 w-4" />
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-0 sm:p-6">
+      {open && mounted && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-0 sm:p-6">
           <div className="relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-3xl bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden text-left animate-in zoom-in-95 duration-200">
             {/* Header (Fixed) */}
             <div className="shrink-0 p-5 sm:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
@@ -244,7 +250,8 @@ export function EditQuestionDialog({
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
