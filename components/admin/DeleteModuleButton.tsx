@@ -4,84 +4,72 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { deleteModule } from "@/app/admin/curriculum/actions";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function DeleteModuleButton({ moduleId, moduleTitle }: { moduleId: string, moduleTitle: string }) {
   const [isDeleting, setIsDeleting] = useState(false);
-  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
   async function handleDelete() {
     setIsDeleting(true);
     try {
       const res = await deleteModule(moduleId);
       if (res.ok) {
-        toast({
-          title: "Berhasil dihapus",
-          description: `Modul ${moduleTitle} beserta seluruh soalnya telah dihapus.`,
-        });
+        toast.success(`Modul ${moduleTitle} beserta seluruh soalnya telah dihapus.`);
+        setOpen(false);
       } else {
-        toast({
-          title: "Gagal menghapus",
-          description: res.error || "Terjadi kesalahan saat menghapus modul.",
-          variant: "destructive",
-        });
+        toast.error(res.error || "Terjadi kesalahan saat menghapus modul.");
       }
-    } catch (err) {
-      toast({
-        title: "Error",
-        description: "Gagal menghubungi server.",
-        variant: "destructive",
-      });
+    } catch {
+      toast.error("Gagal menghubungi server.");
     } finally {
       setIsDeleting(false);
     }
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
           className="h-8 w-8 text-rose-500 hover:text-rose-600 hover:bg-rose-50 z-20"
-          onClick={(e) => e.preventDefault()} // Prevent link click
+          onClick={(e) => e.preventDefault()}
         >
           <Trash2 className="h-4 w-4" />
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent onClick={(e) => e.stopPropagation()}>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Hapus Modul?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Apakah Anda yakin ingin menghapus modul <strong>{moduleTitle}</strong>? 
-            Tindakan ini tidak dapat dibatalkan dan akan menghapus <strong>semua soal dan progress siswa</strong> pada modul ini.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>Batal</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={(e) => {
-              e.preventDefault();
-              handleDelete();
-            }} 
-            className="bg-rose-600 hover:bg-rose-700 focus:ring-rose-600"
+      </DialogTrigger>
+      <DialogContent onClick={(e) => e.stopPropagation()}>
+        <DialogHeader>
+          <DialogTitle>Hapus Modul?</DialogTitle>
+          <DialogDescription>
+            Apakah Anda yakin ingin menghapus modul <strong>{moduleTitle}</strong>?{" "}
+            Tindakan ini tidak dapat dibatalkan dan akan menghapus{" "}
+            <strong>semua soal dan progress siswa</strong> pada modul ini.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={isDeleting}>
+            Batal
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={(e) => { e.preventDefault(); handleDelete(); }}
             disabled={isDeleting}
           >
             {isDeleting ? "Menghapus..." : "Ya, Hapus"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
