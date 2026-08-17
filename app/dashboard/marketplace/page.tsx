@@ -4,7 +4,7 @@ import { requireAuth } from "@/lib/session";
 import { cookies } from "next/headers";
 import { Star, Gift, Package, Clock, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MarketplaceClient } from "../../components/dashboard/MarketplaceClient";
+import { MarketplaceClient } from "@/components/dashboard/MarketplaceClient";
 
 export default async function MarketplacePage() {
   const session = await requireAuth();
