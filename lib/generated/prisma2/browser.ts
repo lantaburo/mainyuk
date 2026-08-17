@@ -127,3 +127,8 @@ export type DiscountCode = Prisma.DiscountCodeModel
  * 
  */
 export type AffiliateCode = Prisma.AffiliateCodeModel
+/**
+ * Model AffiliateWithdrawal
+ * 
+ */
+export type AffiliateWithdrawal = Prisma.AffiliateWithdrawalModel

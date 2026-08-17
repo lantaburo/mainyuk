@@ -418,7 +418,8 @@ export const ModelName = {
   StudentProgress: 'StudentProgress',
   SystemSetting: 'SystemSetting',
   DiscountCode: 'DiscountCode',
-  AffiliateCode: 'AffiliateCode'
+  AffiliateCode: 'AffiliateCode',
+  AffiliateWithdrawal: 'AffiliateWithdrawal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "store" | "storePage" | "storeSettings" | "category" | "product" | "productVariant" | "productImage" | "customer" | "order" | "orderItem" | "payment" | "aiProvider" | "article" | "subject" | "module" | "question" | "studentProfile" | "studentProgress" | "systemSetting" | "discountCode" | "affiliateCode"
+    modelProps: "user" | "store" | "storePage" | "storeSettings" | "category" | "product" | "productVariant" | "productImage" | "customer" | "order" | "orderItem" | "payment" | "aiProvider" | "article" | "subject" | "module" | "question" | "studentProfile" | "studentProgress" | "systemSetting" | "discountCode" | "affiliateCode" | "affiliateWithdrawal"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2066,6 +2067,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AffiliateWithdrawal: {
+      payload: Prisma.$AffiliateWithdrawalPayload<ExtArgs>
+      fields: Prisma.AffiliateWithdrawalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AffiliateWithdrawalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AffiliateWithdrawalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>
+        }
+        findFirst: {
+          args: Prisma.AffiliateWithdrawalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AffiliateWithdrawalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>
+        }
+        findMany: {
+          args: Prisma.AffiliateWithdrawalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>[]
+        }
+        create: {
+          args: Prisma.AffiliateWithdrawalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>
+        }
+        createMany: {
+          args: Prisma.AffiliateWithdrawalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AffiliateWithdrawalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>[]
+        }
+        delete: {
+          args: Prisma.AffiliateWithdrawalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>
+        }
+        update: {
+          args: Prisma.AffiliateWithdrawalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>
+        }
+        deleteMany: {
+          args: Prisma.AffiliateWithdrawalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AffiliateWithdrawalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AffiliateWithdrawalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>[]
+        }
+        upsert: {
+          args: Prisma.AffiliateWithdrawalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AffiliateWithdrawalPayload>
+        }
+        aggregate: {
+          args: Prisma.AffiliateWithdrawalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAffiliateWithdrawal>
+        }
+        groupBy: {
+          args: Prisma.AffiliateWithdrawalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AffiliateWithdrawalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AffiliateWithdrawalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AffiliateWithdrawalCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2442,14 +2517,37 @@ export const AffiliateCodeScalarFieldEnum = {
   code: 'code',
   ownerName: 'ownerName',
   ownerEmail: 'ownerEmail',
+  ownerPhone: 'ownerPhone',
+  userId: 'userId',
   commissionPct: 'commissionPct',
   totalConversions: 'totalConversions',
   totalEarnings: 'totalEarnings',
+  pendingBalance: 'pendingBalance',
+  paidOut: 'paidOut',
+  bankName: 'bankName',
+  bankAccountNumber: 'bankAccountNumber',
+  bankAccountName: 'bankAccountName',
+  status: 'status',
   isActive: 'isActive',
-  createdAt: 'createdAt'
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type AffiliateCodeScalarFieldEnum = (typeof AffiliateCodeScalarFieldEnum)[keyof typeof AffiliateCodeScalarFieldEnum]
+
+
+export const AffiliateWithdrawalScalarFieldEnum = {
+  id: 'id',
+  affiliateId: 'affiliateId',
+  amount: 'amount',
+  status: 'status',
+  notes: 'notes',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AffiliateWithdrawalScalarFieldEnum = (typeof AffiliateWithdrawalScalarFieldEnum)[keyof typeof AffiliateWithdrawalScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2696,6 +2794,34 @@ export type ListEnumDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
+ * Reference to a field of type 'AffiliateStatus'
+ */
+export type EnumAffiliateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AffiliateStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'AffiliateStatus[]'
+ */
+export type ListEnumAffiliateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AffiliateStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WithdrawalStatus'
+ */
+export type EnumWithdrawalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawalStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'WithdrawalStatus[]'
+ */
+export type ListEnumWithdrawalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawalStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2881,6 +3007,7 @@ export type GlobalOmitConfig = {
   systemSetting?: Prisma.SystemSettingOmit
   discountCode?: Prisma.DiscountCodeOmit
   affiliateCode?: Prisma.AffiliateCodeOmit
+  affiliateWithdrawal?: Prisma.AffiliateWithdrawalOmit
 }
 
 /* Types for Logging */

@@ -72,7 +72,8 @@ export const ModelName = {
   StudentProgress: 'StudentProgress',
   SystemSetting: 'SystemSetting',
   DiscountCode: 'DiscountCode',
-  AffiliateCode: 'AffiliateCode'
+  AffiliateCode: 'AffiliateCode',
+  AffiliateWithdrawal: 'AffiliateWithdrawal'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,14 +429,37 @@ export const AffiliateCodeScalarFieldEnum = {
   code: 'code',
   ownerName: 'ownerName',
   ownerEmail: 'ownerEmail',
+  ownerPhone: 'ownerPhone',
+  userId: 'userId',
   commissionPct: 'commissionPct',
   totalConversions: 'totalConversions',
   totalEarnings: 'totalEarnings',
+  pendingBalance: 'pendingBalance',
+  paidOut: 'paidOut',
+  bankName: 'bankName',
+  bankAccountNumber: 'bankAccountNumber',
+  bankAccountName: 'bankAccountName',
+  status: 'status',
   isActive: 'isActive',
-  createdAt: 'createdAt'
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type AffiliateCodeScalarFieldEnum = (typeof AffiliateCodeScalarFieldEnum)[keyof typeof AffiliateCodeScalarFieldEnum]
+
+
+export const AffiliateWithdrawalScalarFieldEnum = {
+  id: 'id',
+  affiliateId: 'affiliateId',
+  amount: 'amount',
+  status: 'status',
+  notes: 'notes',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AffiliateWithdrawalScalarFieldEnum = (typeof AffiliateWithdrawalScalarFieldEnum)[keyof typeof AffiliateWithdrawalScalarFieldEnum]
 
 
 export const SortOrder = {

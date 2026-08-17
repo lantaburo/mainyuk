@@ -242,6 +242,7 @@ export type UserWhereInput = {
   classLevel?: Prisma.IntNullableFilter<"User"> | number | null
   stores?: Prisma.StoreListRelationFilter
   children?: Prisma.StudentProfileListRelationFilter
+  affiliateCode?: Prisma.XOR<Prisma.AffiliateCodeNullableScalarRelationFilter, Prisma.AffiliateCodeWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -255,6 +256,7 @@ export type UserOrderByWithRelationInput = {
   classLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   stores?: Prisma.StoreOrderByRelationAggregateInput
   children?: Prisma.StudentProfileOrderByRelationAggregateInput
+  affiliateCode?: Prisma.AffiliateCodeOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -271,6 +273,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   classLevel?: Prisma.IntNullableFilter<"User"> | number | null
   stores?: Prisma.StoreListRelationFilter
   children?: Prisma.StudentProfileListRelationFilter
+  affiliateCode?: Prisma.XOR<Prisma.AffiliateCodeNullableScalarRelationFilter, Prisma.AffiliateCodeWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -314,6 +317,7 @@ export type UserCreateInput = {
   classLevel?: number | null
   stores?: Prisma.StoreCreateNestedManyWithoutOwnerInput
   children?: Prisma.StudentProfileCreateNestedManyWithoutParentInput
+  affiliateCode?: Prisma.AffiliateCodeCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -327,6 +331,7 @@ export type UserUncheckedCreateInput = {
   classLevel?: number | null
   stores?: Prisma.StoreUncheckedCreateNestedManyWithoutOwnerInput
   children?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutParentInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -340,6 +345,7 @@ export type UserUpdateInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUpdateManyWithoutOwnerNestedInput
   children?: Prisma.StudentProfileUpdateManyWithoutParentNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -353,6 +359,7 @@ export type UserUncheckedUpdateInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUncheckedUpdateManyWithoutOwnerNestedInput
   children?: Prisma.StudentProfileUncheckedUpdateManyWithoutParentNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -434,6 +441,11 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -482,6 +494,22 @@ export type UserUpdateOneRequiredWithoutChildrenNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChildrenInput, Prisma.UserUpdateWithoutChildrenInput>, Prisma.UserUncheckedUpdateWithoutChildrenInput>
 }
 
+export type UserCreateNestedOneWithoutAffiliateCodeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAffiliateCodeInput, Prisma.UserUncheckedCreateWithoutAffiliateCodeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAffiliateCodeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAffiliateCodeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAffiliateCodeInput, Prisma.UserUncheckedCreateWithoutAffiliateCodeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAffiliateCodeInput
+  upsert?: Prisma.UserUpsertWithoutAffiliateCodeInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAffiliateCodeInput, Prisma.UserUpdateWithoutAffiliateCodeInput>, Prisma.UserUncheckedUpdateWithoutAffiliateCodeInput>
+}
+
 export type UserCreateWithoutStoresInput = {
   id?: string
   name: string
@@ -492,6 +520,7 @@ export type UserCreateWithoutStoresInput = {
   updatedAt?: Date | string
   classLevel?: number | null
   children?: Prisma.StudentProfileCreateNestedManyWithoutParentInput
+  affiliateCode?: Prisma.AffiliateCodeCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoresInput = {
@@ -504,6 +533,7 @@ export type UserUncheckedCreateWithoutStoresInput = {
   updatedAt?: Date | string
   classLevel?: number | null
   children?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutParentInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoresInput = {
@@ -532,6 +562,7 @@ export type UserUpdateWithoutStoresInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   children?: Prisma.StudentProfileUpdateManyWithoutParentNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoresInput = {
@@ -544,6 +575,7 @@ export type UserUncheckedUpdateWithoutStoresInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   children?: Prisma.StudentProfileUncheckedUpdateManyWithoutParentNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChildrenInput = {
@@ -556,6 +588,7 @@ export type UserCreateWithoutChildrenInput = {
   updatedAt?: Date | string
   classLevel?: number | null
   stores?: Prisma.StoreCreateNestedManyWithoutOwnerInput
+  affiliateCode?: Prisma.AffiliateCodeCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChildrenInput = {
@@ -568,6 +601,7 @@ export type UserUncheckedCreateWithoutChildrenInput = {
   updatedAt?: Date | string
   classLevel?: number | null
   stores?: Prisma.StoreUncheckedCreateNestedManyWithoutOwnerInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChildrenInput = {
@@ -596,6 +630,7 @@ export type UserUpdateWithoutChildrenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUpdateManyWithoutOwnerNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChildrenInput = {
@@ -608,6 +643,75 @@ export type UserUncheckedUpdateWithoutChildrenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUncheckedUpdateManyWithoutOwnerNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAffiliateCodeInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classLevel?: number | null
+  stores?: Prisma.StoreCreateNestedManyWithoutOwnerInput
+  children?: Prisma.StudentProfileCreateNestedManyWithoutParentInput
+}
+
+export type UserUncheckedCreateWithoutAffiliateCodeInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classLevel?: number | null
+  stores?: Prisma.StoreUncheckedCreateNestedManyWithoutOwnerInput
+  children?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutParentInput
+}
+
+export type UserCreateOrConnectWithoutAffiliateCodeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAffiliateCodeInput, Prisma.UserUncheckedCreateWithoutAffiliateCodeInput>
+}
+
+export type UserUpsertWithoutAffiliateCodeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAffiliateCodeInput, Prisma.UserUncheckedUpdateWithoutAffiliateCodeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAffiliateCodeInput, Prisma.UserUncheckedCreateWithoutAffiliateCodeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAffiliateCodeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAffiliateCodeInput, Prisma.UserUncheckedUpdateWithoutAffiliateCodeInput>
+}
+
+export type UserUpdateWithoutAffiliateCodeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  stores?: Prisma.StoreUpdateManyWithoutOwnerNestedInput
+  children?: Prisma.StudentProfileUpdateManyWithoutParentNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAffiliateCodeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  stores?: Prisma.StoreUncheckedUpdateManyWithoutOwnerNestedInput
+  children?: Prisma.StudentProfileUncheckedUpdateManyWithoutParentNestedInput
 }
 
 
@@ -661,6 +765,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   classLevel?: boolean
   stores?: boolean | Prisma.User$storesArgs<ExtArgs>
   children?: boolean | Prisma.User$childrenArgs<ExtArgs>
+  affiliateCode?: boolean | Prisma.User$affiliateCodeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -701,6 +806,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stores?: boolean | Prisma.User$storesArgs<ExtArgs>
   children?: boolean | Prisma.User$childrenArgs<ExtArgs>
+  affiliateCode?: boolean | Prisma.User$affiliateCodeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -711,6 +817,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     stores: Prisma.$StorePayload<ExtArgs>[]
     children: Prisma.$StudentProfilePayload<ExtArgs>[]
+    affiliateCode: Prisma.$AffiliateCodePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1117,6 +1224,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   stores<T extends Prisma.User$storesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   children<T extends Prisma.User$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  affiliateCode<T extends Prisma.User$affiliateCodeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$affiliateCodeArgs<ExtArgs>>): Prisma.Prisma__AffiliateCodeClient<runtime.Types.Result.GetResult<Prisma.$AffiliateCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1592,6 +1700,25 @@ export type User$childrenArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.StudentProfileScalarFieldEnum | Prisma.StudentProfileScalarFieldEnum[]
+}
+
+/**
+ * User.affiliateCode
+ */
+export type User$affiliateCodeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateCode
+   */
+  select?: Prisma.AffiliateCodeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AffiliateCode
+   */
+  omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
+  where?: Prisma.AffiliateCodeWhereInput
 }
 
 /**

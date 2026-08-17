@@ -30,12 +30,16 @@ export type AffiliateCodeAvgAggregateOutputType = {
   commissionPct: runtime.Decimal | null
   totalConversions: number | null
   totalEarnings: runtime.Decimal | null
+  pendingBalance: runtime.Decimal | null
+  paidOut: runtime.Decimal | null
 }
 
 export type AffiliateCodeSumAggregateOutputType = {
   commissionPct: runtime.Decimal | null
   totalConversions: number | null
   totalEarnings: runtime.Decimal | null
+  pendingBalance: runtime.Decimal | null
+  paidOut: runtime.Decimal | null
 }
 
 export type AffiliateCodeMinAggregateOutputType = {
@@ -43,11 +47,21 @@ export type AffiliateCodeMinAggregateOutputType = {
   code: string | null
   ownerName: string | null
   ownerEmail: string | null
+  ownerPhone: string | null
+  userId: string | null
   commissionPct: runtime.Decimal | null
   totalConversions: number | null
   totalEarnings: runtime.Decimal | null
+  pendingBalance: runtime.Decimal | null
+  paidOut: runtime.Decimal | null
+  bankName: string | null
+  bankAccountNumber: string | null
+  bankAccountName: string | null
+  status: $Enums.AffiliateStatus | null
   isActive: boolean | null
+  notes: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AffiliateCodeMaxAggregateOutputType = {
@@ -55,11 +69,21 @@ export type AffiliateCodeMaxAggregateOutputType = {
   code: string | null
   ownerName: string | null
   ownerEmail: string | null
+  ownerPhone: string | null
+  userId: string | null
   commissionPct: runtime.Decimal | null
   totalConversions: number | null
   totalEarnings: runtime.Decimal | null
+  pendingBalance: runtime.Decimal | null
+  paidOut: runtime.Decimal | null
+  bankName: string | null
+  bankAccountNumber: string | null
+  bankAccountName: string | null
+  status: $Enums.AffiliateStatus | null
   isActive: boolean | null
+  notes: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AffiliateCodeCountAggregateOutputType = {
@@ -67,11 +91,21 @@ export type AffiliateCodeCountAggregateOutputType = {
   code: number
   ownerName: number
   ownerEmail: number
+  ownerPhone: number
+  userId: number
   commissionPct: number
   totalConversions: number
   totalEarnings: number
+  pendingBalance: number
+  paidOut: number
+  bankName: number
+  bankAccountNumber: number
+  bankAccountName: number
+  status: number
   isActive: number
+  notes: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -80,12 +114,16 @@ export type AffiliateCodeAvgAggregateInputType = {
   commissionPct?: true
   totalConversions?: true
   totalEarnings?: true
+  pendingBalance?: true
+  paidOut?: true
 }
 
 export type AffiliateCodeSumAggregateInputType = {
   commissionPct?: true
   totalConversions?: true
   totalEarnings?: true
+  pendingBalance?: true
+  paidOut?: true
 }
 
 export type AffiliateCodeMinAggregateInputType = {
@@ -93,11 +131,21 @@ export type AffiliateCodeMinAggregateInputType = {
   code?: true
   ownerName?: true
   ownerEmail?: true
+  ownerPhone?: true
+  userId?: true
   commissionPct?: true
   totalConversions?: true
   totalEarnings?: true
+  pendingBalance?: true
+  paidOut?: true
+  bankName?: true
+  bankAccountNumber?: true
+  bankAccountName?: true
+  status?: true
   isActive?: true
+  notes?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type AffiliateCodeMaxAggregateInputType = {
@@ -105,11 +153,21 @@ export type AffiliateCodeMaxAggregateInputType = {
   code?: true
   ownerName?: true
   ownerEmail?: true
+  ownerPhone?: true
+  userId?: true
   commissionPct?: true
   totalConversions?: true
   totalEarnings?: true
+  pendingBalance?: true
+  paidOut?: true
+  bankName?: true
+  bankAccountNumber?: true
+  bankAccountName?: true
+  status?: true
   isActive?: true
+  notes?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type AffiliateCodeCountAggregateInputType = {
@@ -117,11 +175,21 @@ export type AffiliateCodeCountAggregateInputType = {
   code?: true
   ownerName?: true
   ownerEmail?: true
+  ownerPhone?: true
+  userId?: true
   commissionPct?: true
   totalConversions?: true
   totalEarnings?: true
+  pendingBalance?: true
+  paidOut?: true
+  bankName?: true
+  bankAccountNumber?: true
+  bankAccountName?: true
+  status?: true
   isActive?: true
+  notes?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -216,11 +284,21 @@ export type AffiliateCodeGroupByOutputType = {
   code: string
   ownerName: string
   ownerEmail: string | null
+  ownerPhone: string | null
+  userId: string | null
   commissionPct: runtime.Decimal
   totalConversions: number
   totalEarnings: runtime.Decimal
+  pendingBalance: runtime.Decimal
+  paidOut: runtime.Decimal
+  bankName: string | null
+  bankAccountNumber: string | null
+  bankAccountName: string | null
+  status: $Enums.AffiliateStatus
   isActive: boolean
+  notes: string | null
   createdAt: Date
+  updatedAt: Date
   _count: AffiliateCodeCountAggregateOutputType | null
   _avg: AffiliateCodeAvgAggregateOutputType | null
   _sum: AffiliateCodeSumAggregateOutputType | null
@@ -251,11 +329,23 @@ export type AffiliateCodeWhereInput = {
   code?: Prisma.StringFilter<"AffiliateCode"> | string
   ownerName?: Prisma.StringFilter<"AffiliateCode"> | string
   ownerEmail?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  ownerPhone?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  userId?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
   commissionPct?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: Prisma.IntFilter<"AffiliateCode"> | number
   totalEarnings?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  bankAccountNumber?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  bankAccountName?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  status?: Prisma.EnumAffiliateStatusFilter<"AffiliateCode"> | $Enums.AffiliateStatus
   isActive?: Prisma.BoolFilter<"AffiliateCode"> | boolean
+  notes?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AffiliateCode"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"AffiliateCode"> | Date | string
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  withdrawals?: Prisma.AffiliateWithdrawalListRelationFilter
 }
 
 export type AffiliateCodeOrderByWithRelationInput = {
@@ -263,38 +353,72 @@ export type AffiliateCodeOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionPct?: Prisma.SortOrder
   totalConversions?: Prisma.SortOrder
   totalEarnings?: Prisma.SortOrder
+  pendingBalance?: Prisma.SortOrder
+  paidOut?: Prisma.SortOrder
+  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
+  withdrawals?: Prisma.AffiliateWithdrawalOrderByRelationAggregateInput
 }
 
 export type AffiliateCodeWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   code?: string
+  userId?: string
   AND?: Prisma.AffiliateCodeWhereInput | Prisma.AffiliateCodeWhereInput[]
   OR?: Prisma.AffiliateCodeWhereInput[]
   NOT?: Prisma.AffiliateCodeWhereInput | Prisma.AffiliateCodeWhereInput[]
   ownerName?: Prisma.StringFilter<"AffiliateCode"> | string
   ownerEmail?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  ownerPhone?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
   commissionPct?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: Prisma.IntFilter<"AffiliateCode"> | number
   totalEarnings?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  bankAccountNumber?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  bankAccountName?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
+  status?: Prisma.EnumAffiliateStatusFilter<"AffiliateCode"> | $Enums.AffiliateStatus
   isActive?: Prisma.BoolFilter<"AffiliateCode"> | boolean
+  notes?: Prisma.StringNullableFilter<"AffiliateCode"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AffiliateCode"> | Date | string
-}, "id" | "code">
+  updatedAt?: Prisma.DateTimeFilter<"AffiliateCode"> | Date | string
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  withdrawals?: Prisma.AffiliateWithdrawalListRelationFilter
+}, "id" | "code" | "userId">
 
 export type AffiliateCodeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionPct?: Prisma.SortOrder
   totalConversions?: Prisma.SortOrder
   totalEarnings?: Prisma.SortOrder
+  pendingBalance?: Prisma.SortOrder
+  paidOut?: Prisma.SortOrder
+  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.AffiliateCodeCountOrderByAggregateInput
   _avg?: Prisma.AffiliateCodeAvgOrderByAggregateInput
   _max?: Prisma.AffiliateCodeMaxOrderByAggregateInput
@@ -310,11 +434,21 @@ export type AffiliateCodeScalarWhereWithAggregatesInput = {
   code?: Prisma.StringWithAggregatesFilter<"AffiliateCode"> | string
   ownerName?: Prisma.StringWithAggregatesFilter<"AffiliateCode"> | string
   ownerEmail?: Prisma.StringNullableWithAggregatesFilter<"AffiliateCode"> | string | null
+  ownerPhone?: Prisma.StringNullableWithAggregatesFilter<"AffiliateCode"> | string | null
+  userId?: Prisma.StringNullableWithAggregatesFilter<"AffiliateCode"> | string | null
   commissionPct?: Prisma.DecimalWithAggregatesFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: Prisma.IntWithAggregatesFilter<"AffiliateCode"> | number
   totalEarnings?: Prisma.DecimalWithAggregatesFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalWithAggregatesFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalWithAggregatesFilter<"AffiliateCode"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.StringNullableWithAggregatesFilter<"AffiliateCode"> | string | null
+  bankAccountNumber?: Prisma.StringNullableWithAggregatesFilter<"AffiliateCode"> | string | null
+  bankAccountName?: Prisma.StringNullableWithAggregatesFilter<"AffiliateCode"> | string | null
+  status?: Prisma.EnumAffiliateStatusWithAggregatesFilter<"AffiliateCode"> | $Enums.AffiliateStatus
   isActive?: Prisma.BoolWithAggregatesFilter<"AffiliateCode"> | boolean
+  notes?: Prisma.StringNullableWithAggregatesFilter<"AffiliateCode"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AffiliateCode"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AffiliateCode"> | Date | string
 }
 
 export type AffiliateCodeCreateInput = {
@@ -322,11 +456,22 @@ export type AffiliateCodeCreateInput = {
   code: string
   ownerName: string
   ownerEmail?: string | null
+  ownerPhone?: string | null
   commissionPct: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: number
   totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  status?: $Enums.AffiliateStatus
   isActive?: boolean
+  notes?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutAffiliateCodeInput
+  withdrawals?: Prisma.AffiliateWithdrawalCreateNestedManyWithoutAffiliateInput
 }
 
 export type AffiliateCodeUncheckedCreateInput = {
@@ -334,11 +479,22 @@ export type AffiliateCodeUncheckedCreateInput = {
   code: string
   ownerName: string
   ownerEmail?: string | null
+  ownerPhone?: string | null
+  userId?: string | null
   commissionPct: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: number
   totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  status?: $Enums.AffiliateStatus
   isActive?: boolean
+  notes?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  withdrawals?: Prisma.AffiliateWithdrawalUncheckedCreateNestedManyWithoutAffiliateInput
 }
 
 export type AffiliateCodeUpdateInput = {
@@ -346,11 +502,22 @@ export type AffiliateCodeUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
   totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutAffiliateCodeNestedInput
+  withdrawals?: Prisma.AffiliateWithdrawalUpdateManyWithoutAffiliateNestedInput
 }
 
 export type AffiliateCodeUncheckedUpdateInput = {
@@ -358,11 +525,22 @@ export type AffiliateCodeUncheckedUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
   totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  withdrawals?: Prisma.AffiliateWithdrawalUncheckedUpdateManyWithoutAffiliateNestedInput
 }
 
 export type AffiliateCodeCreateManyInput = {
@@ -370,11 +548,21 @@ export type AffiliateCodeCreateManyInput = {
   code: string
   ownerName: string
   ownerEmail?: string | null
+  ownerPhone?: string | null
+  userId?: string | null
   commissionPct: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: number
   totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  status?: $Enums.AffiliateStatus
   isActive?: boolean
+  notes?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AffiliateCodeUpdateManyMutationInput = {
@@ -382,11 +570,20 @@ export type AffiliateCodeUpdateManyMutationInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
   totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AffiliateCodeUncheckedUpdateManyInput = {
@@ -394,11 +591,26 @@ export type AffiliateCodeUncheckedUpdateManyInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   ownerName?: Prisma.StringFieldUpdateOperationsInput | string
   ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
   totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AffiliateCodeNullableScalarRelationFilter = {
+  is?: Prisma.AffiliateCodeWhereInput | null
+  isNot?: Prisma.AffiliateCodeWhereInput | null
 }
 
 export type AffiliateCodeCountOrderByAggregateInput = {
@@ -406,17 +618,29 @@ export type AffiliateCodeCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrder
+  ownerPhone?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   commissionPct?: Prisma.SortOrder
   totalConversions?: Prisma.SortOrder
   totalEarnings?: Prisma.SortOrder
+  pendingBalance?: Prisma.SortOrder
+  paidOut?: Prisma.SortOrder
+  bankName?: Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AffiliateCodeAvgOrderByAggregateInput = {
   commissionPct?: Prisma.SortOrder
   totalConversions?: Prisma.SortOrder
   totalEarnings?: Prisma.SortOrder
+  pendingBalance?: Prisma.SortOrder
+  paidOut?: Prisma.SortOrder
 }
 
 export type AffiliateCodeMaxOrderByAggregateInput = {
@@ -424,11 +648,21 @@ export type AffiliateCodeMaxOrderByAggregateInput = {
   code?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrder
+  ownerPhone?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   commissionPct?: Prisma.SortOrder
   totalConversions?: Prisma.SortOrder
   totalEarnings?: Prisma.SortOrder
+  pendingBalance?: Prisma.SortOrder
+  paidOut?: Prisma.SortOrder
+  bankName?: Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AffiliateCodeMinOrderByAggregateInput = {
@@ -436,19 +670,323 @@ export type AffiliateCodeMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   ownerName?: Prisma.SortOrder
   ownerEmail?: Prisma.SortOrder
+  ownerPhone?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   commissionPct?: Prisma.SortOrder
   totalConversions?: Prisma.SortOrder
   totalEarnings?: Prisma.SortOrder
+  pendingBalance?: Prisma.SortOrder
+  paidOut?: Prisma.SortOrder
+  bankName?: Prisma.SortOrder
+  bankAccountNumber?: Prisma.SortOrder
+  bankAccountName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AffiliateCodeSumOrderByAggregateInput = {
   commissionPct?: Prisma.SortOrder
   totalConversions?: Prisma.SortOrder
   totalEarnings?: Prisma.SortOrder
+  pendingBalance?: Prisma.SortOrder
+  paidOut?: Prisma.SortOrder
 }
 
+export type AffiliateCodeScalarRelationFilter = {
+  is?: Prisma.AffiliateCodeWhereInput
+  isNot?: Prisma.AffiliateCodeWhereInput
+}
+
+export type AffiliateCodeCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutUserInput, Prisma.AffiliateCodeUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.AffiliateCodeCreateOrConnectWithoutUserInput
+  connect?: Prisma.AffiliateCodeWhereUniqueInput
+}
+
+export type AffiliateCodeUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutUserInput, Prisma.AffiliateCodeUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.AffiliateCodeCreateOrConnectWithoutUserInput
+  connect?: Prisma.AffiliateCodeWhereUniqueInput
+}
+
+export type AffiliateCodeUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutUserInput, Prisma.AffiliateCodeUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.AffiliateCodeCreateOrConnectWithoutUserInput
+  upsert?: Prisma.AffiliateCodeUpsertWithoutUserInput
+  disconnect?: Prisma.AffiliateCodeWhereInput | boolean
+  delete?: Prisma.AffiliateCodeWhereInput | boolean
+  connect?: Prisma.AffiliateCodeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateCodeUpdateToOneWithWhereWithoutUserInput, Prisma.AffiliateCodeUpdateWithoutUserInput>, Prisma.AffiliateCodeUncheckedUpdateWithoutUserInput>
+}
+
+export type AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutUserInput, Prisma.AffiliateCodeUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.AffiliateCodeCreateOrConnectWithoutUserInput
+  upsert?: Prisma.AffiliateCodeUpsertWithoutUserInput
+  disconnect?: Prisma.AffiliateCodeWhereInput | boolean
+  delete?: Prisma.AffiliateCodeWhereInput | boolean
+  connect?: Prisma.AffiliateCodeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateCodeUpdateToOneWithWhereWithoutUserInput, Prisma.AffiliateCodeUpdateWithoutUserInput>, Prisma.AffiliateCodeUncheckedUpdateWithoutUserInput>
+}
+
+export type EnumAffiliateStatusFieldUpdateOperationsInput = {
+  set?: $Enums.AffiliateStatus
+}
+
+export type AffiliateCodeCreateNestedOneWithoutWithdrawalsInput = {
+  create?: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutWithdrawalsInput, Prisma.AffiliateCodeUncheckedCreateWithoutWithdrawalsInput>
+  connectOrCreate?: Prisma.AffiliateCodeCreateOrConnectWithoutWithdrawalsInput
+  connect?: Prisma.AffiliateCodeWhereUniqueInput
+}
+
+export type AffiliateCodeUpdateOneRequiredWithoutWithdrawalsNestedInput = {
+  create?: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutWithdrawalsInput, Prisma.AffiliateCodeUncheckedCreateWithoutWithdrawalsInput>
+  connectOrCreate?: Prisma.AffiliateCodeCreateOrConnectWithoutWithdrawalsInput
+  upsert?: Prisma.AffiliateCodeUpsertWithoutWithdrawalsInput
+  connect?: Prisma.AffiliateCodeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AffiliateCodeUpdateToOneWithWhereWithoutWithdrawalsInput, Prisma.AffiliateCodeUpdateWithoutWithdrawalsInput>, Prisma.AffiliateCodeUncheckedUpdateWithoutWithdrawalsInput>
+}
+
+export type AffiliateCodeCreateWithoutUserInput = {
+  id?: string
+  code: string
+  ownerName: string
+  ownerEmail?: string | null
+  ownerPhone?: string | null
+  commissionPct: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  status?: $Enums.AffiliateStatus
+  isActive?: boolean
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  withdrawals?: Prisma.AffiliateWithdrawalCreateNestedManyWithoutAffiliateInput
+}
+
+export type AffiliateCodeUncheckedCreateWithoutUserInput = {
+  id?: string
+  code: string
+  ownerName: string
+  ownerEmail?: string | null
+  ownerPhone?: string | null
+  commissionPct: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  status?: $Enums.AffiliateStatus
+  isActive?: boolean
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  withdrawals?: Prisma.AffiliateWithdrawalUncheckedCreateNestedManyWithoutAffiliateInput
+}
+
+export type AffiliateCodeCreateOrConnectWithoutUserInput = {
+  where: Prisma.AffiliateCodeWhereUniqueInput
+  create: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutUserInput, Prisma.AffiliateCodeUncheckedCreateWithoutUserInput>
+}
+
+export type AffiliateCodeUpsertWithoutUserInput = {
+  update: Prisma.XOR<Prisma.AffiliateCodeUpdateWithoutUserInput, Prisma.AffiliateCodeUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutUserInput, Prisma.AffiliateCodeUncheckedCreateWithoutUserInput>
+  where?: Prisma.AffiliateCodeWhereInput
+}
+
+export type AffiliateCodeUpdateToOneWithWhereWithoutUserInput = {
+  where?: Prisma.AffiliateCodeWhereInput
+  data: Prisma.XOR<Prisma.AffiliateCodeUpdateWithoutUserInput, Prisma.AffiliateCodeUncheckedUpdateWithoutUserInput>
+}
+
+export type AffiliateCodeUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  withdrawals?: Prisma.AffiliateWithdrawalUpdateManyWithoutAffiliateNestedInput
+}
+
+export type AffiliateCodeUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  withdrawals?: Prisma.AffiliateWithdrawalUncheckedUpdateManyWithoutAffiliateNestedInput
+}
+
+export type AffiliateCodeCreateWithoutWithdrawalsInput = {
+  id?: string
+  code: string
+  ownerName: string
+  ownerEmail?: string | null
+  ownerPhone?: string | null
+  commissionPct: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  status?: $Enums.AffiliateStatus
+  isActive?: boolean
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutAffiliateCodeInput
+}
+
+export type AffiliateCodeUncheckedCreateWithoutWithdrawalsInput = {
+  id?: string
+  code: string
+  ownerName: string
+  ownerEmail?: string | null
+  ownerPhone?: string | null
+  userId?: string | null
+  commissionPct: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: number
+  totalEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: string | null
+  bankAccountNumber?: string | null
+  bankAccountName?: string | null
+  status?: $Enums.AffiliateStatus
+  isActive?: boolean
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AffiliateCodeCreateOrConnectWithoutWithdrawalsInput = {
+  where: Prisma.AffiliateCodeWhereUniqueInput
+  create: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutWithdrawalsInput, Prisma.AffiliateCodeUncheckedCreateWithoutWithdrawalsInput>
+}
+
+export type AffiliateCodeUpsertWithoutWithdrawalsInput = {
+  update: Prisma.XOR<Prisma.AffiliateCodeUpdateWithoutWithdrawalsInput, Prisma.AffiliateCodeUncheckedUpdateWithoutWithdrawalsInput>
+  create: Prisma.XOR<Prisma.AffiliateCodeCreateWithoutWithdrawalsInput, Prisma.AffiliateCodeUncheckedCreateWithoutWithdrawalsInput>
+  where?: Prisma.AffiliateCodeWhereInput
+}
+
+export type AffiliateCodeUpdateToOneWithWhereWithoutWithdrawalsInput = {
+  where?: Prisma.AffiliateCodeWhereInput
+  data: Prisma.XOR<Prisma.AffiliateCodeUpdateWithoutWithdrawalsInput, Prisma.AffiliateCodeUncheckedUpdateWithoutWithdrawalsInput>
+}
+
+export type AffiliateCodeUpdateWithoutWithdrawalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutAffiliateCodeNestedInput
+}
+
+export type AffiliateCodeUncheckedUpdateWithoutWithdrawalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerName?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPct?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalConversions?: Prisma.IntFieldUpdateOperationsInput | number
+  totalEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pendingBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  paidOut?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankAccountName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAffiliateStatusFieldUpdateOperationsInput | $Enums.AffiliateStatus
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type AffiliateCodeCountOutputType
+ */
+
+export type AffiliateCodeCountOutputType = {
+  withdrawals: number
+}
+
+export type AffiliateCodeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  withdrawals?: boolean | AffiliateCodeCountOutputTypeCountWithdrawalsArgs
+}
+
+/**
+ * AffiliateCodeCountOutputType without action
+ */
+export type AffiliateCodeCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateCodeCountOutputType
+   */
+  select?: Prisma.AffiliateCodeCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AffiliateCodeCountOutputType without action
+ */
+export type AffiliateCodeCountOutputTypeCountWithdrawalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AffiliateWithdrawalWhereInput
+}
 
 
 export type AffiliateCodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -456,11 +994,24 @@ export type AffiliateCodeSelect<ExtArgs extends runtime.Types.Extensions.Interna
   code?: boolean
   ownerName?: boolean
   ownerEmail?: boolean
+  ownerPhone?: boolean
+  userId?: boolean
   commissionPct?: boolean
   totalConversions?: boolean
   totalEarnings?: boolean
+  pendingBalance?: boolean
+  paidOut?: boolean
+  bankName?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  status?: boolean
   isActive?: boolean
+  notes?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.AffiliateCode$userArgs<ExtArgs>
+  withdrawals?: boolean | Prisma.AffiliateCode$withdrawalsArgs<ExtArgs>
+  _count?: boolean | Prisma.AffiliateCodeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateCode"]>
 
 export type AffiliateCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -468,11 +1019,22 @@ export type AffiliateCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   code?: boolean
   ownerName?: boolean
   ownerEmail?: boolean
+  ownerPhone?: boolean
+  userId?: boolean
   commissionPct?: boolean
   totalConversions?: boolean
   totalEarnings?: boolean
+  pendingBalance?: boolean
+  paidOut?: boolean
+  bankName?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  status?: boolean
   isActive?: boolean
+  notes?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.AffiliateCode$userArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateCode"]>
 
 export type AffiliateCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -480,11 +1042,22 @@ export type AffiliateCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   code?: boolean
   ownerName?: boolean
   ownerEmail?: boolean
+  ownerPhone?: boolean
+  userId?: boolean
   commissionPct?: boolean
   totalConversions?: boolean
   totalEarnings?: boolean
+  pendingBalance?: boolean
+  paidOut?: boolean
+  bankName?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  status?: boolean
   isActive?: boolean
+  notes?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  user?: boolean | Prisma.AffiliateCode$userArgs<ExtArgs>
 }, ExtArgs["result"]["affiliateCode"]>
 
 export type AffiliateCodeSelectScalar = {
@@ -492,28 +1065,62 @@ export type AffiliateCodeSelectScalar = {
   code?: boolean
   ownerName?: boolean
   ownerEmail?: boolean
+  ownerPhone?: boolean
+  userId?: boolean
   commissionPct?: boolean
   totalConversions?: boolean
   totalEarnings?: boolean
+  pendingBalance?: boolean
+  paidOut?: boolean
+  bankName?: boolean
+  bankAccountNumber?: boolean
+  bankAccountName?: boolean
+  status?: boolean
   isActive?: boolean
+  notes?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type AffiliateCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "ownerName" | "ownerEmail" | "commissionPct" | "totalConversions" | "totalEarnings" | "isActive" | "createdAt", ExtArgs["result"]["affiliateCode"]>
+export type AffiliateCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "ownerName" | "ownerEmail" | "ownerPhone" | "userId" | "commissionPct" | "totalConversions" | "totalEarnings" | "pendingBalance" | "paidOut" | "bankName" | "bankAccountNumber" | "bankAccountName" | "status" | "isActive" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateCode"]>
+export type AffiliateCodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.AffiliateCode$userArgs<ExtArgs>
+  withdrawals?: boolean | Prisma.AffiliateCode$withdrawalsArgs<ExtArgs>
+  _count?: boolean | Prisma.AffiliateCodeCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type AffiliateCodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.AffiliateCode$userArgs<ExtArgs>
+}
+export type AffiliateCodeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.AffiliateCode$userArgs<ExtArgs>
+}
 
 export type $AffiliateCodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AffiliateCode"
-  objects: {}
+  objects: {
+    user: Prisma.$UserPayload<ExtArgs> | null
+    withdrawals: Prisma.$AffiliateWithdrawalPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     code: string
     ownerName: string
     ownerEmail: string | null
+    ownerPhone: string | null
+    userId: string | null
     commissionPct: runtime.Decimal
     totalConversions: number
     totalEarnings: runtime.Decimal
+    pendingBalance: runtime.Decimal
+    paidOut: runtime.Decimal
+    bankName: string | null
+    bankAccountNumber: string | null
+    bankAccountName: string | null
+    status: $Enums.AffiliateStatus
     isActive: boolean
+    notes: string | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["affiliateCode"]>
   composites: {}
 }
@@ -908,6 +1515,8 @@ readonly fields: AffiliateCodeFieldRefs;
  */
 export interface Prisma__AffiliateCodeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.AffiliateCode$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateCode$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  withdrawals<T extends Prisma.AffiliateCode$withdrawalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AffiliateCode$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AffiliateWithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -941,11 +1550,21 @@ export interface AffiliateCodeFieldRefs {
   readonly code: Prisma.FieldRef<"AffiliateCode", 'String'>
   readonly ownerName: Prisma.FieldRef<"AffiliateCode", 'String'>
   readonly ownerEmail: Prisma.FieldRef<"AffiliateCode", 'String'>
+  readonly ownerPhone: Prisma.FieldRef<"AffiliateCode", 'String'>
+  readonly userId: Prisma.FieldRef<"AffiliateCode", 'String'>
   readonly commissionPct: Prisma.FieldRef<"AffiliateCode", 'Decimal'>
   readonly totalConversions: Prisma.FieldRef<"AffiliateCode", 'Int'>
   readonly totalEarnings: Prisma.FieldRef<"AffiliateCode", 'Decimal'>
+  readonly pendingBalance: Prisma.FieldRef<"AffiliateCode", 'Decimal'>
+  readonly paidOut: Prisma.FieldRef<"AffiliateCode", 'Decimal'>
+  readonly bankName: Prisma.FieldRef<"AffiliateCode", 'String'>
+  readonly bankAccountNumber: Prisma.FieldRef<"AffiliateCode", 'String'>
+  readonly bankAccountName: Prisma.FieldRef<"AffiliateCode", 'String'>
+  readonly status: Prisma.FieldRef<"AffiliateCode", 'AffiliateStatus'>
   readonly isActive: Prisma.FieldRef<"AffiliateCode", 'Boolean'>
+  readonly notes: Prisma.FieldRef<"AffiliateCode", 'String'>
   readonly createdAt: Prisma.FieldRef<"AffiliateCode", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"AffiliateCode", 'DateTime'>
 }
     
 
@@ -962,6 +1581,10 @@ export type AffiliateCodeFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the AffiliateCode
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
   /**
    * Filter, which AffiliateCode to fetch.
    */
@@ -981,6 +1604,10 @@ export type AffiliateCodeFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
+  /**
    * Filter, which AffiliateCode to fetch.
    */
   where: Prisma.AffiliateCodeWhereUniqueInput
@@ -998,6 +1625,10 @@ export type AffiliateCodeFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the AffiliateCode
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
   /**
    * Filter, which AffiliateCode to fetch.
    */
@@ -1047,6 +1678,10 @@ export type AffiliateCodeFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
+  /**
    * Filter, which AffiliateCode to fetch.
    */
   where?: Prisma.AffiliateCodeWhereInput
@@ -1094,6 +1729,10 @@ export type AffiliateCodeFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the AffiliateCode
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
   /**
    * Filter, which AffiliateCodes to fetch.
    */
@@ -1143,6 +1782,10 @@ export type AffiliateCodeCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
+  /**
    * The data needed to create a AffiliateCode.
    */
   data: Prisma.XOR<Prisma.AffiliateCodeCreateInput, Prisma.AffiliateCodeUncheckedCreateInput>
@@ -1176,6 +1819,10 @@ export type AffiliateCodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    */
   data: Prisma.AffiliateCodeCreateManyInput | Prisma.AffiliateCodeCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1190,6 +1837,10 @@ export type AffiliateCodeUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the AffiliateCode
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
   /**
    * The data needed to update a AffiliateCode.
    */
@@ -1242,6 +1893,10 @@ export type AffiliateCodeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * Limit how many AffiliateCodes to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1256,6 +1911,10 @@ export type AffiliateCodeUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the AffiliateCode
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
   /**
    * The filter to search for the AffiliateCode to update in case it exists.
    */
@@ -1283,6 +1942,10 @@ export type AffiliateCodeDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
+  /**
    * Filter which AffiliateCode to delete.
    */
   where: Prisma.AffiliateCodeWhereUniqueInput
@@ -1303,6 +1966,49 @@ export type AffiliateCodeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * AffiliateCode.user
+ */
+export type AffiliateCode$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * AffiliateCode.withdrawals
+ */
+export type AffiliateCode$withdrawalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AffiliateWithdrawal
+   */
+  select?: Prisma.AffiliateWithdrawalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AffiliateWithdrawal
+   */
+  omit?: Prisma.AffiliateWithdrawalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateWithdrawalInclude<ExtArgs> | null
+  where?: Prisma.AffiliateWithdrawalWhereInput
+  orderBy?: Prisma.AffiliateWithdrawalOrderByWithRelationInput | Prisma.AffiliateWithdrawalOrderByWithRelationInput[]
+  cursor?: Prisma.AffiliateWithdrawalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AffiliateWithdrawalScalarFieldEnum | Prisma.AffiliateWithdrawalScalarFieldEnum[]
+}
+
+/**
  * AffiliateCode without action
  */
 export type AffiliateCodeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1314,4 +2020,8 @@ export type AffiliateCodeDefaultArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the AffiliateCode
    */
   omit?: Prisma.AffiliateCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
 }

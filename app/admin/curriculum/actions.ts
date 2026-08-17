@@ -346,7 +346,7 @@ export async function seedCurriculum() {
 
         const questionCount = await prisma.question.count({ where: { moduleId: mod.id } });
         if (questionCount === 0) {
-          const qs = makeSeedQuestions(sub.slug, grade);
+          const qs = makeSeedQuestions(sub.slug, grade, m);
           await prisma.question.createMany({ data: qs.map((q) => ({ moduleId: mod!.id, ...q })) });
           totalQuestions += qs.length;
         }

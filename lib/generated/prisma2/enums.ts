@@ -92,3 +92,21 @@ export const DiscountType = {
 } as const
 
 export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
+export const AffiliateStatus = {
+  pending_review: 'pending_review',
+  active: 'active',
+  suspended: 'suspended'
+} as const
+
+export type AffiliateStatus = (typeof AffiliateStatus)[keyof typeof AffiliateStatus]
+
+
+export const WithdrawalStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected'
+} as const
+
+export type WithdrawalStatus = (typeof WithdrawalStatus)[keyof typeof WithdrawalStatus]
