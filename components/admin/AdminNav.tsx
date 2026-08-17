@@ -23,8 +23,9 @@ export function AdminNav({ user }: AdminNavProps) {
 
   const mainItems = [
     { href: "/admin", label: "Dashboard Utama", icon: LayoutDashboard },
+    { href: "/admin/pengguna", label: "Pengguna & Siswa", icon: Users },
     { href: "/admin/curriculum", label: "Mata Pelajaran & Modul", icon: Wand2 },
-    ...(isSuperAdmin ? [{ href: "/admin/operator", label: "Operator & Staf", icon: Users }] : []),
+    ...(isSuperAdmin ? [{ href: "/admin/operator", label: "Operator & Staf", icon: ShieldCheck }] : []),
   ];
 
   const settingsItems = isSuperAdmin ? [
