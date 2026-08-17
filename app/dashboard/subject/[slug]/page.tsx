@@ -11,11 +11,11 @@ import {
   CheckCircle,
   Crown,
   PlayCircle,
-  ShoppingCart,
   BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { UnlockModuleClient } from "@/components/dashboard/UnlockModuleClient";
 
 const CLASS_COLORS: Record<number, { accent: string; text: string; border: string; badge: string; bg: string }> = {
   1:  { bg: "from-rose-400 to-pink-500",    accent: "bg-rose-500",    text: "text-rose-600",    border: "border-rose-200",    badge: "bg-rose-100 text-rose-700" },
@@ -76,6 +76,18 @@ export default async function SubjectDetailPage({ params }: { params: { slug: st
     acc[curr.moduleId] = curr;
     return acc;
   }, {} as Record<string, any>);
+
+  const moduleAccesses = await prisma.moduleAccess.findMany({
+    where: {
+      studentId: student.id,
+      moduleId: { in: subject.modules.map((m) => m.id) }
+    }
+  });
+
+  const accessMap = moduleAccesses.reduce((acc: Record<string, boolean>, curr: any) => {
+    acc[curr.moduleId] = true;
+    return acc;
+  }, {} as Record<string, boolean>);
 
   const completedCount = progress.filter((p) => p.isCompleted).length;
   const totalCount = subject.modules.length;
@@ -149,7 +161,8 @@ export default async function SubjectDetailPage({ params }: { params: { slug: st
 
             let isUnlocked = index === 0 || !!prevModuleProgress?.isCompleted;
             const isLocked = !isUnlocked;
-            const needsPayment = isUnlocked && module.isPremium;
+            const hasAccess = accessMap[module.id] || false;
+            const needsPayment = isUnlocked && module.isPremium && !hasAccess;
 
             return (
               <div
@@ -250,23 +263,24 @@ export default async function SubjectDetailPage({ params }: { params: { slug: st
                           )}
                         >
                           <PlayCircle className="w-4 h-4 mr-2" />
-                          {isCompleted ? "Ulangi" : "Mulai"}
+                          {isCompleted ? "Mainkan Ulang" : "Mulai Belajar"}
                         </Button>
                       </Link>
-                    ) : needsPayment ? (
-                      <Button
-                        variant="default"
-                        className="bg-amber-500 hover:bg-amber-600 text-white"
-                      >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        Buka Akses
-                      </Button>
-                    ) : (
-                      <Button disabled={true} variant="default">
-                        <span className="cursor-not-allowed">Terkunci</span>
+                    ) : needsPayment ? null : (
+                      <Button disabled={true} variant="default" className="bg-gray-100 text-gray-400">
+                        <span className="cursor-not-allowed flex items-center gap-2"><Lock className="w-4 h-4"/> Terkunci</span>
                       </Button>
                     )}
                   </div>
+
+                  {needsPayment && (
+                    <UnlockModuleClient 
+                      studentId={student.id} 
+                      moduleId={module.id} 
+                      starsCost={500} 
+                      starsBalance={student.starsBalance} 
+                    />
+                  )}
                 </div>
               </div>
             );

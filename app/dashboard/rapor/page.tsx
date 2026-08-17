@@ -114,29 +114,39 @@ export default async function RaporPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className="lg:col-span-2 grid grid-cols-2 gap-4 md:gap-6">
+        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-center relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
               <BookOpen className="w-24 h-24 text-blue-500" />
             </div>
             <div className="relative z-10">
-              <p className="text-slate-500 font-semibold mb-2">Modul Diselesaikan</p>
+              <p className="text-slate-500 text-sm md:text-base font-semibold mb-2">Modul Diselesaikan</p>
               <div className="flex items-end gap-2">
-                <span className="text-5xl font-black text-slate-800">{totalCompleted}</span>
-                <span className="text-slate-400 font-medium mb-1">modul</span>
+                <span className="text-4xl md:text-5xl font-black text-slate-800">{totalCompleted}</span>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-center relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <Star className="w-24 h-24 text-yellow-500" />
+              <Target className="w-24 h-24 text-indigo-500" />
             </div>
             <div className="relative z-10">
-              <p className="text-slate-500 font-semibold mb-2">Rata-rata Nilai</p>
+              <p className="text-slate-500 text-sm md:text-base font-semibold mb-2">Rata-rata Nilai</p>
               <div className="flex items-end gap-2">
-                <span className="text-5xl font-black text-slate-800">{averageScore}</span>
-                <span className="text-slate-400 font-medium mb-1">/ 100</span>
+                <span className="text-4xl md:text-5xl font-black text-slate-800">{averageScore}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-amber-400 to-amber-500 rounded-3xl p-6 border border-amber-300 shadow-sm shadow-amber-500/20 flex flex-col justify-center relative overflow-hidden group text-white">
+            <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-30 transition-opacity scale-125 translate-x-4 -translate-y-4">
+              <Star className="w-32 h-32 fill-white text-white" />
+            </div>
+            <div className="relative z-10">
+              <p className="text-amber-50 text-sm md:text-base font-bold mb-2">Total Bintang</p>
+              <div className="flex items-end gap-2">
+                <span className="text-4xl md:text-5xl font-black">{student.starsBalance || 0}</span>
               </div>
             </div>
           </div>

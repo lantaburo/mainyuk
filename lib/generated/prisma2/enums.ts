@@ -110,3 +110,12 @@ export const WithdrawalStatus = {
 } as const
 
 export type WithdrawalStatus = (typeof WithdrawalStatus)[keyof typeof WithdrawalStatus]
+
+
+export const ClaimStatus = {
+  pending: 'pending',
+  fulfilled: 'fulfilled',
+  rejected: 'rejected'
+} as const
+
+export type ClaimStatus = (typeof ClaimStatus)[keyof typeof ClaimStatus]

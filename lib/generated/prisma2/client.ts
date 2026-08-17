@@ -156,3 +156,18 @@ export type AffiliateCode = Prisma.AffiliateCodeModel
  * 
  */
 export type AffiliateWithdrawal = Prisma.AffiliateWithdrawalModel
+/**
+ * Model ModuleAccess
+ * 
+ */
+export type ModuleAccess = Prisma.ModuleAccessModel
+/**
+ * Model MarketplaceItem
+ * 
+ */
+export type MarketplaceItem = Prisma.MarketplaceItemModel
+/**
+ * Model RewardClaim
+ * 
+ */
+export type RewardClaim = Prisma.RewardClaimModel

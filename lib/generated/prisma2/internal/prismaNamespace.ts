@@ -419,7 +419,10 @@ export const ModelName = {
   SystemSetting: 'SystemSetting',
   DiscountCode: 'DiscountCode',
   AffiliateCode: 'AffiliateCode',
-  AffiliateWithdrawal: 'AffiliateWithdrawal'
+  AffiliateWithdrawal: 'AffiliateWithdrawal',
+  ModuleAccess: 'ModuleAccess',
+  MarketplaceItem: 'MarketplaceItem',
+  RewardClaim: 'RewardClaim'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -435,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "store" | "storePage" | "storeSettings" | "category" | "product" | "productVariant" | "productImage" | "customer" | "order" | "orderItem" | "payment" | "aiProvider" | "article" | "subject" | "module" | "question" | "studentProfile" | "studentProgress" | "systemSetting" | "discountCode" | "affiliateCode" | "affiliateWithdrawal"
+    modelProps: "user" | "store" | "storePage" | "storeSettings" | "category" | "product" | "productVariant" | "productImage" | "customer" | "order" | "orderItem" | "payment" | "aiProvider" | "article" | "subject" | "module" | "question" | "studentProfile" | "studentProgress" | "systemSetting" | "discountCode" | "affiliateCode" | "affiliateWithdrawal" | "moduleAccess" | "marketplaceItem" | "rewardClaim"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2141,6 +2144,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ModuleAccess: {
+      payload: Prisma.$ModuleAccessPayload<ExtArgs>
+      fields: Prisma.ModuleAccessFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ModuleAccessFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ModuleAccessFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>
+        }
+        findFirst: {
+          args: Prisma.ModuleAccessFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ModuleAccessFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>
+        }
+        findMany: {
+          args: Prisma.ModuleAccessFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>[]
+        }
+        create: {
+          args: Prisma.ModuleAccessCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>
+        }
+        createMany: {
+          args: Prisma.ModuleAccessCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ModuleAccessCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>[]
+        }
+        delete: {
+          args: Prisma.ModuleAccessDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>
+        }
+        update: {
+          args: Prisma.ModuleAccessUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>
+        }
+        deleteMany: {
+          args: Prisma.ModuleAccessDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ModuleAccessUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ModuleAccessUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>[]
+        }
+        upsert: {
+          args: Prisma.ModuleAccessUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModuleAccessPayload>
+        }
+        aggregate: {
+          args: Prisma.ModuleAccessAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateModuleAccess>
+        }
+        groupBy: {
+          args: Prisma.ModuleAccessGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ModuleAccessGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ModuleAccessCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ModuleAccessCountAggregateOutputType> | number
+        }
+      }
+    }
+    MarketplaceItem: {
+      payload: Prisma.$MarketplaceItemPayload<ExtArgs>
+      fields: Prisma.MarketplaceItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MarketplaceItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MarketplaceItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>
+        }
+        findFirst: {
+          args: Prisma.MarketplaceItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MarketplaceItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>
+        }
+        findMany: {
+          args: Prisma.MarketplaceItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>[]
+        }
+        create: {
+          args: Prisma.MarketplaceItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>
+        }
+        createMany: {
+          args: Prisma.MarketplaceItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MarketplaceItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>[]
+        }
+        delete: {
+          args: Prisma.MarketplaceItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>
+        }
+        update: {
+          args: Prisma.MarketplaceItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.MarketplaceItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MarketplaceItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MarketplaceItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.MarketplaceItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketplaceItemPayload>
+        }
+        aggregate: {
+          args: Prisma.MarketplaceItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMarketplaceItem>
+        }
+        groupBy: {
+          args: Prisma.MarketplaceItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MarketplaceItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MarketplaceItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MarketplaceItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    RewardClaim: {
+      payload: Prisma.$RewardClaimPayload<ExtArgs>
+      fields: Prisma.RewardClaimFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RewardClaimFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RewardClaimFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>
+        }
+        findFirst: {
+          args: Prisma.RewardClaimFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RewardClaimFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>
+        }
+        findMany: {
+          args: Prisma.RewardClaimFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>[]
+        }
+        create: {
+          args: Prisma.RewardClaimCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>
+        }
+        createMany: {
+          args: Prisma.RewardClaimCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RewardClaimCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>[]
+        }
+        delete: {
+          args: Prisma.RewardClaimDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>
+        }
+        update: {
+          args: Prisma.RewardClaimUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>
+        }
+        deleteMany: {
+          args: Prisma.RewardClaimDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RewardClaimUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RewardClaimUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>[]
+        }
+        upsert: {
+          args: Prisma.RewardClaimUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewardClaimPayload>
+        }
+        aggregate: {
+          args: Prisma.RewardClaimAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRewardClaim>
+        }
+        groupBy: {
+          args: Prisma.RewardClaimGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewardClaimGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RewardClaimCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewardClaimCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2464,6 +2689,7 @@ export const StudentProfileScalarFieldEnum = {
   parentId: 'parentId',
   name: 'name',
   gradeLevel: 'gradeLevel',
+  starsBalance: 'starsBalance',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2548,6 +2774,45 @@ export const AffiliateWithdrawalScalarFieldEnum = {
 } as const
 
 export type AffiliateWithdrawalScalarFieldEnum = (typeof AffiliateWithdrawalScalarFieldEnum)[keyof typeof AffiliateWithdrawalScalarFieldEnum]
+
+
+export const ModuleAccessScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  moduleId: 'moduleId',
+  unlockMethod: 'unlockMethod',
+  createdAt: 'createdAt'
+} as const
+
+export type ModuleAccessScalarFieldEnum = (typeof ModuleAccessScalarFieldEnum)[keyof typeof ModuleAccessScalarFieldEnum]
+
+
+export const MarketplaceItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  price: 'price',
+  imageUrl: 'imageUrl',
+  creatorId: 'creatorId',
+  isGlobal: 'isGlobal',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MarketplaceItemScalarFieldEnum = (typeof MarketplaceItemScalarFieldEnum)[keyof typeof MarketplaceItemScalarFieldEnum]
+
+
+export const RewardClaimScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  itemId: 'itemId',
+  status: 'status',
+  claimedAt: 'claimedAt',
+  fulfilledAt: 'fulfilledAt'
+} as const
+
+export type RewardClaimScalarFieldEnum = (typeof RewardClaimScalarFieldEnum)[keyof typeof RewardClaimScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2822,6 +3087,20 @@ export type ListEnumWithdrawalStatusFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'ClaimStatus'
+ */
+export type EnumClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClaimStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ClaimStatus[]'
+ */
+export type ListEnumClaimStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClaimStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3008,6 +3287,9 @@ export type GlobalOmitConfig = {
   discountCode?: Prisma.DiscountCodeOmit
   affiliateCode?: Prisma.AffiliateCodeOmit
   affiliateWithdrawal?: Prisma.AffiliateWithdrawalOmit
+  moduleAccess?: Prisma.ModuleAccessOmit
+  marketplaceItem?: Prisma.MarketplaceItemOmit
+  rewardClaim?: Prisma.RewardClaimOmit
 }
 
 /* Types for Logging */

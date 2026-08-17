@@ -70,7 +70,15 @@ export async function POST(req: Request) {
       }
     });
 
-    return NextResponse.json({ success: true, isCompleted: newIsCompleted, newLevel, passedLevel });
+    const scoreDiff = Math.max(0, score - (existingProgress?.score || 0));
+    if (scoreDiff > 0) {
+      await prisma.studentProfile.update({
+        where: { id: studentId },
+        data: { starsBalance: { increment: scoreDiff } }
+      });
+    }
+
+    return NextResponse.json({ success: true, isCompleted: newIsCompleted, newLevel, passedLevel, starsEarned: scoreDiff });
   } catch (error) {
     console.error("[SUBMIT_QUIZ_ERROR]", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

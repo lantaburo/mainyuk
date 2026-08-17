@@ -19,6 +19,7 @@ model User {
   classLevel   Int?     @map("class_level")
   children     StudentProfile[]
   affiliateCode AffiliateCode?
+  marketplaceItems MarketplaceItem[]
 
   @@map("users")
 }
@@ -304,6 +305,7 @@ model Module {
   subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   questions   Question[]
   progress    StudentProgress[]
+  moduleAccesses ModuleAccess[]
 
   @@unique([subjectId, slug])
   @@map("modules")
@@ -381,11 +383,14 @@ model StudentProfile {
   parentId   String   @map("parent_id")
   name       String
   gradeLevel Int      @map("grade_level")
+  starsBalance Int    @default(0) @map("stars_balance")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
   
   parent     User     @relation(fields: [parentId], references: [id], onDelete: Cascade)
   progress   StudentProgress[]
+  moduleAccesses ModuleAccess[]
+  rewardClaims   RewardClaim[]
 
   @@index([parentId])
   @@map("student_profiles")
@@ -499,5 +504,64 @@ enum AffiliateStatus {
 enum WithdrawalStatus {
   pending
   approved
+  rejected
+}
+
+// ─── Gamification & Rewards ──────────────────────────────────────────────────
+
+model ModuleAccess {
+  id        String   @id @default(cuid())
+  studentId String   @map("student_id")
+  moduleId  String   @map("module_id")
+  unlockMethod String @default("stars") @map("unlock_method") // "stars" | "payment"
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  module    Module         @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, moduleId])
+  @@index([studentId])
+  @@index([moduleId])
+  @@map("module_accesses")
+}
+
+model MarketplaceItem {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  price       Int      // Price in stars
+  imageUrl    String?  @map("image_url")
+  creatorId   String   @map("creator_id") // Parent User ID or Admin User ID
+  isGlobal    Boolean  @default(false) @map("is_global") // If true, available to all students
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  creator     User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  claims      RewardClaim[]
+
+  @@index([creatorId])
+  @@map("marketplace_items")
+}
+
+model RewardClaim {
+  id        String   @id @default(cuid())
+  studentId String   @map("student_id")
+  itemId    String   @map("item_id")
+  status    ClaimStatus @default(pending) // pending, fulfilled, rejected
+  claimedAt DateTime @default(now()) @map("claimed_at")
+  fulfilledAt DateTime? @map("fulfilled_at")
+
+  student   StudentProfile  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  item      MarketplaceItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+  @@index([itemId])
+  @@map("reward_claims")
+}
+
+enum ClaimStatus {
+  pending
+  fulfilled
   rejected
 }

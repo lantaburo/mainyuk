@@ -243,6 +243,7 @@ export type UserWhereInput = {
   stores?: Prisma.StoreListRelationFilter
   children?: Prisma.StudentProfileListRelationFilter
   affiliateCode?: Prisma.XOR<Prisma.AffiliateCodeNullableScalarRelationFilter, Prisma.AffiliateCodeWhereInput> | null
+  marketplaceItems?: Prisma.MarketplaceItemListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -257,6 +258,7 @@ export type UserOrderByWithRelationInput = {
   stores?: Prisma.StoreOrderByRelationAggregateInput
   children?: Prisma.StudentProfileOrderByRelationAggregateInput
   affiliateCode?: Prisma.AffiliateCodeOrderByWithRelationInput
+  marketplaceItems?: Prisma.MarketplaceItemOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -274,6 +276,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   stores?: Prisma.StoreListRelationFilter
   children?: Prisma.StudentProfileListRelationFilter
   affiliateCode?: Prisma.XOR<Prisma.AffiliateCodeNullableScalarRelationFilter, Prisma.AffiliateCodeWhereInput> | null
+  marketplaceItems?: Prisma.MarketplaceItemListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -318,6 +321,7 @@ export type UserCreateInput = {
   stores?: Prisma.StoreCreateNestedManyWithoutOwnerInput
   children?: Prisma.StudentProfileCreateNestedManyWithoutParentInput
   affiliateCode?: Prisma.AffiliateCodeCreateNestedOneWithoutUserInput
+  marketplaceItems?: Prisma.MarketplaceItemCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -332,6 +336,7 @@ export type UserUncheckedCreateInput = {
   stores?: Prisma.StoreUncheckedCreateNestedManyWithoutOwnerInput
   children?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutParentInput
   affiliateCode?: Prisma.AffiliateCodeUncheckedCreateNestedOneWithoutUserInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUpdateInput = {
@@ -346,6 +351,7 @@ export type UserUpdateInput = {
   stores?: Prisma.StoreUpdateManyWithoutOwnerNestedInput
   children?: Prisma.StudentProfileUpdateManyWithoutParentNestedInput
   affiliateCode?: Prisma.AffiliateCodeUpdateOneWithoutUserNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -360,6 +366,7 @@ export type UserUncheckedUpdateInput = {
   stores?: Prisma.StoreUncheckedUpdateManyWithoutOwnerNestedInput
   children?: Prisma.StudentProfileUncheckedUpdateManyWithoutParentNestedInput
   affiliateCode?: Prisma.AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -510,6 +517,20 @@ export type UserUpdateOneWithoutAffiliateCodeNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAffiliateCodeInput, Prisma.UserUpdateWithoutAffiliateCodeInput>, Prisma.UserUncheckedUpdateWithoutAffiliateCodeInput>
 }
 
+export type UserCreateNestedOneWithoutMarketplaceItemsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMarketplaceItemsInput, Prisma.UserUncheckedCreateWithoutMarketplaceItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMarketplaceItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMarketplaceItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMarketplaceItemsInput, Prisma.UserUncheckedCreateWithoutMarketplaceItemsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMarketplaceItemsInput
+  upsert?: Prisma.UserUpsertWithoutMarketplaceItemsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMarketplaceItemsInput, Prisma.UserUpdateWithoutMarketplaceItemsInput>, Prisma.UserUncheckedUpdateWithoutMarketplaceItemsInput>
+}
+
 export type UserCreateWithoutStoresInput = {
   id?: string
   name: string
@@ -521,6 +542,7 @@ export type UserCreateWithoutStoresInput = {
   classLevel?: number | null
   children?: Prisma.StudentProfileCreateNestedManyWithoutParentInput
   affiliateCode?: Prisma.AffiliateCodeCreateNestedOneWithoutUserInput
+  marketplaceItems?: Prisma.MarketplaceItemCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutStoresInput = {
@@ -534,6 +556,7 @@ export type UserUncheckedCreateWithoutStoresInput = {
   classLevel?: number | null
   children?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutParentInput
   affiliateCode?: Prisma.AffiliateCodeUncheckedCreateNestedOneWithoutUserInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutStoresInput = {
@@ -563,6 +586,7 @@ export type UserUpdateWithoutStoresInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   children?: Prisma.StudentProfileUpdateManyWithoutParentNestedInput
   affiliateCode?: Prisma.AffiliateCodeUpdateOneWithoutUserNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoresInput = {
@@ -576,6 +600,7 @@ export type UserUncheckedUpdateWithoutStoresInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   children?: Prisma.StudentProfileUncheckedUpdateManyWithoutParentNestedInput
   affiliateCode?: Prisma.AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutChildrenInput = {
@@ -589,6 +614,7 @@ export type UserCreateWithoutChildrenInput = {
   classLevel?: number | null
   stores?: Prisma.StoreCreateNestedManyWithoutOwnerInput
   affiliateCode?: Prisma.AffiliateCodeCreateNestedOneWithoutUserInput
+  marketplaceItems?: Prisma.MarketplaceItemCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutChildrenInput = {
@@ -602,6 +628,7 @@ export type UserUncheckedCreateWithoutChildrenInput = {
   classLevel?: number | null
   stores?: Prisma.StoreUncheckedCreateNestedManyWithoutOwnerInput
   affiliateCode?: Prisma.AffiliateCodeUncheckedCreateNestedOneWithoutUserInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutChildrenInput = {
@@ -631,6 +658,7 @@ export type UserUpdateWithoutChildrenInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUpdateManyWithoutOwnerNestedInput
   affiliateCode?: Prisma.AffiliateCodeUpdateOneWithoutUserNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChildrenInput = {
@@ -644,6 +672,7 @@ export type UserUncheckedUpdateWithoutChildrenInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUncheckedUpdateManyWithoutOwnerNestedInput
   affiliateCode?: Prisma.AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserCreateWithoutAffiliateCodeInput = {
@@ -657,6 +686,7 @@ export type UserCreateWithoutAffiliateCodeInput = {
   classLevel?: number | null
   stores?: Prisma.StoreCreateNestedManyWithoutOwnerInput
   children?: Prisma.StudentProfileCreateNestedManyWithoutParentInput
+  marketplaceItems?: Prisma.MarketplaceItemCreateNestedManyWithoutCreatorInput
 }
 
 export type UserUncheckedCreateWithoutAffiliateCodeInput = {
@@ -670,6 +700,7 @@ export type UserUncheckedCreateWithoutAffiliateCodeInput = {
   classLevel?: number | null
   stores?: Prisma.StoreUncheckedCreateNestedManyWithoutOwnerInput
   children?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutParentInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedCreateNestedManyWithoutCreatorInput
 }
 
 export type UserCreateOrConnectWithoutAffiliateCodeInput = {
@@ -699,6 +730,7 @@ export type UserUpdateWithoutAffiliateCodeInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUpdateManyWithoutOwnerNestedInput
   children?: Prisma.StudentProfileUpdateManyWithoutParentNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUpdateManyWithoutCreatorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAffiliateCodeInput = {
@@ -712,6 +744,79 @@ export type UserUncheckedUpdateWithoutAffiliateCodeInput = {
   classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stores?: Prisma.StoreUncheckedUpdateManyWithoutOwnerNestedInput
   children?: Prisma.StudentProfileUncheckedUpdateManyWithoutParentNestedInput
+  marketplaceItems?: Prisma.MarketplaceItemUncheckedUpdateManyWithoutCreatorNestedInput
+}
+
+export type UserCreateWithoutMarketplaceItemsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classLevel?: number | null
+  stores?: Prisma.StoreCreateNestedManyWithoutOwnerInput
+  children?: Prisma.StudentProfileCreateNestedManyWithoutParentInput
+  affiliateCode?: Prisma.AffiliateCodeCreateNestedOneWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMarketplaceItemsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  classLevel?: number | null
+  stores?: Prisma.StoreUncheckedCreateNestedManyWithoutOwnerInput
+  children?: Prisma.StudentProfileUncheckedCreateNestedManyWithoutParentInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedCreateNestedOneWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMarketplaceItemsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMarketplaceItemsInput, Prisma.UserUncheckedCreateWithoutMarketplaceItemsInput>
+}
+
+export type UserUpsertWithoutMarketplaceItemsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMarketplaceItemsInput, Prisma.UserUncheckedUpdateWithoutMarketplaceItemsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMarketplaceItemsInput, Prisma.UserUncheckedCreateWithoutMarketplaceItemsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMarketplaceItemsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMarketplaceItemsInput, Prisma.UserUncheckedUpdateWithoutMarketplaceItemsInput>
+}
+
+export type UserUpdateWithoutMarketplaceItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  stores?: Prisma.StoreUpdateManyWithoutOwnerNestedInput
+  children?: Prisma.StudentProfileUpdateManyWithoutParentNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUpdateOneWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMarketplaceItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  classLevel?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  stores?: Prisma.StoreUncheckedUpdateManyWithoutOwnerNestedInput
+  children?: Prisma.StudentProfileUncheckedUpdateManyWithoutParentNestedInput
+  affiliateCode?: Prisma.AffiliateCodeUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -722,11 +827,13 @@ export type UserUncheckedUpdateWithoutAffiliateCodeInput = {
 export type UserCountOutputType = {
   stores: number
   children: number
+  marketplaceItems: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stores?: boolean | UserCountOutputTypeCountStoresArgs
   children?: boolean | UserCountOutputTypeCountChildrenArgs
+  marketplaceItems?: boolean | UserCountOutputTypeCountMarketplaceItemsArgs
 }
 
 /**
@@ -753,6 +860,13 @@ export type UserCountOutputTypeCountChildrenArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.StudentProfileWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMarketplaceItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MarketplaceItemWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -766,6 +880,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   stores?: boolean | Prisma.User$storesArgs<ExtArgs>
   children?: boolean | Prisma.User$childrenArgs<ExtArgs>
   affiliateCode?: boolean | Prisma.User$affiliateCodeArgs<ExtArgs>
+  marketplaceItems?: boolean | Prisma.User$marketplaceItemsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -807,6 +922,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   stores?: boolean | Prisma.User$storesArgs<ExtArgs>
   children?: boolean | Prisma.User$childrenArgs<ExtArgs>
   affiliateCode?: boolean | Prisma.User$affiliateCodeArgs<ExtArgs>
+  marketplaceItems?: boolean | Prisma.User$marketplaceItemsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -818,6 +934,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     stores: Prisma.$StorePayload<ExtArgs>[]
     children: Prisma.$StudentProfilePayload<ExtArgs>[]
     affiliateCode: Prisma.$AffiliateCodePayload<ExtArgs> | null
+    marketplaceItems: Prisma.$MarketplaceItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1225,6 +1342,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   stores<T extends Prisma.User$storesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   children<T extends Prisma.User$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   affiliateCode<T extends Prisma.User$affiliateCodeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$affiliateCodeArgs<ExtArgs>>): Prisma.Prisma__AffiliateCodeClient<runtime.Types.Result.GetResult<Prisma.$AffiliateCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  marketplaceItems<T extends Prisma.User$marketplaceItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$marketplaceItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MarketplaceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1719,6 +1837,30 @@ export type User$affiliateCodeArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.AffiliateCodeInclude<ExtArgs> | null
   where?: Prisma.AffiliateCodeWhereInput
+}
+
+/**
+ * User.marketplaceItems
+ */
+export type User$marketplaceItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarketplaceItem
+   */
+  select?: Prisma.MarketplaceItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarketplaceItem
+   */
+  omit?: Prisma.MarketplaceItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketplaceItemInclude<ExtArgs> | null
+  where?: Prisma.MarketplaceItemWhereInput
+  orderBy?: Prisma.MarketplaceItemOrderByWithRelationInput | Prisma.MarketplaceItemOrderByWithRelationInput[]
+  cursor?: Prisma.MarketplaceItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MarketplaceItemScalarFieldEnum | Prisma.MarketplaceItemScalarFieldEnum[]
 }
 
 /**

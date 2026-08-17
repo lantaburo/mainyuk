@@ -28,10 +28,12 @@ export type AggregateStudentProfile = {
 
 export type StudentProfileAvgAggregateOutputType = {
   gradeLevel: number | null
+  starsBalance: number | null
 }
 
 export type StudentProfileSumAggregateOutputType = {
   gradeLevel: number | null
+  starsBalance: number | null
 }
 
 export type StudentProfileMinAggregateOutputType = {
@@ -39,6 +41,7 @@ export type StudentProfileMinAggregateOutputType = {
   parentId: string | null
   name: string | null
   gradeLevel: number | null
+  starsBalance: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +51,7 @@ export type StudentProfileMaxAggregateOutputType = {
   parentId: string | null
   name: string | null
   gradeLevel: number | null
+  starsBalance: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,6 +61,7 @@ export type StudentProfileCountAggregateOutputType = {
   parentId: number
   name: number
   gradeLevel: number
+  starsBalance: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -65,10 +70,12 @@ export type StudentProfileCountAggregateOutputType = {
 
 export type StudentProfileAvgAggregateInputType = {
   gradeLevel?: true
+  starsBalance?: true
 }
 
 export type StudentProfileSumAggregateInputType = {
   gradeLevel?: true
+  starsBalance?: true
 }
 
 export type StudentProfileMinAggregateInputType = {
@@ -76,6 +83,7 @@ export type StudentProfileMinAggregateInputType = {
   parentId?: true
   name?: true
   gradeLevel?: true
+  starsBalance?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -85,6 +93,7 @@ export type StudentProfileMaxAggregateInputType = {
   parentId?: true
   name?: true
   gradeLevel?: true
+  starsBalance?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +103,7 @@ export type StudentProfileCountAggregateInputType = {
   parentId?: true
   name?: true
   gradeLevel?: true
+  starsBalance?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -190,6 +200,7 @@ export type StudentProfileGroupByOutputType = {
   parentId: string
   name: string
   gradeLevel: number
+  starsBalance: number
   createdAt: Date
   updatedAt: Date
   _count: StudentProfileCountAggregateOutputType | null
@@ -222,10 +233,13 @@ export type StudentProfileWhereInput = {
   parentId?: Prisma.StringFilter<"StudentProfile"> | string
   name?: Prisma.StringFilter<"StudentProfile"> | string
   gradeLevel?: Prisma.IntFilter<"StudentProfile"> | number
+  starsBalance?: Prisma.IntFilter<"StudentProfile"> | number
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   parent?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   progress?: Prisma.StudentProgressListRelationFilter
+  moduleAccesses?: Prisma.ModuleAccessListRelationFilter
+  rewardClaims?: Prisma.RewardClaimListRelationFilter
 }
 
 export type StudentProfileOrderByWithRelationInput = {
@@ -233,10 +247,13 @@ export type StudentProfileOrderByWithRelationInput = {
   parentId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   gradeLevel?: Prisma.SortOrder
+  starsBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   parent?: Prisma.UserOrderByWithRelationInput
   progress?: Prisma.StudentProgressOrderByRelationAggregateInput
+  moduleAccesses?: Prisma.ModuleAccessOrderByRelationAggregateInput
+  rewardClaims?: Prisma.RewardClaimOrderByRelationAggregateInput
 }
 
 export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -247,10 +264,13 @@ export type StudentProfileWhereUniqueInput = Prisma.AtLeast<{
   parentId?: Prisma.StringFilter<"StudentProfile"> | string
   name?: Prisma.StringFilter<"StudentProfile"> | string
   gradeLevel?: Prisma.IntFilter<"StudentProfile"> | number
+  starsBalance?: Prisma.IntFilter<"StudentProfile"> | number
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   parent?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   progress?: Prisma.StudentProgressListRelationFilter
+  moduleAccesses?: Prisma.ModuleAccessListRelationFilter
+  rewardClaims?: Prisma.RewardClaimListRelationFilter
 }, "id">
 
 export type StudentProfileOrderByWithAggregationInput = {
@@ -258,6 +278,7 @@ export type StudentProfileOrderByWithAggregationInput = {
   parentId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   gradeLevel?: Prisma.SortOrder
+  starsBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.StudentProfileCountOrderByAggregateInput
@@ -275,6 +296,7 @@ export type StudentProfileScalarWhereWithAggregatesInput = {
   parentId?: Prisma.StringWithAggregatesFilter<"StudentProfile"> | string
   name?: Prisma.StringWithAggregatesFilter<"StudentProfile"> | string
   gradeLevel?: Prisma.IntWithAggregatesFilter<"StudentProfile"> | number
+  starsBalance?: Prisma.IntWithAggregatesFilter<"StudentProfile"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"StudentProfile"> | Date | string
 }
@@ -283,10 +305,13 @@ export type StudentProfileCreateInput = {
   id?: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   parent: Prisma.UserCreateNestedOneWithoutChildrenInput
   progress?: Prisma.StudentProgressCreateNestedManyWithoutStudentInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimCreateNestedManyWithoutStudentInput
 }
 
 export type StudentProfileUncheckedCreateInput = {
@@ -294,19 +319,25 @@ export type StudentProfileUncheckedCreateInput = {
   parentId: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutStudentInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   parent?: Prisma.UserUpdateOneRequiredWithoutChildrenNestedInput
   progress?: Prisma.StudentProgressUpdateManyWithoutStudentNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentProfileUncheckedUpdateInput = {
@@ -314,9 +345,12 @@ export type StudentProfileUncheckedUpdateInput = {
   parentId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutStudentNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentProfileCreateManyInput = {
@@ -324,6 +358,7 @@ export type StudentProfileCreateManyInput = {
   parentId: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -332,6 +367,7 @@ export type StudentProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -341,6 +377,7 @@ export type StudentProfileUncheckedUpdateManyInput = {
   parentId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -360,12 +397,14 @@ export type StudentProfileCountOrderByAggregateInput = {
   parentId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   gradeLevel?: Prisma.SortOrder
+  starsBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type StudentProfileAvgOrderByAggregateInput = {
   gradeLevel?: Prisma.SortOrder
+  starsBalance?: Prisma.SortOrder
 }
 
 export type StudentProfileMaxOrderByAggregateInput = {
@@ -373,6 +412,7 @@ export type StudentProfileMaxOrderByAggregateInput = {
   parentId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   gradeLevel?: Prisma.SortOrder
+  starsBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -382,12 +422,14 @@ export type StudentProfileMinOrderByAggregateInput = {
   parentId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   gradeLevel?: Prisma.SortOrder
+  starsBalance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type StudentProfileSumOrderByAggregateInput = {
   gradeLevel?: Prisma.SortOrder
+  starsBalance?: Prisma.SortOrder
 }
 
 export type StudentProfileScalarRelationFilter = {
@@ -451,22 +493,56 @@ export type StudentProfileUpdateOneRequiredWithoutProgressNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentProfileUpdateToOneWithWhereWithoutProgressInput, Prisma.StudentProfileUpdateWithoutProgressInput>, Prisma.StudentProfileUncheckedUpdateWithoutProgressInput>
 }
 
+export type StudentProfileCreateNestedOneWithoutModuleAccessesInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutModuleAccessesInput, Prisma.StudentProfileUncheckedCreateWithoutModuleAccessesInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutModuleAccessesInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+}
+
+export type StudentProfileUpdateOneRequiredWithoutModuleAccessesNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutModuleAccessesInput, Prisma.StudentProfileUncheckedCreateWithoutModuleAccessesInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutModuleAccessesInput
+  upsert?: Prisma.StudentProfileUpsertWithoutModuleAccessesInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentProfileUpdateToOneWithWhereWithoutModuleAccessesInput, Prisma.StudentProfileUpdateWithoutModuleAccessesInput>, Prisma.StudentProfileUncheckedUpdateWithoutModuleAccessesInput>
+}
+
+export type StudentProfileCreateNestedOneWithoutRewardClaimsInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutRewardClaimsInput, Prisma.StudentProfileUncheckedCreateWithoutRewardClaimsInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutRewardClaimsInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+}
+
+export type StudentProfileUpdateOneRequiredWithoutRewardClaimsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentProfileCreateWithoutRewardClaimsInput, Prisma.StudentProfileUncheckedCreateWithoutRewardClaimsInput>
+  connectOrCreate?: Prisma.StudentProfileCreateOrConnectWithoutRewardClaimsInput
+  upsert?: Prisma.StudentProfileUpsertWithoutRewardClaimsInput
+  connect?: Prisma.StudentProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentProfileUpdateToOneWithWhereWithoutRewardClaimsInput, Prisma.StudentProfileUpdateWithoutRewardClaimsInput>, Prisma.StudentProfileUncheckedUpdateWithoutRewardClaimsInput>
+}
+
 export type StudentProfileCreateWithoutParentInput = {
   id?: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   progress?: Prisma.StudentProgressCreateNestedManyWithoutStudentInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimCreateNestedManyWithoutStudentInput
 }
 
 export type StudentProfileUncheckedCreateWithoutParentInput = {
   id?: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutStudentInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentProfileCreateOrConnectWithoutParentInput = {
@@ -503,6 +579,7 @@ export type StudentProfileScalarWhereInput = {
   parentId?: Prisma.StringFilter<"StudentProfile"> | string
   name?: Prisma.StringFilter<"StudentProfile"> | string
   gradeLevel?: Prisma.IntFilter<"StudentProfile"> | number
+  starsBalance?: Prisma.IntFilter<"StudentProfile"> | number
   createdAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentProfile"> | Date | string
 }
@@ -511,9 +588,12 @@ export type StudentProfileCreateWithoutProgressInput = {
   id?: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   parent: Prisma.UserCreateNestedOneWithoutChildrenInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimCreateNestedManyWithoutStudentInput
 }
 
 export type StudentProfileUncheckedCreateWithoutProgressInput = {
@@ -521,8 +601,11 @@ export type StudentProfileUncheckedCreateWithoutProgressInput = {
   parentId: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentProfileCreateOrConnectWithoutProgressInput = {
@@ -545,9 +628,12 @@ export type StudentProfileUpdateWithoutProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   parent?: Prisma.UserUpdateOneRequiredWithoutChildrenNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutProgressInput = {
@@ -555,14 +641,146 @@ export type StudentProfileUncheckedUpdateWithoutProgressInput = {
   parentId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentProfileCreateWithoutModuleAccessesInput = {
+  id?: string
+  name: string
+  gradeLevel: number
+  starsBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parent: Prisma.UserCreateNestedOneWithoutChildrenInput
+  progress?: Prisma.StudentProgressCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimCreateNestedManyWithoutStudentInput
+}
+
+export type StudentProfileUncheckedCreateWithoutModuleAccessesInput = {
+  id?: string
+  parentId: string
+  name: string
+  gradeLevel: number
+  starsBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutStudentInput
+  rewardClaims?: Prisma.RewardClaimUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentProfileCreateOrConnectWithoutModuleAccessesInput = {
+  where: Prisma.StudentProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutModuleAccessesInput, Prisma.StudentProfileUncheckedCreateWithoutModuleAccessesInput>
+}
+
+export type StudentProfileUpsertWithoutModuleAccessesInput = {
+  update: Prisma.XOR<Prisma.StudentProfileUpdateWithoutModuleAccessesInput, Prisma.StudentProfileUncheckedUpdateWithoutModuleAccessesInput>
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutModuleAccessesInput, Prisma.StudentProfileUncheckedCreateWithoutModuleAccessesInput>
+  where?: Prisma.StudentProfileWhereInput
+}
+
+export type StudentProfileUpdateToOneWithWhereWithoutModuleAccessesInput = {
+  where?: Prisma.StudentProfileWhereInput
+  data: Prisma.XOR<Prisma.StudentProfileUpdateWithoutModuleAccessesInput, Prisma.StudentProfileUncheckedUpdateWithoutModuleAccessesInput>
+}
+
+export type StudentProfileUpdateWithoutModuleAccessesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.UserUpdateOneRequiredWithoutChildrenNestedInput
+  progress?: Prisma.StudentProgressUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentProfileUncheckedUpdateWithoutModuleAccessesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentProfileCreateWithoutRewardClaimsInput = {
+  id?: string
+  name: string
+  gradeLevel: number
+  starsBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parent: Prisma.UserCreateNestedOneWithoutChildrenInput
+  progress?: Prisma.StudentProgressCreateNestedManyWithoutStudentInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutStudentInput
+}
+
+export type StudentProfileUncheckedCreateWithoutRewardClaimsInput = {
+  id?: string
+  parentId: string
+  name: string
+  gradeLevel: number
+  starsBalance?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutStudentInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentProfileCreateOrConnectWithoutRewardClaimsInput = {
+  where: Prisma.StudentProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutRewardClaimsInput, Prisma.StudentProfileUncheckedCreateWithoutRewardClaimsInput>
+}
+
+export type StudentProfileUpsertWithoutRewardClaimsInput = {
+  update: Prisma.XOR<Prisma.StudentProfileUpdateWithoutRewardClaimsInput, Prisma.StudentProfileUncheckedUpdateWithoutRewardClaimsInput>
+  create: Prisma.XOR<Prisma.StudentProfileCreateWithoutRewardClaimsInput, Prisma.StudentProfileUncheckedCreateWithoutRewardClaimsInput>
+  where?: Prisma.StudentProfileWhereInput
+}
+
+export type StudentProfileUpdateToOneWithWhereWithoutRewardClaimsInput = {
+  where?: Prisma.StudentProfileWhereInput
+  data: Prisma.XOR<Prisma.StudentProfileUpdateWithoutRewardClaimsInput, Prisma.StudentProfileUncheckedUpdateWithoutRewardClaimsInput>
+}
+
+export type StudentProfileUpdateWithoutRewardClaimsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parent?: Prisma.UserUpdateOneRequiredWithoutChildrenNestedInput
+  progress?: Prisma.StudentProgressUpdateManyWithoutStudentNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentProfileUncheckedUpdateWithoutRewardClaimsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutStudentNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentProfileCreateManyParentInput = {
   id?: string
   name: string
   gradeLevel: number
+  starsBalance?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -571,24 +789,31 @@ export type StudentProfileUpdateWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   progress?: Prisma.StudentProgressUpdateManyWithoutStudentNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentProfileUncheckedUpdateWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutStudentNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutStudentNestedInput
+  rewardClaims?: Prisma.RewardClaimUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentProfileUncheckedUpdateManyWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  starsBalance?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -600,10 +825,14 @@ export type StudentProfileUncheckedUpdateManyWithoutParentInput = {
 
 export type StudentProfileCountOutputType = {
   progress: number
+  moduleAccesses: number
+  rewardClaims: number
 }
 
 export type StudentProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   progress?: boolean | StudentProfileCountOutputTypeCountProgressArgs
+  moduleAccesses?: boolean | StudentProfileCountOutputTypeCountModuleAccessesArgs
+  rewardClaims?: boolean | StudentProfileCountOutputTypeCountRewardClaimsArgs
 }
 
 /**
@@ -623,16 +852,33 @@ export type StudentProfileCountOutputTypeCountProgressArgs<ExtArgs extends runti
   where?: Prisma.StudentProgressWhereInput
 }
 
+/**
+ * StudentProfileCountOutputType without action
+ */
+export type StudentProfileCountOutputTypeCountModuleAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ModuleAccessWhereInput
+}
+
+/**
+ * StudentProfileCountOutputType without action
+ */
+export type StudentProfileCountOutputTypeCountRewardClaimsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RewardClaimWhereInput
+}
+
 
 export type StudentProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   parentId?: boolean
   name?: boolean
   gradeLevel?: boolean
+  starsBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   parent?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   progress?: boolean | Prisma.StudentProfile$progressArgs<ExtArgs>
+  moduleAccesses?: boolean | Prisma.StudentProfile$moduleAccessesArgs<ExtArgs>
+  rewardClaims?: boolean | Prisma.StudentProfile$rewardClaimsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["studentProfile"]>
 
@@ -641,6 +887,7 @@ export type StudentProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   parentId?: boolean
   name?: boolean
   gradeLevel?: boolean
+  starsBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   parent?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -651,6 +898,7 @@ export type StudentProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   parentId?: boolean
   name?: boolean
   gradeLevel?: boolean
+  starsBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   parent?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -661,14 +909,17 @@ export type StudentProfileSelectScalar = {
   parentId?: boolean
   name?: boolean
   gradeLevel?: boolean
+  starsBalance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "parentId" | "name" | "gradeLevel" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
+export type StudentProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "parentId" | "name" | "gradeLevel" | "starsBalance" | "createdAt" | "updatedAt", ExtArgs["result"]["studentProfile"]>
 export type StudentProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   parent?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   progress?: boolean | Prisma.StudentProfile$progressArgs<ExtArgs>
+  moduleAccesses?: boolean | Prisma.StudentProfile$moduleAccessesArgs<ExtArgs>
+  rewardClaims?: boolean | Prisma.StudentProfile$rewardClaimsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -683,12 +934,15 @@ export type $StudentProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     parent: Prisma.$UserPayload<ExtArgs>
     progress: Prisma.$StudentProgressPayload<ExtArgs>[]
+    moduleAccesses: Prisma.$ModuleAccessPayload<ExtArgs>[]
+    rewardClaims: Prisma.$RewardClaimPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     parentId: string
     name: string
     gradeLevel: number
+    starsBalance: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["studentProfile"]>
@@ -1087,6 +1341,8 @@ export interface Prisma__StudentProfileClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   parent<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   progress<T extends Prisma.StudentProfile$progressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$progressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  moduleAccesses<T extends Prisma.StudentProfile$moduleAccessesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$moduleAccessesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModuleAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rewardClaims<T extends Prisma.StudentProfile$rewardClaimsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentProfile$rewardClaimsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RewardClaimPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1120,6 +1376,7 @@ export interface StudentProfileFieldRefs {
   readonly parentId: Prisma.FieldRef<"StudentProfile", 'String'>
   readonly name: Prisma.FieldRef<"StudentProfile", 'String'>
   readonly gradeLevel: Prisma.FieldRef<"StudentProfile", 'Int'>
+  readonly starsBalance: Prisma.FieldRef<"StudentProfile", 'Int'>
   readonly createdAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"StudentProfile", 'DateTime'>
 }
@@ -1544,6 +1801,54 @@ export type StudentProfile$progressArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.StudentProgressScalarFieldEnum | Prisma.StudentProgressScalarFieldEnum[]
+}
+
+/**
+ * StudentProfile.moduleAccesses
+ */
+export type StudentProfile$moduleAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ModuleAccess
+   */
+  select?: Prisma.ModuleAccessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ModuleAccess
+   */
+  omit?: Prisma.ModuleAccessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ModuleAccessInclude<ExtArgs> | null
+  where?: Prisma.ModuleAccessWhereInput
+  orderBy?: Prisma.ModuleAccessOrderByWithRelationInput | Prisma.ModuleAccessOrderByWithRelationInput[]
+  cursor?: Prisma.ModuleAccessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ModuleAccessScalarFieldEnum | Prisma.ModuleAccessScalarFieldEnum[]
+}
+
+/**
+ * StudentProfile.rewardClaims
+ */
+export type StudentProfile$rewardClaimsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RewardClaim
+   */
+  select?: Prisma.RewardClaimSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RewardClaim
+   */
+  omit?: Prisma.RewardClaimOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RewardClaimInclude<ExtArgs> | null
+  where?: Prisma.RewardClaimWhereInput
+  orderBy?: Prisma.RewardClaimOrderByWithRelationInput | Prisma.RewardClaimOrderByWithRelationInput[]
+  cursor?: Prisma.RewardClaimWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RewardClaimScalarFieldEnum | Prisma.RewardClaimScalarFieldEnum[]
 }
 
 /**

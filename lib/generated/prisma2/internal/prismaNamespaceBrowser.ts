@@ -73,7 +73,10 @@ export const ModelName = {
   SystemSetting: 'SystemSetting',
   DiscountCode: 'DiscountCode',
   AffiliateCode: 'AffiliateCode',
-  AffiliateWithdrawal: 'AffiliateWithdrawal'
+  AffiliateWithdrawal: 'AffiliateWithdrawal',
+  ModuleAccess: 'ModuleAccess',
+  MarketplaceItem: 'MarketplaceItem',
+  RewardClaim: 'RewardClaim'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -376,6 +379,7 @@ export const StudentProfileScalarFieldEnum = {
   parentId: 'parentId',
   name: 'name',
   gradeLevel: 'gradeLevel',
+  starsBalance: 'starsBalance',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -460,6 +464,45 @@ export const AffiliateWithdrawalScalarFieldEnum = {
 } as const
 
 export type AffiliateWithdrawalScalarFieldEnum = (typeof AffiliateWithdrawalScalarFieldEnum)[keyof typeof AffiliateWithdrawalScalarFieldEnum]
+
+
+export const ModuleAccessScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  moduleId: 'moduleId',
+  unlockMethod: 'unlockMethod',
+  createdAt: 'createdAt'
+} as const
+
+export type ModuleAccessScalarFieldEnum = (typeof ModuleAccessScalarFieldEnum)[keyof typeof ModuleAccessScalarFieldEnum]
+
+
+export const MarketplaceItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  price: 'price',
+  imageUrl: 'imageUrl',
+  creatorId: 'creatorId',
+  isGlobal: 'isGlobal',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MarketplaceItemScalarFieldEnum = (typeof MarketplaceItemScalarFieldEnum)[keyof typeof MarketplaceItemScalarFieldEnum]
+
+
+export const RewardClaimScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  itemId: 'itemId',
+  status: 'status',
+  claimedAt: 'claimedAt',
+  fulfilledAt: 'fulfilledAt'
+} as const
+
+export type RewardClaimScalarFieldEnum = (typeof RewardClaimScalarFieldEnum)[keyof typeof RewardClaimScalarFieldEnum]
 
 
 export const SortOrder = {

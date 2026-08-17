@@ -271,6 +271,7 @@ export type ModuleWhereInput = {
   subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
   questions?: Prisma.QuestionListRelationFilter
   progress?: Prisma.StudentProgressListRelationFilter
+  moduleAccesses?: Prisma.ModuleAccessListRelationFilter
 }
 
 export type ModuleOrderByWithRelationInput = {
@@ -288,6 +289,7 @@ export type ModuleOrderByWithRelationInput = {
   subject?: Prisma.SubjectOrderByWithRelationInput
   questions?: Prisma.QuestionOrderByRelationAggregateInput
   progress?: Prisma.StudentProgressOrderByRelationAggregateInput
+  moduleAccesses?: Prisma.ModuleAccessOrderByRelationAggregateInput
 }
 
 export type ModuleWhereUniqueInput = Prisma.AtLeast<{
@@ -309,6 +311,7 @@ export type ModuleWhereUniqueInput = Prisma.AtLeast<{
   subject?: Prisma.XOR<Prisma.SubjectScalarRelationFilter, Prisma.SubjectWhereInput>
   questions?: Prisma.QuestionListRelationFilter
   progress?: Prisma.StudentProgressListRelationFilter
+  moduleAccesses?: Prisma.ModuleAccessListRelationFilter
 }, "id" | "subjectId_slug">
 
 export type ModuleOrderByWithAggregationInput = {
@@ -361,6 +364,7 @@ export type ModuleCreateInput = {
   subject: Prisma.SubjectCreateNestedOneWithoutModulesInput
   questions?: Prisma.QuestionCreateNestedManyWithoutModuleInput
   progress?: Prisma.StudentProgressCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleUncheckedCreateInput = {
@@ -377,6 +381,7 @@ export type ModuleUncheckedCreateInput = {
   updatedAt?: Date | string
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutModuleInput
   progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleUpdateInput = {
@@ -393,6 +398,7 @@ export type ModuleUpdateInput = {
   subject?: Prisma.SubjectUpdateOneRequiredWithoutModulesNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutModuleNestedInput
   progress?: Prisma.StudentProgressUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleUncheckedUpdateInput = {
@@ -409,6 +415,7 @@ export type ModuleUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutModuleNestedInput
   progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleCreateManyInput = {
@@ -594,6 +601,20 @@ export type ModuleUpdateOneRequiredWithoutProgressNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ModuleUpdateToOneWithWhereWithoutProgressInput, Prisma.ModuleUpdateWithoutProgressInput>, Prisma.ModuleUncheckedUpdateWithoutProgressInput>
 }
 
+export type ModuleCreateNestedOneWithoutModuleAccessesInput = {
+  create?: Prisma.XOR<Prisma.ModuleCreateWithoutModuleAccessesInput, Prisma.ModuleUncheckedCreateWithoutModuleAccessesInput>
+  connectOrCreate?: Prisma.ModuleCreateOrConnectWithoutModuleAccessesInput
+  connect?: Prisma.ModuleWhereUniqueInput
+}
+
+export type ModuleUpdateOneRequiredWithoutModuleAccessesNestedInput = {
+  create?: Prisma.XOR<Prisma.ModuleCreateWithoutModuleAccessesInput, Prisma.ModuleUncheckedCreateWithoutModuleAccessesInput>
+  connectOrCreate?: Prisma.ModuleCreateOrConnectWithoutModuleAccessesInput
+  upsert?: Prisma.ModuleUpsertWithoutModuleAccessesInput
+  connect?: Prisma.ModuleWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ModuleUpdateToOneWithWhereWithoutModuleAccessesInput, Prisma.ModuleUpdateWithoutModuleAccessesInput>, Prisma.ModuleUncheckedUpdateWithoutModuleAccessesInput>
+}
+
 export type ModuleCreateWithoutSubjectInput = {
   id?: string
   gradeLevel: number
@@ -607,6 +628,7 @@ export type ModuleCreateWithoutSubjectInput = {
   updatedAt?: Date | string
   questions?: Prisma.QuestionCreateNestedManyWithoutModuleInput
   progress?: Prisma.StudentProgressCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleUncheckedCreateWithoutSubjectInput = {
@@ -622,6 +644,7 @@ export type ModuleUncheckedCreateWithoutSubjectInput = {
   updatedAt?: Date | string
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutModuleInput
   progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleCreateOrConnectWithoutSubjectInput = {
@@ -680,6 +703,7 @@ export type ModuleCreateWithoutQuestionsInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutModulesInput
   progress?: Prisma.StudentProgressCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleUncheckedCreateWithoutQuestionsInput = {
@@ -695,6 +719,7 @@ export type ModuleUncheckedCreateWithoutQuestionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleCreateOrConnectWithoutQuestionsInput = {
@@ -726,6 +751,7 @@ export type ModuleUpdateWithoutQuestionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutModulesNestedInput
   progress?: Prisma.StudentProgressUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleUncheckedUpdateWithoutQuestionsInput = {
@@ -741,6 +767,7 @@ export type ModuleUncheckedUpdateWithoutQuestionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleCreateWithoutProgressInput = {
@@ -756,6 +783,7 @@ export type ModuleCreateWithoutProgressInput = {
   updatedAt?: Date | string
   subject: Prisma.SubjectCreateNestedOneWithoutModulesInput
   questions?: Prisma.QuestionCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleUncheckedCreateWithoutProgressInput = {
@@ -771,6 +799,7 @@ export type ModuleUncheckedCreateWithoutProgressInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutModuleInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedCreateNestedManyWithoutModuleInput
 }
 
 export type ModuleCreateOrConnectWithoutProgressInput = {
@@ -802,6 +831,7 @@ export type ModuleUpdateWithoutProgressInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subject?: Prisma.SubjectUpdateOneRequiredWithoutModulesNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleUncheckedUpdateWithoutProgressInput = {
@@ -817,6 +847,87 @@ export type ModuleUncheckedUpdateWithoutProgressInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutModuleNestedInput
+}
+
+export type ModuleCreateWithoutModuleAccessesInput = {
+  id?: string
+  gradeLevel: number
+  title: string
+  slug: string
+  description?: string | null
+  isPublished?: boolean
+  isPremium?: boolean
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  subject: Prisma.SubjectCreateNestedOneWithoutModulesInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutModuleInput
+  progress?: Prisma.StudentProgressCreateNestedManyWithoutModuleInput
+}
+
+export type ModuleUncheckedCreateWithoutModuleAccessesInput = {
+  id?: string
+  subjectId: string
+  gradeLevel: number
+  title: string
+  slug: string
+  description?: string | null
+  isPublished?: boolean
+  isPremium?: boolean
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutModuleInput
+  progress?: Prisma.StudentProgressUncheckedCreateNestedManyWithoutModuleInput
+}
+
+export type ModuleCreateOrConnectWithoutModuleAccessesInput = {
+  where: Prisma.ModuleWhereUniqueInput
+  create: Prisma.XOR<Prisma.ModuleCreateWithoutModuleAccessesInput, Prisma.ModuleUncheckedCreateWithoutModuleAccessesInput>
+}
+
+export type ModuleUpsertWithoutModuleAccessesInput = {
+  update: Prisma.XOR<Prisma.ModuleUpdateWithoutModuleAccessesInput, Prisma.ModuleUncheckedUpdateWithoutModuleAccessesInput>
+  create: Prisma.XOR<Prisma.ModuleCreateWithoutModuleAccessesInput, Prisma.ModuleUncheckedCreateWithoutModuleAccessesInput>
+  where?: Prisma.ModuleWhereInput
+}
+
+export type ModuleUpdateToOneWithWhereWithoutModuleAccessesInput = {
+  where?: Prisma.ModuleWhereInput
+  data: Prisma.XOR<Prisma.ModuleUpdateWithoutModuleAccessesInput, Prisma.ModuleUncheckedUpdateWithoutModuleAccessesInput>
+}
+
+export type ModuleUpdateWithoutModuleAccessesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subject?: Prisma.SubjectUpdateOneRequiredWithoutModulesNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutModuleNestedInput
+  progress?: Prisma.StudentProgressUpdateManyWithoutModuleNestedInput
+}
+
+export type ModuleUncheckedUpdateWithoutModuleAccessesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  gradeLevel?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPremium?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutModuleNestedInput
+  progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleCreateManySubjectInput = {
@@ -845,6 +956,7 @@ export type ModuleUpdateWithoutSubjectInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUpdateManyWithoutModuleNestedInput
   progress?: Prisma.StudentProgressUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleUncheckedUpdateWithoutSubjectInput = {
@@ -860,6 +972,7 @@ export type ModuleUncheckedUpdateWithoutSubjectInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutModuleNestedInput
   progress?: Prisma.StudentProgressUncheckedUpdateManyWithoutModuleNestedInput
+  moduleAccesses?: Prisma.ModuleAccessUncheckedUpdateManyWithoutModuleNestedInput
 }
 
 export type ModuleUncheckedUpdateManyWithoutSubjectInput = {
@@ -883,11 +996,13 @@ export type ModuleUncheckedUpdateManyWithoutSubjectInput = {
 export type ModuleCountOutputType = {
   questions: number
   progress: number
+  moduleAccesses: number
 }
 
 export type ModuleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   questions?: boolean | ModuleCountOutputTypeCountQuestionsArgs
   progress?: boolean | ModuleCountOutputTypeCountProgressArgs
+  moduleAccesses?: boolean | ModuleCountOutputTypeCountModuleAccessesArgs
 }
 
 /**
@@ -914,6 +1029,13 @@ export type ModuleCountOutputTypeCountProgressArgs<ExtArgs extends runtime.Types
   where?: Prisma.StudentProgressWhereInput
 }
 
+/**
+ * ModuleCountOutputType without action
+ */
+export type ModuleCountOutputTypeCountModuleAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ModuleAccessWhereInput
+}
+
 
 export type ModuleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -930,6 +1052,7 @@ export type ModuleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   questions?: boolean | Prisma.Module$questionsArgs<ExtArgs>
   progress?: boolean | Prisma.Module$progressArgs<ExtArgs>
+  moduleAccesses?: boolean | Prisma.Module$moduleAccessesArgs<ExtArgs>
   _count?: boolean | Prisma.ModuleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["module"]>
 
@@ -982,6 +1105,7 @@ export type ModuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   subject?: boolean | Prisma.SubjectDefaultArgs<ExtArgs>
   questions?: boolean | Prisma.Module$questionsArgs<ExtArgs>
   progress?: boolean | Prisma.Module$progressArgs<ExtArgs>
+  moduleAccesses?: boolean | Prisma.Module$moduleAccessesArgs<ExtArgs>
   _count?: boolean | Prisma.ModuleCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ModuleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -997,6 +1121,7 @@ export type $ModulePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     subject: Prisma.$SubjectPayload<ExtArgs>
     questions: Prisma.$QuestionPayload<ExtArgs>[]
     progress: Prisma.$StudentProgressPayload<ExtArgs>[]
+    moduleAccesses: Prisma.$ModuleAccessPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1407,6 +1532,7 @@ export interface Prisma__ModuleClient<T, Null = never, ExtArgs extends runtime.T
   subject<T extends Prisma.SubjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubjectDefaultArgs<ExtArgs>>): Prisma.Prisma__SubjectClient<runtime.Types.Result.GetResult<Prisma.$SubjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   questions<T extends Prisma.Module$questionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Module$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   progress<T extends Prisma.Module$progressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Module$progressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  moduleAccesses<T extends Prisma.Module$moduleAccessesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Module$moduleAccessesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModuleAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1893,6 +2019,30 @@ export type Module$progressArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.StudentProgressScalarFieldEnum | Prisma.StudentProgressScalarFieldEnum[]
+}
+
+/**
+ * Module.moduleAccesses
+ */
+export type Module$moduleAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ModuleAccess
+   */
+  select?: Prisma.ModuleAccessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ModuleAccess
+   */
+  omit?: Prisma.ModuleAccessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ModuleAccessInclude<ExtArgs> | null
+  where?: Prisma.ModuleAccessWhereInput
+  orderBy?: Prisma.ModuleAccessOrderByWithRelationInput | Prisma.ModuleAccessOrderByWithRelationInput[]
+  cursor?: Prisma.ModuleAccessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ModuleAccessScalarFieldEnum | Prisma.ModuleAccessScalarFieldEnum[]
 }
 
 /**
