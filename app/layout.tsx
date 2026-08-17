@@ -19,6 +19,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "MainYuk — Belajar Jadi Lebih Seru Sambil Bermain!",
   description: "Belajar Jadi Lebih Seru Sambil Bermain! Platform edukatif interaktif dengan kuis, game edukasi, dan modul belajar untuk anak-anak.",
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",
@@ -30,6 +31,10 @@ export const metadata: Metadata = {
     locale: "id_ID",
     type: "website",
   },
+};
+
+export const viewport = {
+  themeColor: "#6366f1",
 };
 
 export default function RootLayout({

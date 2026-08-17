@@ -41,3 +41,11 @@ next-env.d.ts
 # claude code local settings
 .claude/settings.local.json
 deploy/*.log
+
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
