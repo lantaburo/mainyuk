@@ -3,7 +3,7 @@
 import { requireSuperAdmin } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import pdfParse from "pdf-parse";
+const pdfParse = require("pdf-parse");
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { nanoid } from "nanoid";
 

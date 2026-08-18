@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
-import pdfParse from "pdf-parse";
+const pdfParse = require("pdf-parse");
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { nanoid } from "nanoid";
 
