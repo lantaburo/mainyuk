@@ -129,8 +129,8 @@ export async function createOrUpdateSkill(formData: FormData) {
     revalidatePath("/admin/pengaturan-ai/skills");
     return { ok: true };
   } catch (e: any) {
-    console.error(e);
-    return { ok: false, error: "Terjadi kesalahan saat menyimpan Skill." };
+    console.error("DEBUG SKILL ERROR:", e);
+    return { ok: false, error: `Terjadi kesalahan: ${e.message || String(e)}` };
   }
 }
 
