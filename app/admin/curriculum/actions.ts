@@ -238,6 +238,11 @@ export async function generateQuestionsForModule(moduleId: string, count: number
     arabicInstruction = `\n6. **Khat Arabic**: Khusus untuk mata pelajaran Bahasa Arab, semua kosakata, frasa, atau kalimat berbahasa Arab **WAJIB ditulis menggunakan tulisan/khat huruf Arab asli**, bukan latinnya. (Contoh: tulis كِتَابٌ bukan kitabun).`;
   }
 
+  let tsaqafahInstruction = "";
+  if (moduleData.subject.name.toLowerCase().includes('tsaqafah')) {
+    tsaqafahInstruction = `\n7. **Rujukan Tsaqafah**: Khusus untuk materi Tsaqafah, jadikan Al-Quran, As-Sunnah, dan kitab Nidzamul Islam karya Syaikh Taqiyuddin an-Nabhani sebagai rujukan utama dalam pembuatan soal maupun penjelasannya.`;
+  }
+
   const prompt = `Anda adalah seorang ahli penyusun soal evaluasi pendidikan berdasarkan standar **Kurikulum Merdeka**.
 Tugas Anda adalah membuat ${count} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) **Kelas ${grade} (${faseMerdeka})**.
 Mata Pelajaran: ${moduleData.subject.name}
@@ -249,7 +254,7 @@ ${existingQuestionsText}
 3. **Struktur Jawaban (Randomize):** Opsi jawaban harus 4 pilihan yang masuk akal. Pengecoh (distractor) HARUS berupa kesalahan umum anak. **PENTING: Letak kunci jawaban yang benar (correctIndex) HARUS diacak secara merata (tidak boleh selalu A atau 0 terus menerus).** DILARANG keras menggunakan opsi "Semua jawaban benar".
 4. **Keberagaman & Anti-Pengulangan:** Setiap soal yang Anda buat HARUS unik. Dilarang keras mengulang pola soal, nama tokoh, atau konteks cerita yang sama secara berulang.
 5. **Kalimat Positif:** Gunakan kalimat tanya yang positif dan jelas. Hindari jebakan kata "yang bukan" atau "kecuali".
-6. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!${arabicInstruction}
+6. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!${arabicInstruction}${tsaqafahInstruction}
 
 **INSTRUKSI TEKNIS:**
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3). Pastikan terdistribusi acak (misal 1, 3, 0, 2, dll).${levelInstructions}
