@@ -199,6 +199,7 @@ export type SubjectWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   modules?: Prisma.ModuleListRelationFilter
+  aiDocuments?: Prisma.AiDocumentListRelationFilter
 }
 
 export type SubjectOrderByWithRelationInput = {
@@ -210,6 +211,7 @@ export type SubjectOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   modules?: Prisma.ModuleOrderByRelationAggregateInput
+  aiDocuments?: Prisma.AiDocumentOrderByRelationAggregateInput
 }
 
 export type SubjectWhereUniqueInput = Prisma.AtLeast<{
@@ -224,6 +226,7 @@ export type SubjectWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subject"> | Date | string
   modules?: Prisma.ModuleListRelationFilter
+  aiDocuments?: Prisma.AiDocumentListRelationFilter
 }, "id" | "slug">
 
 export type SubjectOrderByWithAggregationInput = {
@@ -261,6 +264,7 @@ export type SubjectCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   modules?: Prisma.ModuleCreateNestedManyWithoutSubjectInput
+  aiDocuments?: Prisma.AiDocumentCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateInput = {
@@ -272,6 +276,7 @@ export type SubjectUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutSubjectInput
+  aiDocuments?: Prisma.AiDocumentUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUpdateInput = {
@@ -283,6 +288,7 @@ export type SubjectUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   modules?: Prisma.ModuleUpdateManyWithoutSubjectNestedInput
+  aiDocuments?: Prisma.AiDocumentUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateInput = {
@@ -294,6 +300,7 @@ export type SubjectUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   modules?: Prisma.ModuleUncheckedUpdateManyWithoutSubjectNestedInput
+  aiDocuments?: Prisma.AiDocumentUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectCreateManyInput = {
@@ -361,6 +368,11 @@ export type SubjectScalarRelationFilter = {
   isNot?: Prisma.SubjectWhereInput
 }
 
+export type SubjectNullableScalarRelationFilter = {
+  is?: Prisma.SubjectWhereInput | null
+  isNot?: Prisma.SubjectWhereInput | null
+}
+
 export type SubjectCreateNestedOneWithoutModulesInput = {
   create?: Prisma.XOR<Prisma.SubjectCreateWithoutModulesInput, Prisma.SubjectUncheckedCreateWithoutModulesInput>
   connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutModulesInput
@@ -375,6 +387,22 @@ export type SubjectUpdateOneRequiredWithoutModulesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutModulesInput, Prisma.SubjectUpdateWithoutModulesInput>, Prisma.SubjectUncheckedUpdateWithoutModulesInput>
 }
 
+export type SubjectCreateNestedOneWithoutAiDocumentsInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutAiDocumentsInput, Prisma.SubjectUncheckedCreateWithoutAiDocumentsInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutAiDocumentsInput
+  connect?: Prisma.SubjectWhereUniqueInput
+}
+
+export type SubjectUpdateOneWithoutAiDocumentsNestedInput = {
+  create?: Prisma.XOR<Prisma.SubjectCreateWithoutAiDocumentsInput, Prisma.SubjectUncheckedCreateWithoutAiDocumentsInput>
+  connectOrCreate?: Prisma.SubjectCreateOrConnectWithoutAiDocumentsInput
+  upsert?: Prisma.SubjectUpsertWithoutAiDocumentsInput
+  disconnect?: Prisma.SubjectWhereInput | boolean
+  delete?: Prisma.SubjectWhereInput | boolean
+  connect?: Prisma.SubjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubjectUpdateToOneWithWhereWithoutAiDocumentsInput, Prisma.SubjectUpdateWithoutAiDocumentsInput>, Prisma.SubjectUncheckedUpdateWithoutAiDocumentsInput>
+}
+
 export type SubjectCreateWithoutModulesInput = {
   id?: string
   name: string
@@ -383,6 +411,7 @@ export type SubjectCreateWithoutModulesInput = {
   color?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiDocuments?: Prisma.AiDocumentCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectUncheckedCreateWithoutModulesInput = {
@@ -393,6 +422,7 @@ export type SubjectUncheckedCreateWithoutModulesInput = {
   color?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  aiDocuments?: Prisma.AiDocumentUncheckedCreateNestedManyWithoutSubjectInput
 }
 
 export type SubjectCreateOrConnectWithoutModulesInput = {
@@ -419,6 +449,7 @@ export type SubjectUpdateWithoutModulesInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiDocuments?: Prisma.AiDocumentUpdateManyWithoutSubjectNestedInput
 }
 
 export type SubjectUncheckedUpdateWithoutModulesInput = {
@@ -429,6 +460,67 @@ export type SubjectUncheckedUpdateWithoutModulesInput = {
   color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aiDocuments?: Prisma.AiDocumentUncheckedUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectCreateWithoutAiDocumentsInput = {
+  id?: string
+  name: string
+  slug: string
+  icon?: string | null
+  color?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  modules?: Prisma.ModuleCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectUncheckedCreateWithoutAiDocumentsInput = {
+  id?: string
+  name: string
+  slug: string
+  icon?: string | null
+  color?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  modules?: Prisma.ModuleUncheckedCreateNestedManyWithoutSubjectInput
+}
+
+export type SubjectCreateOrConnectWithoutAiDocumentsInput = {
+  where: Prisma.SubjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutAiDocumentsInput, Prisma.SubjectUncheckedCreateWithoutAiDocumentsInput>
+}
+
+export type SubjectUpsertWithoutAiDocumentsInput = {
+  update: Prisma.XOR<Prisma.SubjectUpdateWithoutAiDocumentsInput, Prisma.SubjectUncheckedUpdateWithoutAiDocumentsInput>
+  create: Prisma.XOR<Prisma.SubjectCreateWithoutAiDocumentsInput, Prisma.SubjectUncheckedCreateWithoutAiDocumentsInput>
+  where?: Prisma.SubjectWhereInput
+}
+
+export type SubjectUpdateToOneWithWhereWithoutAiDocumentsInput = {
+  where?: Prisma.SubjectWhereInput
+  data: Prisma.XOR<Prisma.SubjectUpdateWithoutAiDocumentsInput, Prisma.SubjectUncheckedUpdateWithoutAiDocumentsInput>
+}
+
+export type SubjectUpdateWithoutAiDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modules?: Prisma.ModuleUpdateManyWithoutSubjectNestedInput
+}
+
+export type SubjectUncheckedUpdateWithoutAiDocumentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  modules?: Prisma.ModuleUncheckedUpdateManyWithoutSubjectNestedInput
 }
 
 
@@ -438,10 +530,12 @@ export type SubjectUncheckedUpdateWithoutModulesInput = {
 
 export type SubjectCountOutputType = {
   modules: number
+  aiDocuments: number
 }
 
 export type SubjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   modules?: boolean | SubjectCountOutputTypeCountModulesArgs
+  aiDocuments?: boolean | SubjectCountOutputTypeCountAiDocumentsArgs
 }
 
 /**
@@ -461,6 +555,13 @@ export type SubjectCountOutputTypeCountModulesArgs<ExtArgs extends runtime.Types
   where?: Prisma.ModuleWhereInput
 }
 
+/**
+ * SubjectCountOutputType without action
+ */
+export type SubjectCountOutputTypeCountAiDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiDocumentWhereInput
+}
+
 
 export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -471,6 +572,7 @@ export type SubjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   modules?: boolean | Prisma.Subject$modulesArgs<ExtArgs>
+  aiDocuments?: boolean | Prisma.Subject$aiDocumentsArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subject"]>
 
@@ -507,6 +609,7 @@ export type SubjectSelectScalar = {
 export type SubjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "icon" | "color" | "createdAt" | "updatedAt", ExtArgs["result"]["subject"]>
 export type SubjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   modules?: boolean | Prisma.Subject$modulesArgs<ExtArgs>
+  aiDocuments?: boolean | Prisma.Subject$aiDocumentsArgs<ExtArgs>
   _count?: boolean | Prisma.SubjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -516,6 +619,7 @@ export type $SubjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Subject"
   objects: {
     modules: Prisma.$ModulePayload<ExtArgs>[]
+    aiDocuments: Prisma.$AiDocumentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -920,6 +1024,7 @@ readonly fields: SubjectFieldRefs;
 export interface Prisma__SubjectClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   modules<T extends Prisma.Subject$modulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$modulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ModulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiDocuments<T extends Prisma.Subject$aiDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subject$aiDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1370,6 +1475,30 @@ export type Subject$modulesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ModuleScalarFieldEnum | Prisma.ModuleScalarFieldEnum[]
+}
+
+/**
+ * Subject.aiDocuments
+ */
+export type Subject$aiDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiDocument
+   */
+  select?: Prisma.AiDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiDocument
+   */
+  omit?: Prisma.AiDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiDocumentInclude<ExtArgs> | null
+  where?: Prisma.AiDocumentWhereInput
+  orderBy?: Prisma.AiDocumentOrderByWithRelationInput | Prisma.AiDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.AiDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiDocumentScalarFieldEnum | Prisma.AiDocumentScalarFieldEnum[]
 }
 
 /**

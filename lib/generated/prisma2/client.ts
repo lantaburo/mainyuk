@@ -171,3 +171,18 @@ export type MarketplaceItem = Prisma.MarketplaceItemModel
  * 
  */
 export type RewardClaim = Prisma.RewardClaimModel
+/**
+ * Model AiSkill
+ * 
+ */
+export type AiSkill = Prisma.AiSkillModel
+/**
+ * Model AiSkillVersion
+ * 
+ */
+export type AiSkillVersion = Prisma.AiSkillVersionModel
+/**
+ * Model AiDocument
+ * 
+ */
+export type AiDocument = Prisma.AiDocumentModel

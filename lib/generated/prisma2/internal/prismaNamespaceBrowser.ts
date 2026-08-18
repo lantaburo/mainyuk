@@ -76,7 +76,10 @@ export const ModelName = {
   AffiliateWithdrawal: 'AffiliateWithdrawal',
   ModuleAccess: 'ModuleAccess',
   MarketplaceItem: 'MarketplaceItem',
-  RewardClaim: 'RewardClaim'
+  RewardClaim: 'RewardClaim',
+  AiSkill: 'AiSkill',
+  AiSkillVersion: 'AiSkillVersion',
+  AiDocument: 'AiDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -503,6 +506,46 @@ export const RewardClaimScalarFieldEnum = {
 } as const
 
 export type RewardClaimScalarFieldEnum = (typeof RewardClaimScalarFieldEnum)[keyof typeof RewardClaimScalarFieldEnum]
+
+
+export const AiSkillScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiSkillScalarFieldEnum = (typeof AiSkillScalarFieldEnum)[keyof typeof AiSkillScalarFieldEnum]
+
+
+export const AiSkillVersionScalarFieldEnum = {
+  id: 'id',
+  skillId: 'skillId',
+  content: 'content',
+  version: 'version',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy'
+} as const
+
+export type AiSkillVersionScalarFieldEnum = (typeof AiSkillVersionScalarFieldEnum)[keyof typeof AiSkillVersionScalarFieldEnum]
+
+
+export const AiDocumentScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  subjectId: 'subjectId',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  extractedText: 'extractedText',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiDocumentScalarFieldEnum = (typeof AiDocumentScalarFieldEnum)[keyof typeof AiDocumentScalarFieldEnum]
 
 
 export const SortOrder = {

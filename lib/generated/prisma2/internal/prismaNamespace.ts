@@ -422,7 +422,10 @@ export const ModelName = {
   AffiliateWithdrawal: 'AffiliateWithdrawal',
   ModuleAccess: 'ModuleAccess',
   MarketplaceItem: 'MarketplaceItem',
-  RewardClaim: 'RewardClaim'
+  RewardClaim: 'RewardClaim',
+  AiSkill: 'AiSkill',
+  AiSkillVersion: 'AiSkillVersion',
+  AiDocument: 'AiDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -438,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "store" | "storePage" | "storeSettings" | "category" | "product" | "productVariant" | "productImage" | "customer" | "order" | "orderItem" | "payment" | "aiProvider" | "article" | "subject" | "module" | "question" | "studentProfile" | "studentProgress" | "systemSetting" | "discountCode" | "affiliateCode" | "affiliateWithdrawal" | "moduleAccess" | "marketplaceItem" | "rewardClaim"
+    modelProps: "user" | "store" | "storePage" | "storeSettings" | "category" | "product" | "productVariant" | "productImage" | "customer" | "order" | "orderItem" | "payment" | "aiProvider" | "article" | "subject" | "module" | "question" | "studentProfile" | "studentProgress" | "systemSetting" | "discountCode" | "affiliateCode" | "affiliateWithdrawal" | "moduleAccess" | "marketplaceItem" | "rewardClaim" | "aiSkill" | "aiSkillVersion" | "aiDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2366,6 +2369,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AiSkill: {
+      payload: Prisma.$AiSkillPayload<ExtArgs>
+      fields: Prisma.AiSkillFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiSkillFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiSkillFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>
+        }
+        findFirst: {
+          args: Prisma.AiSkillFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiSkillFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>
+        }
+        findMany: {
+          args: Prisma.AiSkillFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>[]
+        }
+        create: {
+          args: Prisma.AiSkillCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>
+        }
+        createMany: {
+          args: Prisma.AiSkillCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AiSkillCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>[]
+        }
+        delete: {
+          args: Prisma.AiSkillDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>
+        }
+        update: {
+          args: Prisma.AiSkillUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>
+        }
+        deleteMany: {
+          args: Prisma.AiSkillDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiSkillUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AiSkillUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>[]
+        }
+        upsert: {
+          args: Prisma.AiSkillUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillPayload>
+        }
+        aggregate: {
+          args: Prisma.AiSkillAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiSkill>
+        }
+        groupBy: {
+          args: Prisma.AiSkillGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiSkillGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AiSkillCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiSkillCountAggregateOutputType> | number
+        }
+      }
+    }
+    AiSkillVersion: {
+      payload: Prisma.$AiSkillVersionPayload<ExtArgs>
+      fields: Prisma.AiSkillVersionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiSkillVersionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiSkillVersionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>
+        }
+        findFirst: {
+          args: Prisma.AiSkillVersionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiSkillVersionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>
+        }
+        findMany: {
+          args: Prisma.AiSkillVersionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>[]
+        }
+        create: {
+          args: Prisma.AiSkillVersionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>
+        }
+        createMany: {
+          args: Prisma.AiSkillVersionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AiSkillVersionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>[]
+        }
+        delete: {
+          args: Prisma.AiSkillVersionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>
+        }
+        update: {
+          args: Prisma.AiSkillVersionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AiSkillVersionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiSkillVersionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AiSkillVersionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AiSkillVersionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiSkillVersionPayload>
+        }
+        aggregate: {
+          args: Prisma.AiSkillVersionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiSkillVersion>
+        }
+        groupBy: {
+          args: Prisma.AiSkillVersionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiSkillVersionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AiSkillVersionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiSkillVersionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AiDocument: {
+      payload: Prisma.$AiDocumentPayload<ExtArgs>
+      fields: Prisma.AiDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.AiDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.AiDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.AiDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.AiDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AiDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.AiDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>
+        }
+        update: {
+          args: Prisma.AiDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.AiDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AiDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.AiDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.AiDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiDocument>
+        }
+        groupBy: {
+          args: Prisma.AiDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AiDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2813,6 +3038,46 @@ export const RewardClaimScalarFieldEnum = {
 } as const
 
 export type RewardClaimScalarFieldEnum = (typeof RewardClaimScalarFieldEnum)[keyof typeof RewardClaimScalarFieldEnum]
+
+
+export const AiSkillScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiSkillScalarFieldEnum = (typeof AiSkillScalarFieldEnum)[keyof typeof AiSkillScalarFieldEnum]
+
+
+export const AiSkillVersionScalarFieldEnum = {
+  id: 'id',
+  skillId: 'skillId',
+  content: 'content',
+  version: 'version',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  createdBy: 'createdBy'
+} as const
+
+export type AiSkillVersionScalarFieldEnum = (typeof AiSkillVersionScalarFieldEnum)[keyof typeof AiSkillVersionScalarFieldEnum]
+
+
+export const AiDocumentScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  subjectId: 'subjectId',
+  fileName: 'fileName',
+  fileUrl: 'fileUrl',
+  extractedText: 'extractedText',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AiDocumentScalarFieldEnum = (typeof AiDocumentScalarFieldEnum)[keyof typeof AiDocumentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3290,6 +3555,9 @@ export type GlobalOmitConfig = {
   moduleAccess?: Prisma.ModuleAccessOmit
   marketplaceItem?: Prisma.MarketplaceItemOmit
   rewardClaim?: Prisma.RewardClaimOmit
+  aiSkill?: Prisma.AiSkillOmit
+  aiSkillVersion?: Prisma.AiSkillVersionOmit
+  aiDocument?: Prisma.AiDocumentOmit
 }
 
 /* Types for Logging */
