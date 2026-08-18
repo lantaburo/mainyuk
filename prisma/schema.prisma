@@ -584,15 +584,18 @@ model AiSkill {
 }
 
 model AiSkillVersion {
-  id          String   @id @default(cuid())
-  skillId     String   @map("skill_id")
-  content     String   @db.Text
-  version     Int
-  isActive    Boolean  @default(false) @map("is_active")
-  createdAt   DateTime @default(now()) @map("created_at")
-  createdBy   String?  @map("created_by") // User ID
+  id               String   @id @default(cuid())
+  skillId          String   @map("skill_id")
+  content          String   @db.Text
+  version          Int
+  isActive         Boolean  @default(false) @map("is_active")
+  createdAt        DateTime @default(now()) @map("created_at")
+  createdBy        String?  @map("created_by") // User ID
+  attachedFileName String?  @map("attached_file_name")
+  attachedFileUrl  String?  @map("attached_file_url")
+  attachedFileText String?  @db.Text @map("attached_file_text")
   
-  skill       AiSkill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  skill            AiSkill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
   
   @@index([skillId])
   @@map("ai_skill_versions")

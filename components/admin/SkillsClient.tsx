@@ -51,11 +51,18 @@ export function SkillsListClient({ skills }: { skills: any[] }) {
                   <Button variant="outline" size="sm" onClick={() => setHistorySkill(skill)} className="rounded-xl">
                     <History className="w-4 h-4 mr-1" /> Riwayat
                   </Button>
-                  <Button variant="default" size="sm" onClick={() => setEditingSkill({ ...skill, content: activeVersion?.content || "" })} className="rounded-xl bg-slate-900">
+                  <Button variant="default" size="sm" onClick={() => setEditingSkill({ ...skill, content: activeVersion?.content || "", attachedFileName: activeVersion?.attachedFileName })} className="rounded-xl bg-slate-900">
                     <Edit className="w-4 h-4 mr-1" /> Edit
                   </Button>
                 </div>
               </div>
+              
+              {activeVersion?.attachedFileName && (
+                <div className="mt-4 px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center gap-2 text-sm text-indigo-700">
+                  <span className="font-bold">Lampiran:</span> {activeVersion.attachedFileName}
+                </div>
+              )}
+
               <div className="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-100 text-sm font-mono text-slate-600 whitespace-pre-wrap max-h-32 overflow-y-auto">
                 {activeVersion?.content || "Belum ada konten."}
               </div>
@@ -122,6 +129,16 @@ function SkillEditModal({ skill, onClose }: { skill: any, onClose: () => void })
               className="w-full rounded-xl border border-input p-3 text-sm font-mono"
             />
           </div>
+          <div className="space-y-1.5 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+            <Label className="text-indigo-900 font-bold">Lampirkan Dokumen (Opsional)</Label>
+            <p className="text-xs text-indigo-600 mb-2">Unggah PDF/TXT baru untuk menimpa lampiran lama, atau biarkan kosong untuk mempertahankan lampiran yang ada.</p>
+            <Input name="attachment" type="file" accept=".pdf,.txt" className="bg-white rounded-xl" />
+            {skill.attachedFileName && (
+              <p className="text-xs text-slate-500 mt-2">
+                Terlampir saat ini: <strong>{skill.attachedFileName}</strong>
+              </p>
+            )}
+          </div>
           <div className="flex gap-3 justify-end pt-2">
             <Button type="button" variant="ghost" onClick={onClose}>Batal</Button>
             <Button type="submit" disabled={loading} className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl">
@@ -169,6 +186,13 @@ function SkillHistoryModal({ skill, onClose }: { skill: any, onClose: () => void
                   </Button>
                 )}
               </div>
+              
+              {v.attachedFileName && (
+                <div className="mb-3 px-3 py-1.5 bg-indigo-50 border border-indigo-100 rounded-lg flex items-center gap-2 text-xs text-indigo-700">
+                  <span className="font-bold">Lampiran:</span> {v.attachedFileName}
+                </div>
+              )}
+
               <div className="text-xs font-mono text-gray-600 bg-gray-50 p-3 rounded-xl max-h-32 overflow-y-auto whitespace-pre-wrap">
                 {v.content}
               </div>

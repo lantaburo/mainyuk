@@ -42,6 +42,9 @@ export type AiSkillVersionMinAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   createdBy: string | null
+  attachedFileName: string | null
+  attachedFileUrl: string | null
+  attachedFileText: string | null
 }
 
 export type AiSkillVersionMaxAggregateOutputType = {
@@ -52,6 +55,9 @@ export type AiSkillVersionMaxAggregateOutputType = {
   isActive: boolean | null
   createdAt: Date | null
   createdBy: string | null
+  attachedFileName: string | null
+  attachedFileUrl: string | null
+  attachedFileText: string | null
 }
 
 export type AiSkillVersionCountAggregateOutputType = {
@@ -62,6 +68,9 @@ export type AiSkillVersionCountAggregateOutputType = {
   isActive: number
   createdAt: number
   createdBy: number
+  attachedFileName: number
+  attachedFileUrl: number
+  attachedFileText: number
   _all: number
 }
 
@@ -82,6 +91,9 @@ export type AiSkillVersionMinAggregateInputType = {
   isActive?: true
   createdAt?: true
   createdBy?: true
+  attachedFileName?: true
+  attachedFileUrl?: true
+  attachedFileText?: true
 }
 
 export type AiSkillVersionMaxAggregateInputType = {
@@ -92,6 +104,9 @@ export type AiSkillVersionMaxAggregateInputType = {
   isActive?: true
   createdAt?: true
   createdBy?: true
+  attachedFileName?: true
+  attachedFileUrl?: true
+  attachedFileText?: true
 }
 
 export type AiSkillVersionCountAggregateInputType = {
@@ -102,6 +117,9 @@ export type AiSkillVersionCountAggregateInputType = {
   isActive?: true
   createdAt?: true
   createdBy?: true
+  attachedFileName?: true
+  attachedFileUrl?: true
+  attachedFileText?: true
   _all?: true
 }
 
@@ -199,6 +217,9 @@ export type AiSkillVersionGroupByOutputType = {
   isActive: boolean
   createdAt: Date
   createdBy: string | null
+  attachedFileName: string | null
+  attachedFileUrl: string | null
+  attachedFileText: string | null
   _count: AiSkillVersionCountAggregateOutputType | null
   _avg: AiSkillVersionAvgAggregateOutputType | null
   _sum: AiSkillVersionSumAggregateOutputType | null
@@ -232,6 +253,9 @@ export type AiSkillVersionWhereInput = {
   isActive?: Prisma.BoolFilter<"AiSkillVersion"> | boolean
   createdAt?: Prisma.DateTimeFilter<"AiSkillVersion"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileName?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileUrl?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileText?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
   skill?: Prisma.XOR<Prisma.AiSkillScalarRelationFilter, Prisma.AiSkillWhereInput>
 }
 
@@ -243,6 +267,9 @@ export type AiSkillVersionOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachedFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachedFileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachedFileText?: Prisma.SortOrderInput | Prisma.SortOrder
   skill?: Prisma.AiSkillOrderByWithRelationInput
 }
 
@@ -257,6 +284,9 @@ export type AiSkillVersionWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"AiSkillVersion"> | boolean
   createdAt?: Prisma.DateTimeFilter<"AiSkillVersion"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileName?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileUrl?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileText?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
   skill?: Prisma.XOR<Prisma.AiSkillScalarRelationFilter, Prisma.AiSkillWhereInput>
 }, "id">
 
@@ -268,6 +298,9 @@ export type AiSkillVersionOrderByWithAggregationInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachedFileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachedFileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachedFileText?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AiSkillVersionCountOrderByAggregateInput
   _avg?: Prisma.AiSkillVersionAvgOrderByAggregateInput
   _max?: Prisma.AiSkillVersionMaxOrderByAggregateInput
@@ -286,6 +319,9 @@ export type AiSkillVersionScalarWhereWithAggregatesInput = {
   isActive?: Prisma.BoolWithAggregatesFilter<"AiSkillVersion"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AiSkillVersion"> | Date | string
   createdBy?: Prisma.StringNullableWithAggregatesFilter<"AiSkillVersion"> | string | null
+  attachedFileName?: Prisma.StringNullableWithAggregatesFilter<"AiSkillVersion"> | string | null
+  attachedFileUrl?: Prisma.StringNullableWithAggregatesFilter<"AiSkillVersion"> | string | null
+  attachedFileText?: Prisma.StringNullableWithAggregatesFilter<"AiSkillVersion"> | string | null
 }
 
 export type AiSkillVersionCreateInput = {
@@ -295,6 +331,9 @@ export type AiSkillVersionCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   createdBy?: string | null
+  attachedFileName?: string | null
+  attachedFileUrl?: string | null
+  attachedFileText?: string | null
   skill: Prisma.AiSkillCreateNestedOneWithoutVersionsInput
 }
 
@@ -306,6 +345,9 @@ export type AiSkillVersionUncheckedCreateInput = {
   isActive?: boolean
   createdAt?: Date | string
   createdBy?: string | null
+  attachedFileName?: string | null
+  attachedFileUrl?: string | null
+  attachedFileText?: string | null
 }
 
 export type AiSkillVersionUpdateInput = {
@@ -315,6 +357,9 @@ export type AiSkillVersionUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skill?: Prisma.AiSkillUpdateOneRequiredWithoutVersionsNestedInput
 }
 
@@ -326,6 +371,9 @@ export type AiSkillVersionUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AiSkillVersionCreateManyInput = {
@@ -336,6 +384,9 @@ export type AiSkillVersionCreateManyInput = {
   isActive?: boolean
   createdAt?: Date | string
   createdBy?: string | null
+  attachedFileName?: string | null
+  attachedFileUrl?: string | null
+  attachedFileText?: string | null
 }
 
 export type AiSkillVersionUpdateManyMutationInput = {
@@ -345,6 +396,9 @@ export type AiSkillVersionUpdateManyMutationInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AiSkillVersionUncheckedUpdateManyInput = {
@@ -355,6 +409,9 @@ export type AiSkillVersionUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AiSkillVersionListRelationFilter = {
@@ -375,6 +432,9 @@ export type AiSkillVersionCountOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  attachedFileName?: Prisma.SortOrder
+  attachedFileUrl?: Prisma.SortOrder
+  attachedFileText?: Prisma.SortOrder
 }
 
 export type AiSkillVersionAvgOrderByAggregateInput = {
@@ -389,6 +449,9 @@ export type AiSkillVersionMaxOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  attachedFileName?: Prisma.SortOrder
+  attachedFileUrl?: Prisma.SortOrder
+  attachedFileText?: Prisma.SortOrder
 }
 
 export type AiSkillVersionMinOrderByAggregateInput = {
@@ -399,6 +462,9 @@ export type AiSkillVersionMinOrderByAggregateInput = {
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  attachedFileName?: Prisma.SortOrder
+  attachedFileUrl?: Prisma.SortOrder
+  attachedFileText?: Prisma.SortOrder
 }
 
 export type AiSkillVersionSumOrderByAggregateInput = {
@@ -454,6 +520,9 @@ export type AiSkillVersionCreateWithoutSkillInput = {
   isActive?: boolean
   createdAt?: Date | string
   createdBy?: string | null
+  attachedFileName?: string | null
+  attachedFileUrl?: string | null
+  attachedFileText?: string | null
 }
 
 export type AiSkillVersionUncheckedCreateWithoutSkillInput = {
@@ -463,6 +532,9 @@ export type AiSkillVersionUncheckedCreateWithoutSkillInput = {
   isActive?: boolean
   createdAt?: Date | string
   createdBy?: string | null
+  attachedFileName?: string | null
+  attachedFileUrl?: string | null
+  attachedFileText?: string | null
 }
 
 export type AiSkillVersionCreateOrConnectWithoutSkillInput = {
@@ -502,6 +574,9 @@ export type AiSkillVersionScalarWhereInput = {
   isActive?: Prisma.BoolFilter<"AiSkillVersion"> | boolean
   createdAt?: Prisma.DateTimeFilter<"AiSkillVersion"> | Date | string
   createdBy?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileName?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileUrl?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
+  attachedFileText?: Prisma.StringNullableFilter<"AiSkillVersion"> | string | null
 }
 
 export type AiSkillVersionCreateManySkillInput = {
@@ -511,6 +586,9 @@ export type AiSkillVersionCreateManySkillInput = {
   isActive?: boolean
   createdAt?: Date | string
   createdBy?: string | null
+  attachedFileName?: string | null
+  attachedFileUrl?: string | null
+  attachedFileText?: string | null
 }
 
 export type AiSkillVersionUpdateWithoutSkillInput = {
@@ -520,6 +598,9 @@ export type AiSkillVersionUpdateWithoutSkillInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AiSkillVersionUncheckedUpdateWithoutSkillInput = {
@@ -529,6 +610,9 @@ export type AiSkillVersionUncheckedUpdateWithoutSkillInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AiSkillVersionUncheckedUpdateManyWithoutSkillInput = {
@@ -538,6 +622,9 @@ export type AiSkillVersionUncheckedUpdateManyWithoutSkillInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachedFileText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -550,6 +637,9 @@ export type AiSkillVersionSelect<ExtArgs extends runtime.Types.Extensions.Intern
   isActive?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  attachedFileName?: boolean
+  attachedFileUrl?: boolean
+  attachedFileText?: boolean
   skill?: boolean | Prisma.AiSkillDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aiSkillVersion"]>
 
@@ -561,6 +651,9 @@ export type AiSkillVersionSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   isActive?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  attachedFileName?: boolean
+  attachedFileUrl?: boolean
+  attachedFileText?: boolean
   skill?: boolean | Prisma.AiSkillDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aiSkillVersion"]>
 
@@ -572,6 +665,9 @@ export type AiSkillVersionSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   isActive?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  attachedFileName?: boolean
+  attachedFileUrl?: boolean
+  attachedFileText?: boolean
   skill?: boolean | Prisma.AiSkillDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aiSkillVersion"]>
 
@@ -583,9 +679,12 @@ export type AiSkillVersionSelectScalar = {
   isActive?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  attachedFileName?: boolean
+  attachedFileUrl?: boolean
+  attachedFileText?: boolean
 }
 
-export type AiSkillVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "skillId" | "content" | "version" | "isActive" | "createdAt" | "createdBy", ExtArgs["result"]["aiSkillVersion"]>
+export type AiSkillVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "skillId" | "content" | "version" | "isActive" | "createdAt" | "createdBy" | "attachedFileName" | "attachedFileUrl" | "attachedFileText", ExtArgs["result"]["aiSkillVersion"]>
 export type AiSkillVersionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   skill?: boolean | Prisma.AiSkillDefaultArgs<ExtArgs>
 }
@@ -609,6 +708,9 @@ export type $AiSkillVersionPayload<ExtArgs extends runtime.Types.Extensions.Inte
     isActive: boolean
     createdAt: Date
     createdBy: string | null
+    attachedFileName: string | null
+    attachedFileUrl: string | null
+    attachedFileText: string | null
   }, ExtArgs["result"]["aiSkillVersion"]>
   composites: {}
 }
@@ -1040,6 +1142,9 @@ export interface AiSkillVersionFieldRefs {
   readonly isActive: Prisma.FieldRef<"AiSkillVersion", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"AiSkillVersion", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"AiSkillVersion", 'String'>
+  readonly attachedFileName: Prisma.FieldRef<"AiSkillVersion", 'String'>
+  readonly attachedFileUrl: Prisma.FieldRef<"AiSkillVersion", 'String'>
+  readonly attachedFileText: Prisma.FieldRef<"AiSkillVersion", 'String'>
 }
     
 

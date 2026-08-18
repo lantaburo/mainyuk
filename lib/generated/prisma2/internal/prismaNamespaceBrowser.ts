@@ -528,7 +528,10 @@ export const AiSkillVersionScalarFieldEnum = {
   version: 'version',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  attachedFileName: 'attachedFileName',
+  attachedFileUrl: 'attachedFileUrl',
+  attachedFileText: 'attachedFileText'
 } as const
 
 export type AiSkillVersionScalarFieldEnum = (typeof AiSkillVersionScalarFieldEnum)[keyof typeof AiSkillVersionScalarFieldEnum]

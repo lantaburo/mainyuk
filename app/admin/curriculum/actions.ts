@@ -242,7 +242,13 @@ export async function generateQuestionsForModule(moduleId: string, count: number
   let dynamicSkillsText = "";
   if (activeSkills.length > 0) {
     dynamicSkillsText = "\n\n**INSTRUKSI KHUSUS (SKILL SETS):**\n" + 
-      activeSkills.map((s, i) => `${i + 1}. [${s.skill.name}]: ${s.content}`).join("\n");
+      activeSkills.map((s, i) => {
+        let skillText = `${i + 1}. [${s.skill.name}]: ${s.content}`;
+        if (s.attachedFileText) {
+          skillText += `\n   [DOKUMEN LAMPIRAN SKILL INI (PELAJARI & GUNAKAN SEBAGAI SUMBER)]:\n   ${s.attachedFileText}`;
+        }
+        return skillText;
+      }).join("\n\n");
   }
 
   // Fetch AI Documents (Global + Subject Specific)
