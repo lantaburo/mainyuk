@@ -2,6 +2,7 @@ import withPWAInit from "@ducanh2912/next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ['pdf-parse'],
   eslint: {
     // Lint errors (unused vars, no-explicit-any, etc.) should not block
     // production builds/deploys. Run `npm run lint` separately in CI/dev
