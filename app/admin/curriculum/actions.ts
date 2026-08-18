@@ -244,9 +244,13 @@ export async function generateQuestionsForModule(moduleId: string, count: number
   }
 
   const prompt = `Anda adalah seorang ahli penyusun soal evaluasi pendidikan berdasarkan standar **Kurikulum Merdeka**.
-Tugas Anda adalah membuat ${count} soal pilihan ganda berbahasa Indonesia untuk siswa Sekolah Dasar (SD) **Kelas ${grade} (${faseMerdeka})**.
-Mata Pelajaran: ${moduleData.subject.name}
-Topik/Materi: "${moduleData.title}"
+Tugas Anda adalah membuat ${count} soal pilihan ganda yang BENAR-BENAR FOKUS pada spesifikasi berikut:
+
+**SPESIFIKASI SOAL (ADAPTIF & WAJIB DIIKUTI):**
+- **Kelas:** ${grade} SD (${faseMerdeka})
+- **Mata Pelajaran:** ${moduleData.subject.name} (Soal HARUS MURNI tentang mata pelajaran ini. Jangan sampai membuat soal Matematika untuk pelajaran Bahasa Indonesia, dst).
+- **Topik/Modul:** "${moduleData.title}" (Seluruh soal HARUS secara spesifik menguji pemahaman tentang topik ini, disesuaikan dengan kapasitas nalar Kelas ${grade}).
+
 ${existingQuestionsText}
 **PEDOMAN PENYUSUNAN SOAL KURIKULUM MERDEKA:**
 1. **Pendekatan & Diferensiasi Kelas:** Soal tidak boleh sekadar hafalan murni (C1). Gunakan cerita naratif pendek yang interaktif, studi kasus, atau teka-teki. **Tingkat kesulitan dan gaya bahasa WAJIB sangat berbeda antar kelas!** (Soal Kelas 1 harus jauh lebih simpel dari Kelas 6).
