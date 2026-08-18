@@ -233,14 +233,32 @@ export async function generateQuestionsForModule(moduleId: string, count: number
     });
   }
 
-  let arabicInstruction = "";
-  if (moduleData.subject.name.toLowerCase().includes('arab')) {
-    arabicInstruction = `\n6. **Khat Arabic**: Khusus untuk mata pelajaran Bahasa Arab, semua kosakata, frasa, atau kalimat berbahasa Arab **WAJIB ditulis menggunakan tulisan/khat huruf Arab asli**, bukan latinnya. (Contoh: tulis كِتَابٌ bukan kitabun).`;
+  // Fetch Dynamic AI Skills
+  const activeSkills = await prisma.aiSkillVersion.findMany({
+    where: { isActive: true },
+    include: { skill: true }
+  });
+  
+  let dynamicSkillsText = "";
+  if (activeSkills.length > 0) {
+    dynamicSkillsText = "\n\n**INSTRUKSI KHUSUS (SKILL SETS):**\n" + 
+      activeSkills.map((s, i) => `${i + 1}. [${s.skill.name}]: ${s.content}`).join("\n");
   }
 
-  let tsaqafahInstruction = "";
-  if (moduleData.subject.name.toLowerCase().includes('tsaqafah')) {
-    tsaqafahInstruction = `\n7. **Rujukan Tsaqafah**: Khusus untuk materi Tsaqafah, jadikan Al-Quran, As-Sunnah, dan kitab Nidzamul Islam karya Syaikh Taqiyuddin an-Nabhani sebagai rujukan utama dalam pembuatan soal maupun penjelasannya.`;
+  // Fetch AI Documents (Global + Subject Specific)
+  const aiDocuments = await prisma.aiDocument.findMany({
+    where: {
+      OR: [
+        { subjectId: null },
+        { subjectId: moduleData.subjectId }
+      ]
+    }
+  });
+
+  let documentsText = "";
+  if (aiDocuments.length > 0) {
+    documentsText = "\n\n**DOKUMEN REFERENSI (RAG):**\nAnda WAJIB menggunakan informasi dari dokumen berikut sebagai referensi utama pembuatan soal:\n" + 
+      aiDocuments.map((doc, i) => `--- DOKUMEN ${i+1}: ${doc.title} ---\n${doc.extractedText || ""}\n-------------------`).join("\n\n");
   }
 
   const prompt = `Anda adalah seorang ahli penyusun soal evaluasi pendidikan berdasarkan standar **Kurikulum Merdeka**.
@@ -258,7 +276,7 @@ ${existingQuestionsText}
 3. **Struktur Jawaban (Randomize):** Opsi jawaban harus 4 pilihan yang masuk akal. Pengecoh (distractor) HARUS berupa kesalahan umum anak. **PENTING: Letak kunci jawaban yang benar (correctIndex) HARUS diacak secara merata (tidak boleh selalu A atau 0 terus menerus).** DILARANG keras menggunakan opsi "Semua jawaban benar".
 4. **Keberagaman & Anti-Pengulangan:** Setiap soal yang Anda buat HARUS unik. Dilarang keras mengulang pola soal, nama tokoh, atau konteks cerita yang sama secara berulang.
 5. **Kalimat Positif:** Gunakan kalimat tanya yang positif dan jelas. Hindari jebakan kata "yang bukan" atau "kecuali".
-6. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!${arabicInstruction}${tsaqafahInstruction}
+6. **Pembahasan:** Penjelasan (explanation) harus ekstra menyenangkan, gunakan gaya bahasa seperti kakak pembina atau guru ramah yang sedang bercerita, dan pastikan memotivasi anak!${dynamicSkillsText}${documentsText}
 
 **INSTRUKSI TEKNIS:**
 - correctIndex dimulai dari 0 (A=0, B=1, C=2, D=3). Pastikan terdistribusi acak (misal 1, 3, 0, 2, dll).${levelInstructions}

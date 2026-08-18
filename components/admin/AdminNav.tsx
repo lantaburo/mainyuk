@@ -34,6 +34,8 @@ export function AdminNav({ user }: AdminNavProps) {
     { href: "/admin/pengaturan-diskon", label: "Kode Diskon", icon: Tag },
     { href: "/admin/pengaturan-afiliasi", label: "Program Afiliasi", icon: UserCheck },
     { href: "/admin/pengaturan-ai", label: "Pengaturan AI", icon: Settings },
+    { href: "/admin/pengaturan-ai/skills", label: "AI Skill Set (Instruksi)", icon: Wand2 },
+    { href: "/admin/pengaturan-ai/documents", label: "AI Documents (RAG)", icon: Wand2 },
   ] : [];
 
   return (

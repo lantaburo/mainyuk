@@ -286,6 +286,7 @@ model Subject {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   modules   Module[]
+  aiDocuments AiDocument[]
 
   @@map("subjects")
 }
@@ -564,4 +565,51 @@ enum ClaimStatus {
   pending
   fulfilled
   rejected
+}
+
+// ─── AI Settings (Skills, Documents) ─────────────────────────────────────────
+
+model AiSkill {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false) @map("is_system") // Protected skills
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  versions    AiSkillVersion[]
+  
+  @@map("ai_skills")
+}
+
+model AiSkillVersion {
+  id          String   @id @default(cuid())
+  skillId     String   @map("skill_id")
+  content     String   @db.Text
+  version     Int
+  isActive    Boolean  @default(false) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  createdBy   String?  @map("created_by") // User ID
+  
+  skill       AiSkill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  
+  @@index([skillId])
+  @@map("ai_skill_versions")
+}
+
+model AiDocument {
+  id            String   @id @default(cuid())
+  title         String
+  subjectId     String?  @map("subject_id")
+  fileName      String   @map("file_name")
+  fileUrl       String   @map("file_url")
+  extractedText String?  @db.Text @map("extracted_text")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  
+  subject       Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  
+  @@index([subjectId])
+  @@map("ai_documents")
 }
